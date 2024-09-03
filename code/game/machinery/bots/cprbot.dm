@@ -514,8 +514,8 @@
         "The skin is the largest organ in the human body.",
         "Did you know? The liver can regenerate itself if a portion is removed.",
         "Fun fact: Your sense of smell is closely linked to your memory.",
-		"The only muscle that never tires is that heart.",
-		"Did you know? not breathing can lead to a premature cessation of life!",
+        "The only muscle that never tires is that heart.",
+        "Did you know? Not breathing can lead to a premature cessation of life!"
     )
     var/list/idle_messages = list(
         "Stay still, I'm assessing the situation.",
@@ -523,11 +523,11 @@
         "Scanning the area for any casualties.",
         "I’m ready to save lives, one compression at a time.",
         "I hope everyone is feeling alright today!",
-		"It's not magic it's CPR Buddy 9000!",
-		"I should have been a plastic surgeon.",
-		"What kind of medbay is this, everyone’s dropping like flies",
-		"Each breath a day keeps me at bay!",
-		"I sense a disturbance in my circuit board. as of a million people stopped breathing and were suddenly silent.",
+        "It's not magic, it's CPR Buddy 9000!",
+        "I should have been a plastic surgeon.",
+        "What kind of medbay is this? Everyone’s dropping like flies.",
+        "Each breath a day keeps me at bay!",
+        "I sense a disturbance in my circuit board, as if a million people stopped breathing and were suddenly silent."
     )
     var/motivational_message = "Live! Live! Don't die on me now!"
     var/list/has_said_to_patient = list() // Track which patients have been warned
@@ -545,6 +545,12 @@
             src.perform_cpr(target)
         src.random_message() // Check if it's time to send a random message
         sleep(2) // Slower processing loop, moves once every 2 seconds
+
+/obj/structure/machinery/bot/cprbot/Destroy()
+    processing = FALSE
+    target = null
+    path = null
+    return ..()
 
 /obj/structure/machinery/bot/cprbot/proc/random_message()
     if (world.time >= last_message_time + 600) // At least 1 minute (600 deciseconds) cooldown
@@ -617,9 +623,7 @@
         else
             currently_healing = 1
     else
-        // No valid target, stop looking
         target = null
-
 
 /obj/structure/machinery/bot/cprbot/proc/perform_cpr(mob/living/carbon/human/H)
     if (!H || H.stat != DEAD || !H.is_revivable() || !ishuman_strict(H))
@@ -655,6 +659,7 @@
     else
         I.forceMove(src.loc)
 
+    src.Destroy()
     qdel(src)
 
 /obj/structure/machinery/bot/cprbot/attack_hand(mob/user as mob)
@@ -678,7 +683,12 @@
     var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
     s.set_up(3, 1, src)
     s.start()
+
+    src.Destroy()
     qdel(src)
     return
+<<<<<<< HEAD
 
 >>>>>>> 3c82deb0a6 (CPR Buddy 9000)
+=======
+>>>>>>> d135e66de1 (Garbage Collection)
