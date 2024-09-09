@@ -561,10 +561,13 @@
 /obj/structure/machinery/bot/cprbot/Initialize(mapload, ...)
 	. = ..()
 	start_processing()
+	playsound(loc, 'sound/CPRbot/CPRbot_poweron.ogg', 25, 1)
 
 /obj/structure/machinery/bot/cprbot/process()
 	if (health > 0)
 		think()
+
+		random_message()
 	else
 		stop_processing()
 
@@ -615,6 +618,7 @@
 	if (!message)
 		return
 	visible_message("[src] beeps, \"[message]\"")
+	playsound(loc, 'sound/CPRbot/CPRbot_beep.ogg', 25, 1)
 
 /obj/structure/machinery/bot/cprbot/proc/go_idle()
 	human = null
@@ -728,7 +732,7 @@
 	target.visible_message(SPAN_NOTICE("<b>[src]</b> automatically performs <b>CPR</b> on <b>[target]</b>."))
 	target.visible_message(SPAN_DANGER("Currently performing CPR on <b>[target]</b> do not intervene!"))
 	currently_healing = TRUE
-
+	playsound(loc, 'sound/CPRbot/CPR.ogg', 25, 1)
 	cpr_ready = FALSE
 	addtimer(VARSET_CALLBACK(src, cpr_ready, TRUE), 7 SECONDS)
 
