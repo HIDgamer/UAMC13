@@ -210,6 +210,7 @@
 	siemens_coefficient = 2
 	flags_armor_protection = BODY_FLAG_HEAD|BODY_FLAG_FACE|BODY_FLAG_EYES
 	anti_hug = 10 //Lel
+<<<<<<< HEAD
 
 /obj/item/clothing/head/wintercap
 	name = "Winter Cap"
@@ -220,3 +221,5 @@
 /obj/item/clothing/head/wintercap/green
 	icon_state = "santa_hat_green"
 >>>>>>> fb1fbf9458 (Temp_Christmas_Hat)
+=======
+>>>>>>> 114ed526ff (Revert "Temp_Christmas_Hat")

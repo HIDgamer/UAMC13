@@ -220,9 +220,12 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth, list(
 	list("Officer Cap", 12, /obj/item/clothing/head/cmcap/bridge, null, VENDOR_ITEM_REGULAR),
 	list("Bio Hood", 12, /obj/item/clothing/head/bio_hood/synth, null, VENDOR_ITEM_REGULAR),
 	list("Fedora", 12, /obj/item/clothing/head/fedora, null, VENDOR_ITEM_REGULAR),
+<<<<<<< HEAD
 	list("Winter Cap Green", 12, /obj/item/clothing/head/wintercap/green, null, VENDOR_ITEM_REGULAR),
 	list("Winter Cap", 12, /obj/item/clothing/head/wintercap, null, VENDOR_ITEM_REGULAR),
 >>>>>>> fb1fbf9458 (Temp_Christmas_Hat)
+=======
+>>>>>>> 114ed526ff (Revert "Temp_Christmas_Hat")
 
 /datum/gear/synthetic/uscm/medical_green
 	path = /obj/item/clothing/under/rank/medical/green
