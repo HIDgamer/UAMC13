@@ -707,7 +707,7 @@
 
 		// Resolve the other bot's patient target (sanity checks included)
 		if (!isnull(other_cpr_bot.human))
-			other_bot_patient = other_cpr_bot.human.resolve()
+			other_bot_patient = other_cpr_bot.human?.resolve()
 
 		if (!isnull(other_bot_patient) && (other_bot_patient in potential_patients))
 			potential_patients.Remove(other_bot_patient) // Remove the patient targeted by another bot
@@ -735,7 +735,7 @@
 			go_idle()
 
 /obj/structure/machinery/bot/cprbot/proc/call_astar_pathfinding()
-	var/mob/living/carbon/human/patient = human.resolve()
+	var/mob/living/carbon/human/patient = human?.resolve()
 	if (isnull(patient))
 		return FALSE
 
@@ -807,7 +807,7 @@
 	if (isnull(human))
 		return FALSE
 
-	var/mob/living/carbon/human/patient = human.resolve()
+	var/mob/living/carbon/human/patient = human?.resolve()
 	if (isnull(patient))
 		return FALSE
 
@@ -818,7 +818,7 @@
 		return FALSE
 
 	if (isnull(patient))
-		patient = human.resolve()
+		patient = human?.resolve()
 
 	if (isnull(patient))
 		return FALSE
@@ -898,7 +898,7 @@
 /obj/structure/machinery/bot/cprbot/proc/try_perform_cpr()
 	currently_healing = TRUE
 	// Resolve the weak reference to check if the target still exists
-	var/mob/living/carbon/human/target = human.resolve()
+	var/mob/living/carbon/human/target = human?.resolve()
 
 	if (!patient_in_range())
 		go_idle()
@@ -954,7 +954,6 @@
 	on = FALSE
 	visible_message(SPAN_DANGER("<B>[src] blows apart!</B>"), null, null, 1)
 	var/turf/Tsec = get_turf(src)
-	visible_message(SPAN_DANGER("<B>[src] blows apart!</B>"), null, null, 1)
 
 	new /obj/item/cprbot_broken(Tsec)
 
