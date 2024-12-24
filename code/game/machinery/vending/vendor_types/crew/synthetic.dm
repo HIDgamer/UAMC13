@@ -614,6 +614,7 @@ GLOBAL_LIST_INIT(cm_vending_synth_tools, list(
 	list("Compact Nailgun kit", 15, /obj/effect/essentials_set/cnailgun, null, VENDOR_ITEM_REGULAR),
 	list("Telescopic Baton", 15, /obj/item/weapon/telebaton, null, VENDOR_ITEM_REGULAR),
 <<<<<<< HEAD
+<<<<<<< HEAD
 	list("Surgical Webbing Vest", 15, /obj/item/clothing/accessory/storage/surg_vest, null, VENDOR_ITEM_REGULAR),
 	list("Surgical Webbing Vest (Blue)", 15, /obj/item/clothing/accessory/storage/surg_vest/blue, null, VENDOR_ITEM_REGULAR),
 	list("Surgical Drop Pouch", 15, /obj/item/clothing/accessory/storage/surg_vest/drop_green, null, VENDOR_ITEM_REGULAR),
@@ -625,6 +626,8 @@ GLOBAL_LIST_INIT(cm_vending_synth_tools, list(
 =======
 	list("CPR Buddy 9k", 15, /obj/item/cprbot_item, null, VENDOR_ITEM_REGULAR),
 >>>>>>> 3c82deb0a6 (CPR Buddy 9000)
+=======
+>>>>>>> 36095d5360 (removed from the coin vendor.)
 ))
 
 //------------EXPERIMENTAL TOOL KITS---------------
