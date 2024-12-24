@@ -1168,7 +1168,11 @@
 #include "code\game\objects\items\cprbot_item.dm"
 =======
 #include "code\game\objects\items\cprbot.dm"
+<<<<<<< HEAD
 >>>>>>> 3c82deb0a6 (CPR Buddy 9000)
+=======
+#include "code\game\objects\items\cprbot_item.dm"
+>>>>>>> 15385ad212 (renamed 2)
 #include "code\game\objects\items\disks.dm"
 #include "code\game\objects\items\fulton.dm"
 #include "code\game\objects\items\gift_wrappaper.dm"
