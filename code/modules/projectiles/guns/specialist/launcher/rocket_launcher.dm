@@ -151,6 +151,7 @@
 			rocket.forceMove(src)
 			replace_ammo(,rocket)
 			to_chat(user, SPAN_NOTICE("You load [rocket] into [src]."))
+			update_icon()
 			if(reload_sound)
 				playsound(user, reload_sound, 25, 1)
 			else
@@ -163,6 +164,7 @@
 		current_mag = rocket
 		rocket.forceMove(src)
 		replace_ammo(,rocket)
+		update_icon()
 	return TRUE
 
 /obj/item/weapon/gun/launcher/rocket/unload(mob/user,  reload_override = 0, drop_override = 0)
@@ -180,6 +182,7 @@
 			SPAN_NOTICE("You unload [ammo] from [src]."))
 			make_rocket(user, drop_override, 0)
 			current_mag.current_rounds = 0
+			update_icon()
 
 //Adding in the rocket backblast. The tile behind the specialist gets blasted hard enough to down and slightly wound anyone
 /obj/item/weapon/gun/launcher/rocket/apply_bullet_effects(obj/projectile/projectile_to_fire, mob/user, i = 1, reflex = 0)
@@ -207,6 +210,14 @@
 		mob.KnockDown(knockdown_amount)
 		mob.apply_effect(6, STUTTER)
 		mob.emote("pain")
+
+
+//-------------------------------------------------------
+//M5 RPG
+
+/obj/item/weapon/gun/launcher/rocket/m5
+	name = "\improper M5 RPG"
+	desc = "The M5 RPG is the primary anti-armor weapon of the USCM. Used to take out light-tanks and enemy structures, the M5 RPG is a dangerous weapon with a variety of combat uses."
 
 //-------------------------------------------------------
 //M5 RPG'S MEAN FUCKING COUSIN
