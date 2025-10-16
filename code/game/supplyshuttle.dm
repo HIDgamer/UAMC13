@@ -105,8 +105,16 @@ GLOBAL_DATUM_INIT(supply_controller, /datum/controller/supply, new())
 	name = "\improper Airtight plastic flaps"
 	desc = "Heavy-duty, airtight, plastic flaps."
 
+/obj/structure/machinery/computer/supply
+	name = "Supply ordering console"
+	icon = 'icons/obj/structures/machinery/computer.dmi'
+	icon_state = "request"
+	density = TRUE
+	circuit = /obj/item/circuitboard/computer/ordercomp
+	var/datum/controller/supply/linked_supply_controller
+	var/faction = FACTION_MARINE
+	var/asrs_name = "Automated Storage and Retrieval System"
 
-<<<<<<< HEAD
 	/// What message should be displayed to the user when the UI is accessed
 	var/system_message = null
 
@@ -198,7 +206,7 @@ GLOBAL_DATUM_INIT(supply_controller, /datum/controller/supply, new())
 		if(isnull(pack.contains) && isnull(pack.containertype))
 			continue
 
-		if(!(pack.group in (list() + linked_supply_controller.all_supply_groups + linked_supply_controller.contraband_supply_groups)))
+		if(!(pack.group in linked_supply_controller.all_supply_groups))
 			continue
 
 		if(!pack.contraband && length(pack.group))
@@ -364,9 +372,6 @@ GLOBAL_DATUM_INIT(supply_controller, /datum/controller/supply, new())
 	return FALSE
 
 /obj/structure/machinery/computer/supply/asrs
-=======
-/obj/structure/machinery/computer/supplycomp
->>>>>>> 17fe604e3f (req console tgui (#7774))
 	name = "ASRS console"
 	desc = "A console for the Automated Storage Retrieval System"
 	icon = 'icons/obj/structures/machinery/computer.dmi'
@@ -407,11 +412,7 @@ GLOBAL_DATUM_INIT(supply_controller, /datum/controller/supply, new())
 
 /obj/structure/machinery/computer/supply/asrs/proc/toggle_contraband(contraband_enabled = FALSE)
 	can_order_contraband = contraband_enabled
-<<<<<<< HEAD
-	for(var/obj/structure/machinery/computer/supply/asrs/computer in linked_supply_controller.bound_supply_computer_list)
-=======
-	for(var/obj/structure/machinery/computer/supplycomp/computer as anything in GLOB.supply_controller.bound_supply_computer_list)
->>>>>>> 17fe604e3f (req console tgui (#7774))
+	for(var/obj/structure/machinery/computer/supply/asrs/computer as anything in linked_supply_controller.bound_supply_computer_list)
 		if(computer.can_order_contraband)
 			linked_supply_controller.black_market_enabled = TRUE
 			return
@@ -420,13 +421,8 @@ GLOBAL_DATUM_INIT(supply_controller, /datum/controller/supply, new())
 	//If any computers are able to order contraband, it's enabled. Otherwise, it's disabled!
 
 /// Prevents use of black market, even if it is otherwise enabled. If any computer has black market locked out, it applies across all of the currently established ones.
-<<<<<<< HEAD
 /obj/structure/machinery/computer/supply/asrs/proc/lock_black_market(market_locked = FALSE)
-	for(var/obj/structure/machinery/computer/supply/asrs/computer in linked_supply_controller.bound_supply_computer_list)
-=======
-/obj/structure/machinery/computer/supplycomp/proc/lock_black_market(market_locked = FALSE)
-	for(var/obj/structure/machinery/computer/supplycomp/computer as anything in GLOB.supply_controller.bound_supply_computer_list)
->>>>>>> 17fe604e3f (req console tgui (#7774))
+	for(var/obj/structure/machinery/computer/supply/asrs/computer as anything in linked_supply_controller.bound_supply_computer_list)
 		if(market_locked)
 			computer.black_market_lockout = TRUE
 
@@ -1027,141 +1023,7 @@ GLOBAL_DATUM_INIT(supply_controller, /datum/controller/supply, new())
 /obj/structure/machinery/computer/supply/asrs/attack_remote(mob/user as mob)
 	return attack_hand(user)
 
-<<<<<<< HEAD
 /obj/structure/machinery/computer/supply/asrs/attack_hand(mob/user as mob)
-	if(!is_mainship_level(z))
-		return
-=======
-/obj/structure/machinery/computer/supplycomp/attack_remote(mob/user as mob)
-	return attack_hand(user)
-
-/obj/structure/machinery/computer/ordercomp/attack_hand(mob/user as mob)
-	if(..())
-		return
-	user.set_interaction(src)
-	var/dat
-	if(temp)
-		dat = temp
-	else
-		var/datum/shuttle/ferry/supply/shuttle = GLOB.supply_controller.shuttle
-		if (shuttle)
-			dat += {"Location: [shuttle.has_arrive_time() ? "Raising platform":shuttle.at_station() ? "Raised":"Lowered"]<BR>
-			<HR>Supply budget: $[GLOB.supply_controller.points * SUPPLY_TO_MONEY_MUPLTIPLIER]<BR>
-		<BR>\n<A href='byond://?src=\ref[src];order=categories'>Request items</A><BR><BR>
-		<A href='byond://?src=\ref[src];vieworders=1'>View approved orders</A><BR><BR>
-		<A href='byond://?src=\ref[src];viewrequests=1'>View requests</A><BR><BR>
-		<A href='byond://?src=\ref[user];mach_close=computer'>Close</A>"}
-
-	show_browser(user, dat, "Automated Storage and Retrieval System", "computer", "size=575x450")
-	return
-
-/obj/structure/machinery/computer/ordercomp/Topic(href, href_list)
-	if(..())
-		return
-
-	if( isturf(loc) && (in_range(src, usr) || isSilicon(usr)) )
-		usr.set_interaction(src)
-
-	if(href_list["order"])
-		if(href_list["order"] == "categories")
-			//all_supply_groups
-			//Request what?
-			last_viewed_group = "categories"
-			temp = "<b>Supply budget: $[GLOB.supply_controller.points * SUPPLY_TO_MONEY_MUPLTIPLIER]</b><BR>"
-			temp += "<A href='byond://?src=\ref[src];mainmenu=1'>Main Menu</A><HR><BR><BR>"
-			temp += "<b>Select a category</b><BR><BR>"
-			for(var/supply_group_name in GLOB.supply_controller.all_supply_groups)
-				temp += "<A href='byond://?src=\ref[src];order=[supply_group_name]'>[supply_group_name]</A><BR>"
-		else
-			last_viewed_group = href_list["order"]
-			temp = "<b>Supply budget: $[GLOB.supply_controller.points * SUPPLY_TO_MONEY_MUPLTIPLIER]</b><BR>"
-			temp += "<A href='byond://?src=\ref[src];order=categories'>Back to all categories</A><HR><BR><BR>"
-			temp += "<b>Request from: [last_viewed_group]</b><BR><BR>"
-			for(var/supply_type in GLOB.supply_packs_datums)
-				var/datum/supply_packs/supply_pack = GLOB.supply_packs_datums[supply_type]
-				if(supply_pack.contraband || supply_pack.group != last_viewed_group || !supply_pack.buyable)
-					continue //Have to send the type instead of a reference to
-				temp += "<A href='byond://?src=\ref[src];doorder=[supply_pack.name]'>[supply_pack.name]</A> Cost: $[floor(supply_pack.cost) * SUPPLY_TO_MONEY_MUPLTIPLIER]<BR>" //the obj because it would get caught by the garbage
-
-	else if (href_list["doorder"])
-		if(world.time < reqtime)
-			for(var/mob/V in hearers(src))
-				V.show_message("<b>[src]</b>'s monitor flashes, \"[world.time - reqtime] seconds remaining until another requisition form may be printed.\"", SHOW_MESSAGE_VISIBLE)
-			return
-
-		//Find the correct supply_pack datum
-		var/supply_pack_type = GLOB.supply_packs_types[href_list["doorder"]]
-		if(!supply_pack_type)
-			return
-		var/datum/supply_packs/supply_pack = GLOB.supply_packs_datums[supply_pack_type]
-
-		if(supply_pack.contraband || !supply_pack.buyable)
-			return
-
-		var/timeout = world.time + 600
-		var/reason = strip_html(input(usr,"Reason:","Why do you require this item?","") as null|text)
-		if(world.time > timeout) return
-		if(!reason) return
-
-		var/idname = "*None Provided*"
-		var/idrank = "*None Provided*"
-		if(ishuman(usr))
-			var/mob/living/carbon/human/H = usr
-			idname = H.get_authentification_name()
-			idrank = H.get_assignment()
-		else if(isSilicon(usr))
-			idname = usr.real_name
-
-		GLOB.supply_controller.ordernum++
-		var/obj/item/paper/reqform = new /obj/item/paper(loc)
-		reqform.name = "Requisition Form - [supply_pack.name]"
-		reqform.info += "<h3>[MAIN_SHIP_NAME] Supply Requisition Form</h3><hr>"
-		reqform.info += "INDEX: #[GLOB.supply_controller.ordernum]<br>"
-		reqform.info += "REQUESTED BY: [idname]<br>"
-		reqform.info += "RANK: [idrank]<br>"
-		reqform.info += "REASON: [reason]<br>"
-		reqform.info += "SUPPLY CRATE TYPE: [supply_pack.name]<br>"
-		reqform.info += "ACCESS RESTRICTION: [get_access_desc(supply_pack.access)]<br>"
-		reqform.info += "CONTENTS:<br>"
-		reqform.info += supply_pack.manifest
-		reqform.info += "<hr>"
-		reqform.info += "STAMP BELOW TO APPROVE THIS REQUISITION:<br>"
-
-		reqform.update_icon() //Fix for appearing blank when printed.
-		reqtime = (world.time + 5) % 1e5
-
-		//make our supply_order datum
-		var/datum/supply_order/supply_order = new /datum/supply_order()
-		supply_order.ordernum = GLOB.supply_controller.ordernum
-		supply_order.object = supply_pack
-		supply_order.orderedby = idname
-		GLOB.supply_controller.requestlist += supply_order
-
-		temp = "Thanks for your request. The cargo team will process it as soon as possible.<BR>"
-		temp += "<BR><A href='byond://?src=\ref[src];order=[last_viewed_group]'>Back</A> <A href='byond://?src=\ref[src];mainmenu=1'>Main Menu</A>"
-
-	else if (href_list["vieworders"])
-		temp = "Current approved orders: <BR><BR>"
-		for(var/S in GLOB.supply_controller.shoppinglist)
-			var/datum/supply_order/SO = S
-			temp += "[SO.object.name] approved by [SO.approvedby]<BR>"
-		temp += "<BR><A href='byond://?src=\ref[src];mainmenu=1'>OK</A>"
-
-	else if (href_list["viewrequests"])
-		temp = "Current requests: <BR><BR>"
-		for(var/S in GLOB.supply_controller.requestlist)
-			var/datum/supply_order/SO = S
-			temp += "#[SO.ordernum] - [SO.object.name] requested by [SO.orderedby]<BR>"
-		temp += "<BR><A href='byond://?src=\ref[src];mainmenu=1'>OK</A>"
-
-	else if (href_list["mainmenu"])
-		temp = null
-
-	add_fingerprint(usr)
-	updateUsrDialog()
-	return
-
-/obj/structure/machinery/computer/supplycomp/attack_hand(mob/user as mob)
 	if(!is_mainship_level(z)) return
 >>>>>>> 17fe604e3f (req console tgui (#7774))
 	if(!allowed(user))
