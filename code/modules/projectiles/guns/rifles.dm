@@ -1759,6 +1759,8 @@
 
 	//-------------------------------------------------------
 
+<<<<<<< HEAD
+=======
 // Norcomm AK-4047 - Space AK47 - UPP Gun - MK2 equivalent
 
 /obj/item/weapon/gun/rifle/ak4047
@@ -1838,6 +1840,7 @@
 
 	//-------------------------------------------------------
 
+>>>>>>> 44751f0cc1 (M10 revamp, new attachments & additions. (#9861))
 //M4RA Battle Rifle, standard USCM DMR
 
 /obj/item/weapon/gun/rifle/m4ra

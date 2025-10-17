@@ -308,6 +308,8 @@
 	bullet_duraloss = BULLET_DURABILITY_LOSS_MEDIUM // yeah this thing is gonna rattle inside the barrel when fired
 	bullet_duramage = BULLET_DURABILITY_DAMAGE_INSUBSTANTIAL
 
+<<<<<<< HEAD
+=======
 /datum/ammo/bullet/pistol/l54_custom
 	penetration= ARMOR_PENETRATION_TIER_3
 
@@ -330,3 +332,4 @@
 	damage = 24
 	penetration = ARMOR_PENETRATION_TIER_6
 	shell_speed = AMMO_SPEED_TIER_5
+>>>>>>> 44751f0cc1 (M10 revamp, new attachments & additions. (#9861))

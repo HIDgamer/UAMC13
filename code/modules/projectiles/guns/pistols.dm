@@ -983,12 +983,14 @@ Unlike other pistols, it can be equipped with limited mods (small muzzle, underb
 	fa_scatter_peak = FULL_AUTO_SCATTER_PEAK_TIER_4
 	fa_max_scatter = SCATTER_AMOUNT_TIER_7
 	accuracy_mult = BASE_ACCURACY_MULT
+<<<<<<< HEAD
 	accuracy_mult_unwielded = BASE_ACCURACY_MULT
 	scatter = SCATTER_AMOUNT_TIER_4
 	scatter_unwielded = SCATTER_AMOUNT_TIER_3
 	damage_mult = BASE_BULLET_DAMAGE_MULT - BULLET_DAMAGE_MULT_TIER_7
 	recoil = RECOIL_AMOUNT_TIER_5
 	recoil_unwielded = RECOIL_AMOUNT_TIER_4
+=======
 	accuracy_mult_unwielded = BASE_ACCURACY_MULT - HIT_ACCURACY_MULT_TIER_4
 	scatter = SCATTER_AMOUNT_TIER_5
 	scatter_unwielded = SCATTER_AMOUNT_TIER_4
@@ -1074,3 +1076,4 @@ L54 service pistol
 	desc = "The standard-issue semi-automatic sidearm of the NSPA and various military forces within the Three World Empire, chambered in 9mm. Functionally comparable to the USCM’s M4A3 service pistol, this particular example has been heavily customized—featuring a dark special-alloy finish, extended barrel with an integrated compensator, and precision-tuned internals, as well as an auto-eject feature. These modifications push its performance well beyond standard service specifications."
 	icon_state = "l54_custom_alt"
 	item_state = "l54_custom_alt"
+>>>>>>> 44751f0cc1 (M10 revamp, new attachments & additions. (#9861))
