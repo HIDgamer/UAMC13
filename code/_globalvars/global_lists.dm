@@ -108,6 +108,10 @@ GLOBAL_LIST_INIT(resin_build_order_ovipositor, list(
 	/datum/resin_construction/resin_obj/resin_spike
 ))
 
+GLOBAL_LIST_INIT(resin_build_order_pathogen_overmind, list(
+	/datum/resin_construction/resin_obj/popper_cocoon
+))
+
 //Xeno Leader Mark Meanings
 GLOBAL_LIST_INIT_TYPED(resin_mark_meanings, /datum/xeno_mark_define, setup_resin_mark_meanings())
 
@@ -133,7 +137,8 @@ GLOBAL_LIST_INIT_TYPED(conflicting_properties, /list, list( PROPERTY_NUTRITIOUS 
 											PROPERTY_HYPOMETABOLIC = PROPERTY_HYPERMETABOLIC, PROPERTY_HYPERTHROTTLING = PROPERTY_NEUROINHIBITING,
 											PROPERTY_FOCUSING = PROPERTY_NERVESTIMULATING, PROPERTY_THERMOSTABILIZING = PROPERTY_HYPERTHERMIC, PROPERTY_THERMOSTABILIZING = PROPERTY_HYPOTHERMIC,
 											PROPERTY_AIDING = PROPERTY_NEUROINHIBITING, PROPERTY_OXYGENATING = PROPERTY_HYPOXEMIC, PROPERTY_ANTICARCINOGENIC = PROPERTY_CARCINOGENIC, \
-											PROPERTY_CIPHERING = PROPERTY_CIPHERING_PREDATOR, PROPERTY_TRANSFORMATIVE = PROPERTY_ANTITOXIC, PROPERTY_MUSCLESTIMULATING = PROPERTY_NERVESTIMULATING))
+											PROPERTY_CIPHERING = PROPERTY_CIPHERING_PREDATOR, PROPERTY_TRANSFORMATIVE = PROPERTY_ANTITOXIC, PROPERTY_INTRAVENOUS = PROPERTY_HYPERMETABOLIC,\
+											PROPERTY_INTRAVENOUS = PROPERTY_HYPOMETABOLIC, PROPERTY_MUSCLESTIMULATING = PROPERTY_NERVESTIMULATING, PROPERTY_HEMOSITIC = PROPERTY_NUTRITIOUS))
 //list of all properties that combine into something else, now featured in global list
 GLOBAL_LIST_INIT_TYPED(combining_properties, /list, list( PROPERTY_DEFIBRILLATING = list(PROPERTY_MUSCLESTIMULATING, PROPERTY_CARDIOPEUTIC),\
 											PROPERTY_THANATOMETABOL = list(PROPERTY_HYPOXEMIC, PROPERTY_CRYOMETABOLIZING, PROPERTY_NEUROCRYOGENIC),\
@@ -144,11 +149,10 @@ GLOBAL_LIST_INIT_TYPED(combining_properties, /list, list( PROPERTY_DEFIBRILLATIN
 											PROPERTY_ADDICTIVE = list(PROPERTY_PSYCHOSTIMULATING, PROPERTY_NEUROTOXIC),\
 											PROPERTY_CIPHERING_PREDATOR = list(PROPERTY_CIPHERING, PROPERTY_CROSSMETABOLIZING),\
 											PROPERTY_FIRE_PENETRATING = list(PROPERTY_OXYGENATING, PROPERTY_VISCOUS),\
-											PROPERTY_BONEMENDING = list(PROPERTY_HYPERDENSIFICATING, PROPERTY_NUTRITIOUS),\
-											PROPERTY_BONEMENDING = list(PROPERTY_HYPERDENSIFICATING, PROPERTY_NUTRITIOUS),\
+											PROPERTY_BONEMENDING = list(PROPERTY_CRYSTALLIZATION, PROPERTY_NUTRITIOUS),\
 											PROPERTY_ENCEPHALOPHRASIVE = list(PROPERTY_NERVESTIMULATING, PROPERTY_PSYCHOSTIMULATING)))
 //List of all id's from classed /datum/reagent datums indexed by class or tier. Used by chemistry generator and chem spawners.
-GLOBAL_LIST_INIT_TYPED(chemical_gen_classes_list, /list, list("C" = list(),"C1" = list(),"C2" = list(),"C3" = list(),"C4" = list(),"C5" = list(),"C6" = list(),"T1" = list(),"T2" = list(),"T3" = list(),"T4" = list(),"tau", list()))
+GLOBAL_LIST_INIT_TYPED(chemical_gen_classes_list, /list, list("C" = list(),"C1" = list(),"C2" = list(),"C3" = list(),"C4" = list(),"C5" = list(),"C6" = list(),"T1" = list(),"T2" = list(),"T3" = list(),"T4" = list(), "H1" = list(), "tau", list()))
 //properties generated in chemicals, helps to make sure the same property doesn't show up 10 times
 GLOBAL_LIST_INIT_TYPED(generated_properties, /list, list("positive" = list(), "negative" = list(), "neutral" = list()))
 
@@ -217,7 +221,8 @@ GLOBAL_LIST_INIT_TYPED(hive_datum, /datum/hive_status, list(
 	XENO_HIVE_FORSAKEN = new /datum/hive_status/forsaken(),
 	XENO_HIVE_YAUTJA = new /datum/hive_status/yautja(),
 	XENO_HIVE_RENEGADE = new /datum/hive_status/corrupted/renegade(),
-	XENO_HIVE_TUTORIAL = new /datum/hive_status/tutorial()
+	XENO_HIVE_TUTORIAL = new /datum/hive_status/tutorial(),
+	XENO_HIVE_PATHOGEN = new /datum/hive_status/pathogen(),
 ))
 
 GLOBAL_VAR_INIT(king_acquisition_time, 1 HOURS + 30 MINUTES + rand(0, 25) MINUTES)
@@ -429,9 +434,7 @@ GLOBAL_LIST_INIT(wy_droid_emotes, setup_wy_droid_emotes())
 	var/list/language_keys = list()
 	for (var/language_name in subtypesof(/datum/language))
 		var/datum/language/L = language_name
-		language_keys[":[lowertext(initial(L.key))]"] = initial(L.name)
-		language_keys[".[lowertext(initial(L.key))]"] = initial(L.name)
-		language_keys["#[lowertext(initial(L.key))]"] = initial(L.name)
+		language_keys["![lowertext(initial(L.key))]"] = initial(L.name)
 	return language_keys
 
 //Comb Sort. This works apparently, so we're keeping it that way
@@ -541,7 +544,7 @@ GLOBAL_LIST_INIT(wy_droid_emotes, setup_wy_droid_emotes())
 
 
 /* // Uncomment to debug chemical reaction list.
-/client/verb/debug_chemical_list()
+CLIENT_VERB(debug_chemical_list)
 
 	for (var/reaction in GLOB.chemical_reactions_filtered_list)
 		. += "GLOB.chemical_reactions_filtered_list\[\"[reaction]\"\] = \"[GLOB.chemical_reactions_filtered_list[reaction]]\"\n"

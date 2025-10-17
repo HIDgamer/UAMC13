@@ -77,6 +77,8 @@
 		if(HAS_TRAIT(M, TRAIT_CHARGING))
 			to_chat(M, SPAN_WARNING("You ignore some weird noises as you charge."))
 			continue
+		if(M.status_flags & INCORPOREAL)
+			continue
 
 		if(M.get_target_lock(faction_group))
 			continue
@@ -192,12 +194,13 @@
 	M.set_effect(TESLA_COIL_DAZE_EFFECT * 1.5, DAZE) // 1.5x as effective as normal tesla
 
 #undef TESLA_COIL_STUN_FIRE_DELAY
-#define TESLA_COIL_MICRO_FIRE_DELAY 10
+#define TESLA_COIL_MICRO_FIRE_DELAY 1 SECONDS
 /obj/structure/machinery/defenses/tesla_coil/micro
 	name = "\improper 25S micro tesla coil"
 	desc = "A perfected way of producing high-voltage, low-current and high-frequency electricity. Minor modifications allow it to only hit hostile targets with a devastating shock. This one is smaller and more lightweight."
 	handheld_type = /obj/item/defenses/handheld/tesla_coil/micro
 	disassemble_time = 0.5 SECONDS
+	fire_delay = TESLA_COIL_MICRO_FIRE_DELAY
 	density = FALSE
 	defense_type = "Micro"
 

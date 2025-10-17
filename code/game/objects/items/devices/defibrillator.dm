@@ -115,7 +115,7 @@
 		return
 
 	//Job knowledge requirement
-	if(istype(user) && !noskill)
+	if(user.skills && !noskill)
 		if(!skillcheck(user, skill_to_check, skill_level))
 			if(!skill_to_check_alt || (!skillcheck(user, skill_to_check_alt, skill_level_alt)))
 				to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
@@ -164,7 +164,7 @@
 		to_chat(user, SPAN_WARNING("You can't defibrilate [H]. You need a synthetic reset key for reboot!"))
 		return
 	if(!ready)
-		balloon_alert(user, "take out the [fluff_tool].")
+		balloon_alert(user, "take out the [fluff_tool]")
 		to_chat(user, SPAN_WARNING("Take [src]'s [fluff_tool] out first."))
 		return
 	if(dcell.charge < charge_cost)
@@ -200,7 +200,7 @@
 	//job knowledge requirement
 	if(user.skills && !noskill)
 		if(!skillcheck(user, skill_to_check, skill_level))
-			if(skill_to_check_alt && !skillcheck(user, skill_to_check_alt, skill_level_alt))
+			if(!skill_to_check_alt || (!skillcheck(user, skill_to_check_alt, skill_level_alt)))
 				to_chat(user, SPAN_WARNING("You don't seem to know how to use [src]..."))
 				return
 

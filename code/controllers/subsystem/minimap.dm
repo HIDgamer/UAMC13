@@ -769,9 +769,10 @@ SUBSYSTEM_DEF(minimaps)
 	if(faction == FACTION_NEUTRAL && isobserver(user))
 		faction = allowed_flags == MINIMAP_FLAG_XENO ? XENO_HIVE_NORMAL : FACTION_MARINE
 
-	if(is_xeno && xeno.hive.see_humans_on_tacmap && targeted_ztrait != ZTRAIT_MARINE_MAIN_SHIP)
+	if(is_xeno && xeno.hive.see_humans_on_tacmap)
+		if(targeted_ztrait != ZTRAIT_MARINE_MAIN_SHIP && !xeno.hive.need_round_end_check)
+			targeted_ztrait = ZTRAIT_MARINE_MAIN_SHIP
 		allowed_flags |= MINIMAP_FLAG_USCM|MINIMAP_FLAG_WY|MINIMAP_FLAG_UPP|MINIMAP_FLAG_CLF
-		targeted_ztrait = ZTRAIT_MARINE_MAIN_SHIP
 		map_holder = null
 
 	new_current_map = get_unannounced_tacmap_data_png(faction)
@@ -1048,7 +1049,7 @@ SUBSYSTEM_DEF(minimaps)
 		return UI_CLOSE
 
 	var/mob/living/carbon/xenomorph/xeno = user
-	if(!xeno.hive?.living_xeno_queen?.ovipositor)
+	if(xeno.hive?.tacmap_requires_queen_ovi && !xeno.hive?.living_xeno_queen?.ovipositor)
 		return UI_CLOSE
 
 	return UI_INTERACTIVE
@@ -1139,6 +1140,8 @@ SUBSYSTEM_DEF(minimaps)
 			return MINIMAP_FLAG_YAUTJA
 		if(XENO_HIVE_RENEGADE)
 			return MINIMAP_FLAG_XENO_RENEGADE
+		if(XENO_HIVE_PATHOGEN)
+			return MINIMAP_FLAG_XENO_PATHOGEN
 	return 0
 
 #undef CANVAS_COOLDOWN_TIME

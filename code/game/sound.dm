@@ -330,6 +330,8 @@
 				sound = pick('sound/weapons/gun_nsg23_1.ogg','sound/weapons/gun_nsg23_2.ogg')
 			if("gun_pkd")
 				sound = pick('sound/weapons/gun_pkd_fire01.ogg','sound/weapons/gun_pkd_fire02.ogg','sound/weapons/gun_pkd_fire03.ogg')
+			if("gun_l64")
+				sound = pick('sound/weapons/gun_l64_1.ogg','sound/weapons/gun_l64_2.ogg','sound/weapons/gun_l64_3.ogg')
 
 			// Xeno
 			if("acid_hit")
@@ -384,6 +386,19 @@
 				sound = pick('sound/voice/alien_roar_larva1.ogg','sound/voice/alien_roar_larva2.ogg')
 			if("queen")
 				sound = pick('sound/voice/alien_queen_command.ogg','sound/voice/alien_queen_command2.ogg','sound/voice/alien_queen_command3.ogg')
+			// Pathogen Creatures
+			if("pathogen_talk")
+				sound = pick('sound/pathogen_creatures/pathogen_talk1.ogg','sound/pathogen_creatures/pathogen_talk2.ogg','sound/pathogen_creatures/pathogen_talk3.ogg')
+			if("pathogen_roar")
+				sound = pick('sound/pathogen_creatures/pathogen_roar1.ogg','sound/pathogen_creatures/pathogen_roar2.ogg')
+			if("bloodburster_roar")
+				sound = pick('sound/pathogen_creatures/bloodburster_roar1.ogg','sound/pathogen_creatures/bloodburster_roar2.ogg')
+			if("pathogen_hiss")
+				sound = pick('sound/pathogen_creatures/pathogen_hiss1.ogg','sound/pathogen_creatures/pathogen_hiss2.ogg','sound/pathogen_creatures/pathogen_hiss3.ogg')
+			if("pathogen_growl")
+				sound = pick('sound/pathogen_creatures/pathogen_growl1.ogg','sound/pathogen_creatures/pathogen_growl2.ogg')
+			if("pathogen_pounce")
+				sound = pick('sound/pathogen_creatures/pathogen_pounce1.ogg','sound/pathogen_creatures/pathogen_pounce2.ogg')
 			// Human
 			if("male_scream")
 				sound = pick('sound/voice/human_male_scream_1.ogg','sound/voice/human_male_scream_2.ogg','sound/voice/human_male_scream_3.ogg','sound/voice/human_male_scream_4.ogg',5;'sound/voice/human_male_scream_5.ogg',5;'sound/voice/human_jackson_scream.ogg',5;'sound/voice/human_ack_scream.ogg','sound/voice/human_male_scream_6.ogg')
@@ -418,7 +433,7 @@
 			if("talk_phone")
 				sound = pick('sound/machines/telephone/talk_phone1.ogg', 'sound/machines/telephone/talk_phone2.ogg', 'sound/machines/telephone/talk_phone3.ogg', 'sound/machines/telephone/talk_phone4.ogg', 'sound/machines/telephone/talk_phone5.ogg', 'sound/machines/telephone/talk_phone6.ogg', 'sound/machines/telephone/talk_phone7.ogg')
 			if("bone_break")
-				sound = pick('sound/effects/bone_break1.ogg','sound/effects/bone_break2.ogg','sound/effects/bone_break3.ogg','sound/effects/bone_break4.ogg','sound/effects/bone_break5.ogg','sound/effects/bone_break6.ogg','sound/effects/bone_break7.ogg')
+				sound = pick('sound/effects/bone_break1.ogg','sound/effects/bone_break2.ogg','sound/effects/bone_break3.ogg','sound/effects/bone_break4.ogg','sound/effects/bone_break5.ogg','sound/effects/bone_break6.ogg','sound/effects/bone_break7.ogg','sound/effects/crack1.ogg', 'sound/effects/crack2.ogg', 'sound/effects/crackandbleed.ogg')
 			if("plush")
 				sound = pick('sound/items/plush1.ogg', 'sound/items/plush2.ogg', 'sound/items/plush3.ogg')
 			// working joe

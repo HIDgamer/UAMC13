@@ -25,8 +25,6 @@
 	var/spread_on_semiweedable = FALSE
 	var/block_structures = BLOCK_NOTHING
 
-	var/datum/hive_status/linked_hive = null
-	var/hivenumber = XENO_HIVE_NORMAL
 	var/turf/weeded_turf
 
 	// Which node is responsible for keeping this weed patch alive?
@@ -41,7 +39,10 @@
 			weed_strength = node.weed_strength
 		node_range = node.node_range
 		if(weed_strength >= WEED_LEVEL_HIVE)
-			name = "hive [name]"
+			if(linked_hive.hivenumber == XENO_HIVE_PATHOGEN)
+				name = "confluence blight"
+			else
+				name = "hive [name]"
 			health = WEED_HEALTH_HIVE
 		node.add_child(src)
 		hivenumber = linked_hive.hivenumber
@@ -223,14 +224,14 @@
 		var/turf/T = get_step(src, dirn)
 		if(!istype(T))
 			continue
-		var/is_weedable = T.is_weedable()
-		if(!is_weedable)
+		if(!T.is_weedable)
 			continue
-		if(!spread_on_semiweedable && is_weedable < FULLY_WEEDABLE)
+		if(!spread_on_semiweedable && T.is_weedable < FULLY_WEEDABLE)
 			continue
 		T.clean_cleanables()
 
 		var/obj/effect/alien/resin/fruit/old_fruit
+		var/obj/effect/alien/resin/design/old_design
 
 		var/obj/effect/alien/weeds/W = locate() in T
 		if(W)
@@ -246,24 +247,45 @@
 			if(old_fruit)
 				old_fruit.unregister_weed_expiration_signal()
 
+			old_design = locate() in T
+
+			if(old_design)
+				old_design.unregister_weed_expiration_signal_design()
+
 			qdel(W)
 
 		if(!istype(T, /turf/closed/wall/resin) && T.density)
-			if(istype(T, /turf/closed/wall))
-				weeds.Add(new /obj/effect/alien/weeds/weedwall(T, node))
-				continue
-			else if( istype(T, /turf/closed))
-				weeds.Add(new /obj/effect/alien/weeds(T, node, TRUE, FALSE))
-				continue
+			if(hivenumber == XENO_HIVE_PATHOGEN)
+				if(istype(T, /turf/closed/wall))
+					weeds.Add(new /obj/effect/alien/weeds/weedwall/pathogen(T, node))
+					continue
+				else if(istype(T, /turf/closed))
+					weeds.Add(new /obj/effect/alien/weeds/pathogen(T, node, TRUE, FALSE))
+					continue
+			else
+				if(istype(T, /turf/closed/wall))
+					weeds.Add(new /obj/effect/alien/weeds/weedwall(T, node))
+					continue
+				else if(istype(T, /turf/closed))
+					weeds.Add(new /obj/effect/alien/weeds(T, node, TRUE, FALSE))
+					continue
 
 		if(!weed_expand_objects(T, dirn))
 			continue
 
-		var/obj/effect/alien/weeds/new_weed = new(T, node)
+		var/obj/effect/alien/weeds/new_weed
+		if(hivenumber == XENO_HIVE_PATHOGEN)
+			new_weed = new /obj/effect/alien/weeds/pathogen(T, node)
+		else
+			new_weed = new(T, node)
+
 		weeds += new_weed
 
 		if(old_fruit)
 			old_fruit.register_weed_expiration_signal(new_weed)
+
+		if(old_design)
+			old_design.register_weed_expiration_signal_design(new_weed)
 
 	on_weed_expand(src, weeds)
 	if(parent)
@@ -290,10 +312,16 @@
 				return FALSE
 
 		if(istype(O, /obj/structure/window/framed))
-			new /obj/effect/alien/weeds/weedwall/window(T, parent)
+			if(hivenumber == XENO_HIVE_PATHOGEN)
+				new /obj/effect/alien/weeds/weedwall/window/pathogen(T, parent)
+			else
+				new /obj/effect/alien/weeds/weedwall/window(T, parent)
 			return FALSE
 		else if(istype(O, /obj/structure/window_frame))
-			new /obj/effect/alien/weeds/weedwall/frame(T, parent)
+			if(hivenumber == XENO_HIVE_PATHOGEN)
+				new /obj/effect/alien/weeds/weedwall/frame/pathogen(T, parent)
+			else
+				new /obj/effect/alien/weeds/weedwall/frame(T, parent)
 			return FALSE
 		else if(istype(O, /obj/structure/machinery/door) && O.density && (!(O.flags_atom & ON_BORDER) || O.dir != direction))
 			return FALSE
@@ -315,6 +343,9 @@
 
 /obj/effect/alien/weeds/update_icon()
 	overlays.Cut()
+
+	if(hivenumber == XENO_HIVE_PATHOGEN)
+		icon = 'icons/mob/pathogen/pathogen_weeds.dmi'
 
 	var/my_dir = 0
 	for(var/check_dir in GLOB.cardinals)
@@ -481,7 +512,8 @@
 	flags_atom = OPENCONTAINER
 	layer = ABOVE_BLOOD_LAYER
 	plane = FLOOR_PLANE
-	var/static/staticnode
+	var/static/image/staticnode
+	var/static/image/staticnode_p
 	var/overlay_node = TRUE
 
 	// Which weeds are being kept alive by this node?
@@ -508,12 +540,18 @@
 /obj/effect/alien/weeds/node/update_icon()
 	..()
 	if(overlay_node)
-		overlays += staticnode
+		if(hivenumber == XENO_HIVE_PATHOGEN)
+			overlays += staticnode_p
+		else
+			overlays += staticnode
 
 /obj/effect/alien/weeds/node/proc/trap_destroyed()
 	SIGNAL_HANDLER
 	overlay_node = TRUE
-	overlays += staticnode
+	if(hivenumber == XENO_HIVE_PATHOGEN)
+		overlays += staticnode_p
+	else
+		overlays += staticnode
 
 /obj/effect/alien/weeds/node/Initialize(mapload, obj/effect/alien/weeds/node/node, mob/living/carbon/xenomorph/xeno, datum/hive_status/hive)
 	if (istype(hive))
@@ -533,14 +571,18 @@
 
 	. = ..(mapload, src)
 
+	// Create the overlay with the determined icon_state
 	if(!staticnode)
 		staticnode = image('icons/mob/xenos/weeds.dmi', "weednode", ABOVE_OBJ_LAYER)
+	if(!staticnode_p)
+		staticnode_p = image('icons/mob/pathogen/pathogen_weeds.dmi', "weednode", ABOVE_OBJ_LAYER)
 
 	var/obj/effect/alien/resin/trap/trap = locate() in loc
 	if(trap)
 		RegisterSignal(trap, COMSIG_PARENT_PREQDELETED, PROC_REF(trap_destroyed))
 		overlay_node = FALSE
 		overlays -= staticnode
+		overlays -= staticnode_p
 
 	if(xeno)
 		add_hiddenprint(xeno)
@@ -550,7 +592,10 @@
 
 		node_range = node_range + weed_strength - 1//stronger weeds expand further!
 		if(weed_strength >= WEED_LEVEL_HIVE)
-			name = "hive node sac"
+			if(hivenumber == XENO_HIVE_PATHOGEN)
+				name = "confluence blight node"
+			else
+				name = "hive node sac"
 
 	create_reagents(30)
 	reagents.add_reagent(PLASMA_PURPLE, 30)

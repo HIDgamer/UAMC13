@@ -155,9 +155,10 @@
 	var/tier = 1 //This will track their "tier" to restrict/limit evolutions
 	var/time_of_birth
 
-	var/pslash_delay = 0
+	var/hardcore = 0 //Set to 1 in New() when Whiskey Outpost is active. Prevents queen evolution and deactivates dchat death messages
 
-	var/hardcore = 0 //Set to 1 in New() when Whiskey Outpost is active. Prevents healing and queen evolution, deactivates dchat death messages
+	///Can the xeno rest and passively heal?
+	var/can_heal = TRUE
 
 	//Naming variables
 	var/caste_type = "Drone"
@@ -235,7 +236,6 @@
 	/// Caste-based spit windup
 	var/spit_windup = FALSE
 	/// Caste-based spit windup duration (if applicable)
-	var/spit_delay = 0
 	var/tileoffset = 0 	// How much your view will be offset in the direction that you zoom?
 	var/viewsize = 0	//What size your view will be changed to when you zoom?
 	var/banished = FALSE // Banished xenos can be attacked by all other xenos
@@ -253,7 +253,7 @@
 	var/life_slow_reduction = -1.5
 	//Research organ harvesting.
 	var/organ_removed = FALSE
-	/// value of organ in each caste, e.g. 10k is autodoc larva removal. runner is 500
+	/// value of organ in each caste, e.g. 7k is autodoc larva removal. runner is 500
 	var/organ_value = 0
 
 	var/obj/item/skull/skull = /obj/item/skull
@@ -307,8 +307,17 @@
 	var/obj/effect/alien/resin/fruit/selected_fruit = null
 	var/list/built_structures = list()
 
+	// Designer stuff
+	var/obj/effect/alien/resin/design/selected_design = null
+	var/list/available_design = list()
+	var/list/current_design = list()
+	var/max_design_nodes = 0
+	var/selected_design_mark
+
 	var/icon_xeno
 	var/icon_xenonid
+	/// Stores the overlay icon for spitting/drooling when acid-based abilities are selected
+	var/acid_overlay
 
 	bubble_icon = "alien"
 
@@ -344,7 +353,7 @@
 	//Taken from update_icon for all xeno's
 	var/list/overlays_standing[X_TOTAL_LAYERS]
 
-	var/atom/movable/vis_obj/xeno_wounds/wound_icon_holder
+	var/atom/movable/vis_obj/wound_icon_holder
 	var/atom/movable/vis_obj/xeno_pack/backpack_icon_holder
 	/// If TRUE, the xeno cannot slash anything
 	var/cannot_slash = FALSE
@@ -359,7 +368,11 @@
 
 	//putting the organ in for research
 	if(organ_value != 0)
-		var/obj/item/organ/xeno/organ = new() //give
+		var/obj/item/organ/xeno/organ //give
+		if(hivenumber == XENO_HIVE_PATHOGEN)
+			organ = new /obj/item/organ/xeno/pathogen()
+		else
+			organ = new()
 		organ.forceMove(src)
 		organ.research_value = organ_value
 		organ.caste_origin = caste_type
@@ -415,7 +428,7 @@
 		caste = GLOB.xeno_datum_list[caste_type]
 
 		//Fire immunity signals
-		if (caste.fire_immunity != FIRE_IMMUNITY_NONE)
+		if (HAS_FLAG(caste.fire_immunity, FIRE_IMMUNITY_NO_DAMAGE | FIRE_IMMUNITY_NO_IGNITE | FIRE_IMMUNITY_XENO_FRENZY))
 			if(caste.fire_immunity & FIRE_IMMUNITY_NO_IGNITE)
 				RegisterSignal(src, COMSIG_LIVING_PREIGNITION, PROC_REF(fire_immune))
 
@@ -475,8 +488,9 @@
 	SStracking.start_tracking("hive_[src.hivenumber]", src)
 
 	//WO GAMEMODE
-	if(SSticker?.mode?.hardcore)
-		hardcore = 1 //Prevents healing and queen evolution
+	if(SSticker?.mode?.hardcore)  //Prevents healing and queen evolution
+		hardcore = TRUE
+		can_heal = FALSE
 	time_of_birth = world.time
 
 	//Minimap
@@ -518,6 +532,8 @@
 
 /mob/living/carbon/xenomorph/proc/handle_screech_act(mob/self, mob/living/carbon/xenomorph/queen/queen)
 	SIGNAL_HANDLER
+	if(tier == 4 || is_hive_ruler())
+		return COMPONENT_SCREECH_ACT_CANCEL
 	if(queen.can_not_harm(src))
 		return COMPONENT_SCREECH_ACT_CANCEL
 
@@ -581,6 +597,7 @@
 
 	//Im putting this in here, because this proc gets called when a player inhabits a SSD xeno and it needs to go somewhere (sorry)
 	hud_set_marks()
+	hud_set_design_marks()
 
 	var/name_prefix = in_hive.prefix
 	var/name_client_prefix = ""
@@ -594,14 +611,17 @@
 	if(!HAS_TRAIT(src, TRAIT_NO_COLOR))
 		color = in_hive.color
 
-	var/age_display = show_age_prefix ? age_prefix : ""
-	var/name_display = ""
-	// Rare easter egg
-	if(nicknumber == 666)
-		number_decorator = "Infernal "
-	if(show_name_numbers)
-		name_display = show_only_numbers ? " ([nicknumber])" : " ([name_client_prefix][nicknumber][name_client_postfix])"
-	name = "[name_prefix][number_decorator][age_display][caste.display_name || caste.caste_type][name_display]"
+	if(!HAS_TRAIT(src, TRAIT_PATHOGEN_OVERMIND))
+		var/age_display = show_age_prefix ? age_prefix : ""
+		var/name_display = ""
+		// Rare easter egg
+		if(nicknumber == 666)
+			number_decorator = "Infernal "
+		if(show_name_numbers)
+			name_display = show_only_numbers ? " ([nicknumber])" : " ([name_client_prefix][nicknumber][name_client_postfix])"
+		name = "[name_prefix][number_decorator][age_display][caste.display_name || caste.caste_type][name_display]"
+	else
+		name = "Overmind ([full_designation])"
 
 	//Update linked data so they show up properly
 	change_real_name(src, name)
@@ -746,9 +766,10 @@
 /mob/living/carbon/xenomorph/start_pulling(atom/movable/AM, lunge, no_msg)
 	if(SEND_SIGNAL(AM, COMSIG_MOVABLE_XENO_START_PULLING, src) & COMPONENT_ALLOW_PULL)
 		return do_pull(AM, lunge, no_msg)
-
 	if(HAS_TRAIT(src,TRAIT_ABILITY_BURROWED))
 		return
+	if(status_flags & INCORPOREAL)
+		return FALSE //Incorporeal things can't grab or be grabbed.
 	if(!isliving(AM))
 		return FALSE
 	var/mob/living/L = AM
@@ -765,6 +786,8 @@
 
 /mob/living/carbon/xenomorph/pull_response(mob/puller)
 	if(stat == DEAD)
+		return TRUE
+	if(legcuffed)
 		return TRUE
 	if(has_species(puller,"Human")) // If the Xeno is alive, fight back against a grab/pull
 		var/mob/living/carbon/human/H = puller
@@ -806,12 +829,17 @@
 	hud_set_plasma()
 	hud_set_pheromone()
 	hud_set_marks()
+	hud_set_design_marks()
 
 
 	//and display them
 	add_to_all_mob_huds()
 	var/datum/mob_hud/MH = GLOB.huds[MOB_HUD_XENO_INFECTION]
 	MH.add_hud_to(src, src)
+
+	if(is_pathogen_creature(src))
+		MH = GLOB.huds[MOB_HUD_MYCOTOXIN]
+		MH.add_hud_to(src, src)
 
 // Transfer any observing players over to the xeno's new body (`target`) on evolve/de-evolve.
 /mob/living/carbon/xenomorph/transfer_observers_to(atom/target)
@@ -859,6 +887,9 @@
 
 	// Update the hive status UI
 	new_hive.hive_ui.update_all_xeno_data()
+
+	if(new_hivenumber == XENO_HIVE_PATHOGEN)
+		make_pathogen_speaker()
 
 	return TRUE
 
@@ -1029,6 +1060,8 @@
 		SPAN_NOTICE("We extinguish ourselves."), null, 5)
 
 /mob/living/carbon/xenomorph/proc/get_organ_icon()
+	if(hivenumber == XENO_HIVE_PATHOGEN)
+		return "m_heart_t[tier]"
 	return "heart_t[tier]"
 
 /mob/living/carbon/xenomorph/resist_restraints()
@@ -1075,6 +1108,11 @@
 	. = ..()
 	if(. && !can_reenter_corpse && stat != DEAD && !QDELETED(src) && !should_block_game_interaction(src))
 		handle_ghost_message()
+	if(selected_ability)
+		selected_ability.action_deselect()
+		if(selected_ability.charge_time)
+			selected_ability.stop_charging_ability()
+		set_selected_ability(null)
 
 /mob/living/carbon/xenomorph/proc/handle_ghost_message()
 	notify_ghosts("[src] ([get_strain_name()] [caste_type]) has ghosted and their body is up for grabs!", source = src)

@@ -161,106 +161,6 @@
 		SSticker.delay_end = !SSticker.delay_end
 		message_admins("[key_name(usr)] [SSticker.delay_end ? "delayed the round end" : "has made the round end normally"].")
 
-	else if(href_list["simplemake"])
-
-		if(!check_rights(R_SPAWN))
-			return
-
-		var/mob/M = locate(href_list["mob"])
-		if(!ismob(M))
-			to_chat(usr, "This can only be used on instances of type /mob")
-			return
-
-		var/delmob = 0
-		switch(alert("Delete old mob?","Message","Yes","No","Cancel"))
-			if("Cancel")
-				return
-			if("Yes")
-				delmob = 1
-
-		message_admins("[key_name_admin(usr)] has used rudimentary transformation on [key_name_admin(M)]. Transforming to [href_list["simplemake"]]; deletemob=[delmob]")
-
-		var/mob/transformed
-		var/hivenumber = XENO_HIVE_NORMAL
-
-		if(isxeno(M))
-			var/mob/living/carbon/xenomorph/X = M
-			hivenumber = X.hivenumber
-
-		switch(href_list["simplemake"])
-			if("observer")
-				transformed = M.change_mob_type( /mob/dead/observer , null, null, delmob )
-
-			if("larva")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/larva , null, null, delmob )
-			if("facehugger")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/facehugger , null, null, delmob )
-			if("defender")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/defender, null, null, delmob )
-			if("warrior")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/warrior, null, null, delmob )
-			if("runner")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/runner , null, null, delmob )
-			if("drone")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/drone , null, null, delmob )
-			if("sentinel")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/sentinel , null, null, delmob )
-			if("lurker")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/lurker , null, null, delmob )
-			if("carrier")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/carrier , null, null, delmob )
-			if("hivelord")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/hivelord , null, null, delmob )
-			if("praetorian")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/praetorian , null, null, delmob )
-			if("ravager")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/ravager , null, null, delmob )
-			if("spitter")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/spitter , null, null, delmob )
-			if("boiler")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/boiler , null, null, delmob )
-			if("burrower")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/burrower , null, null, delmob )
-			if("crusher")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/crusher , null, null, delmob )
-			if("queen")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/queen , null, null, delmob )
-			if("predalien")
-				transformed = M.change_mob_type( /mob/living/carbon/xenomorph/predalien , null, null, delmob )
-
-			if("human")
-				transformed = M.change_mob_type( /mob/living/carbon/human , null, null, delmob, href_list["species"])
-			if("monkey")
-				transformed = M.change_mob_type( /mob/living/carbon/human/monkey , null, null, delmob )
-			if("farwa")
-				transformed = M.change_mob_type( /mob/living/carbon/human/farwa , null, null, delmob )
-			if("neaera")
-				transformed = M.change_mob_type( /mob/living/carbon/human/neaera , null, null, delmob )
-			if("yiren")
-				transformed = M.change_mob_type( /mob/living/carbon/human/yiren , null, null, delmob )
-			if("robot")
-				transformed = M.change_mob_type( /mob/living/silicon/robot , null, null, delmob )
-			if("cat")
-				transformed = M.change_mob_type( /mob/living/simple_animal/cat , null, null, delmob )
-			if("runtime")
-				transformed = M.change_mob_type( /mob/living/simple_animal/cat/Runtime , null, null, delmob )
-			if("corgi")
-				transformed = M.change_mob_type( /mob/living/simple_animal/corgi , null, null, delmob )
-			if("ian")
-				transformed = M.change_mob_type( /mob/living/simple_animal/corgi/Ian , null, null, delmob )
-			if("crab")
-				transformed = M.change_mob_type( /mob/living/simple_animal/crab , null, null, delmob )
-			if("coffee")
-				transformed = M.change_mob_type( /mob/living/simple_animal/crab/Coffee , null, null, delmob )
-			if("parrot")
-				transformed = M.change_mob_type( /mob/living/simple_animal/parrot , null, null, delmob )
-			if("polyparrot")
-				transformed = M.change_mob_type( /mob/living/simple_animal/parrot/Poly , null, null, delmob )
-
-		if(isxeno(transformed) && hivenumber)
-			var/mob/living/carbon/xenomorph/X = transformed
-			X.set_hive_and_update(hivenumber)
-
 	/////////////////////////////////////new ban stuff
 
 	else if(href_list["sticky"])
@@ -2171,6 +2071,28 @@
 		for(var/client/staff in GLOB.admins)
 			if((R_ADMIN|R_MOD) & staff.admin_holder.rights)
 				to_chat(staff, SPAN_STAFF_IC("<b>ADMINS/MODS: [SPAN_RED("[src.owner] marked [key_name(speaker)]'s ARES message for response.")]</b>"))
+
+	if(href_list["overmind_deny"])
+		var/mob/ref_person = locate(href_list["overmind_deny"])
+		log_game("[key_name_admin(usr)] has refused the Overmind Request from [key_name_admin(ref_person)].")
+		message_admins("[key_name_admin(usr)] has refused the Overmind Request from [key_name_admin(ref_person)].", 1)
+		return
+
+	if(href_list["overmind_approve"])
+		GLOB.overmind_cancel = FALSE
+		var/mob/ref_person = locate(href_list["overmind_approve"])
+		message_admins("[key_name_admin(usr)] has granted the Overmind Request from [key_name_admin(ref_person)]! Finalizing in 10 seconds... (<A href='byond://?_src_=admin_holder;[HrefToken(forceGlobal = TRUE)];overmind_cancel=\ref[usr]'>CANCEL</A>)")
+		addtimer(CALLBACK(src, PROC_REF(approve_overmind), usr, ref_person), 10 SECONDS)
+		return
+
+	if(href_list["overmind_cancel"])
+		if(GLOB.overmind_cancel)
+			to_chat(usr, "The Overmind Request was either canceled, or you are too late to cancel.")
+			return
+		log_game("[key_name_admin(usr)] has canceled the Overmind Request.")
+		message_admins("[key_name_admin(usr)] has canceled the Overmind Request.")
+		GLOB.overmind_cancel = TRUE
+		return
 
 	return
 

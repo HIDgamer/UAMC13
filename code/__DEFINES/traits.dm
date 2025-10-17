@@ -167,6 +167,8 @@
 #define TRAIT_HAULED "hauled"
 // only used by valkyrie
 #define TRAIT_VALKYRIE_ARMORED "trait_valkyrie_armored"
+/// When a pathogen creature is acting as overmind.
+#define TRAIT_PATHOGEN_OVERMIND "trait_pathogen_overmind"
 
 // SPECIES TRAITS
 /// Knowledge of Yautja technology
@@ -297,6 +299,9 @@
 /// If this item can hear things from inside one level of contents.
 #define TRAIT_HEARS_FROM_CONTENTS "t_hears_from_contents"
 
+///if this item can allow reactions to occur "fully" in itself. missing this trait makes the reaction inert. it will still mix, but safely.
+#define TRAIT_REACTS_UNSAFELY "t_reacts_unsafely"
+
 // Miscellaneous item traits.
 // Do NOT bloat this category, if needed make a new category (like shoe traits, xeno item traits...)
 
@@ -312,6 +317,9 @@
 
 // This item can't be implanted into someone, regardless of the size of the item.
 #define TRAIT_ITEM_NOT_IMPLANTABLE "t_item_not_implantable"
+
+//This item is being dissolved. Used by yautja_cleaner.
+#define TRAIT_ITEM_DISSOLVING "item_dissolving"
 
 //-- structure traits --
 // TABLE TRAITS
@@ -385,6 +393,7 @@ GLOBAL_LIST_INIT(traits_by_type, list(
 		"TRAIT_CARDPLAYING_THUMBS" = TRAIT_CARDPLAYING_THUMBS,
 		"TRAIT_INTERFERENCE" = TRAIT_HIVEMIND_INTERFERENCE,
 		"TRAIT_VALKYRIE_ARMOR" = TRAIT_VALKYRIE_ARMORED,
+		"TRAIT_PATHOGEN_OVERMIND" = TRAIT_PATHOGEN_OVERMIND,
 	),
 	/datum/hive_status = list(
 		"TRAIT_XENONID" = TRAIT_XENONID,
@@ -529,3 +538,5 @@ GLOBAL_LIST(trait_name_map)
 #define TURF_Z_TRANSPARENT_TRAIT "turf_z_transparent"
 /// traits from wall hiding
 #define WALL_HIDING_TRAIT "wallhiding"
+/// trait effect related to the pathogen overmind
+#define OVERMIND_TRAIT "overmind"
