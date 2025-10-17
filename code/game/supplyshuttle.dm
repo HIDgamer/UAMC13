@@ -1025,7 +1025,6 @@ GLOBAL_DATUM_INIT(supply_controller, /datum/controller/supply, new())
 
 /obj/structure/machinery/computer/supply/asrs/attack_hand(mob/user as mob)
 	if(!is_mainship_level(z)) return
->>>>>>> 17fe604e3f (req console tgui (#7774))
 	if(!allowed(user))
 		to_chat(user, SPAN_DANGER("Access Denied."))
 		return
