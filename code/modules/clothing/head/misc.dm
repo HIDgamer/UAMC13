@@ -197,8 +197,6 @@
 	flags_inv_hide = HIDEALLHAIR
 	siemens_coefficient = 2
 	flags_armor_protection = BODY_FLAG_HEAD|BODY_FLAG_FACE|BODY_FLAG_EYES
-<<<<<<< HEAD
-=======
 
 /obj/item/clothing/head/xenos
 	name = "xenos helmet"
@@ -210,16 +208,4 @@
 	siemens_coefficient = 2
 	flags_armor_protection = BODY_FLAG_HEAD|BODY_FLAG_FACE|BODY_FLAG_EYES
 	anti_hug = 10 //Lel
-<<<<<<< HEAD
 
-/obj/item/clothing/head/wintercap
-	name = "Winter Cap"
-	desc = "Ho ho ho. Merrry X-mas!"
-	icon_state = "santa_hat_red"
-	item_state = "santa_hat_red_item"
-
-/obj/item/clothing/head/wintercap/green
-	icon_state = "santa_hat_green"
->>>>>>> fb1fbf9458 (Temp_Christmas_Hat)
-=======
->>>>>>> 114ed526ff (Revert "Temp_Christmas_Hat")

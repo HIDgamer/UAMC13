@@ -118,13 +118,33 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth, list(
 		list("M3A1 Pattern Synthetic Utility Vest (UA Gray)", 0, /obj/item/clothing/suit/storage/marine/light/synvest/grey, MARINE_CAN_BUY_ARMOR, VENDOR_ITEM_REGULAR),
 		list("M3A1 Pattern Synthetic Utility Vest (UA Dark Grey)", 0, /obj/item/clothing/suit/storage/marine/light/synvest/dgrey, MARINE_CAN_BUY_ARMOR, VENDOR_ITEM_REGULAR),
 		list("M3A1 Pattern Synthetic Utility Vest (UA Jungle)", 0, /obj/item/clothing/suit/storage/marine/light/synvest/jungle, MARINE_CAN_BUY_ARMOR, VENDOR_ITEM_REGULAR),
-		list("M3A1 Pattern Synthetic Utility Vest (UA Snow)", 0, /obj/item/clothing/suit/storage/marine/light/synvest/snow, MARINE_CAN_BUY_ARMOR, VENDOR_ITEM_REGULAR),
 		list("M3A1 Pattern Synthetic Utility Vest (UA Desert)", 0, /obj/item/clothing/suit/storage/marine/light/synvest/desert, MARINE_CAN_BUY_ARMOR, VENDOR_ITEM_REGULAR),
 
 		list("GLOVES (CHOOSE 1)", 0, null, null, null),
 		list("Insulated Gloves", 0, /obj/item/clothing/gloves/yellow, MARINE_CAN_BUY_GLOVES, VENDOR_ITEM_RECOMMENDED),
 		list("Black Gloves", 0, /obj/item/clothing/gloves/black, MARINE_CAN_BUY_GLOVES, VENDOR_ITEM_REGULAR),
 		list("Latex Gloves", 0, /obj/item/clothing/gloves/latex, MARINE_CAN_BUY_GLOVES, VENDOR_ITEM_REGULAR),
+
+		list("HEADWEAR", 0, null, null, null),
+		list("Beanie", 12, /obj/item/clothing/head/beanie, null, VENDOR_ITEM_REGULAR),
+		list("Beret, Engineering", 12, /obj/item/clothing/head/beret/eng, null, VENDOR_ITEM_REGULAR),
+		list("Beret, Purple", 12, /obj/item/clothing/head/beret/jan, null, VENDOR_ITEM_REGULAR),
+		list("Beret, Red", 12, /obj/item/clothing/head/beret/cm/red, null, VENDOR_ITEM_REGULAR),
+		list("Beret, Standard", 12, /obj/item/clothing/head/beret/cm, null, VENDOR_ITEM_REGULAR),
+		list("Beret, Tan", 12, /obj/item/clothing/head/beret/cm/tan, null, VENDOR_ITEM_REGULAR),
+		list("Beret, Green", 12, /obj/item/clothing/head/beret/cm, MARINE_CAN_BUY_HELMET, VENDOR_ITEM_REGULAR),
+		list("Beret, Black", 12, /obj/item/clothing/head/beret/cm/black, null, VENDOR_ITEM_REGULAR),
+		list("Beret, White", 12, /obj/item/clothing/head/beret/cm/white, null, VENDOR_ITEM_REGULAR),
+		list("Surgical Cap, Blue", 12, /obj/item/clothing/head/surgery/blue, null, VENDOR_ITEM_REGULAR),
+		list("Surgical Cap, Purple", 12, /obj/item/clothing/head/surgery/purple, null, VENDOR_ITEM_REGULAR),
+		list("Surgical Cap, Green", 12, /obj/item/clothing/head/surgery/green, null, VENDOR_ITEM_REGULAR),
+		list("Cap", 12, /obj/item/clothing/head/cmcap, null, VENDOR_ITEM_REGULAR),
+		list("MP Cap", 12, /obj/item/clothing/head/beret/marine/mp/mpcap, null, VENDOR_ITEM_REGULAR),
+		list("QM Cap", 12, /obj/item/clothing/head/cmcap/req/ro, null, VENDOR_ITEM_REGULAR),
+		list("Req Cap", 12, /obj/item/clothing/head/cmcap/req, null, VENDOR_ITEM_REGULAR),
+		list("Officer Cap", 12, /obj/item/clothing/head/cmcap/bridge, null, VENDOR_ITEM_REGULAR),
+		list("Bio Hood", 12, /obj/item/clothing/head/bio_hood/synth, null, VENDOR_ITEM_REGULAR),
+		list("Fedora", 12, /obj/item/clothing/head/fedora, null, VENDOR_ITEM_REGULAR),
 
 		list("BACKPACK (CHOOSE 1)", 0, null, null, null),
 		list("S-V42 Smartpack, Blue", 0, /obj/item/storage/backpack/marine/smartpack, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
@@ -195,37 +215,8 @@ GLOBAL_LIST_INIT(cm_vending_clothing_synth, list(
 /datum/gear/synthetic/uscm/medical_blue
 	path = /obj/item/clothing/under/rank/medical/blue
 
-<<<<<<< HEAD
 /datum/gear/synthetic/uscm/medical_lightblue
 	path = /obj/item/clothing/under/rank/medical/lightblue
-=======
-	list("HEADWEAR", 0, null, null, null),
-	list("Beanie", 12, /obj/item/clothing/head/beanie, null, VENDOR_ITEM_REGULAR),
-	list("Beret, Engineering", 12, /obj/item/clothing/head/beret/eng, null, VENDOR_ITEM_REGULAR),
-	list("Beret, Purple", 12, /obj/item/clothing/head/beret/jan, null, VENDOR_ITEM_REGULAR),
-	list("Beret, Red", 12, /obj/item/clothing/head/beret/cm/red, null, VENDOR_ITEM_REGULAR),
-	list("Beret, Standard", 12, /obj/item/clothing/head/beret/cm, null, VENDOR_ITEM_REGULAR),
-	list("Beret, Tan", 12, /obj/item/clothing/head/beret/cm/tan, null, VENDOR_ITEM_REGULAR),
-	list("Beret, Green", 12, /obj/item/clothing/head/beret/cm, MARINE_CAN_BUY_HELMET, VENDOR_ITEM_REGULAR),
-	list("Beret, Black", 12, /obj/item/clothing/head/beret/cm/black, null, VENDOR_ITEM_REGULAR),
-	list("Beret, White", 12, /obj/item/clothing/head/beret/cm/white, null, VENDOR_ITEM_REGULAR),
-	list("Surgical Cap, Blue", 12, /obj/item/clothing/head/surgery/blue, null, VENDOR_ITEM_REGULAR),
-	list("Surgical Cap, Blue", 12, /obj/item/clothing/head/surgery/purple, null, VENDOR_ITEM_REGULAR),
-	list("Surgical Cap, Green", 12, /obj/item/clothing/head/surgery/green, null, VENDOR_ITEM_REGULAR),
-	list("Ushanka", 12, /obj/item/clothing/head/ushanka, null, VENDOR_ITEM_REGULAR),
-	list("Cap", 12, /obj/item/clothing/head/cmcap, null, VENDOR_ITEM_REGULAR),
-	list("MP Cap", 12, /obj/item/clothing/head/beret/marine/mp/mpcap, null, VENDOR_ITEM_REGULAR),
-	list("QM Cap", 12, /obj/item/clothing/head/cmcap/req/ro, null, VENDOR_ITEM_REGULAR),
-	list("Req Cap", 12, /obj/item/clothing/head/cmcap/req, null, VENDOR_ITEM_REGULAR),
-	list("Officer Cap", 12, /obj/item/clothing/head/cmcap/bridge, null, VENDOR_ITEM_REGULAR),
-	list("Bio Hood", 12, /obj/item/clothing/head/bio_hood/synth, null, VENDOR_ITEM_REGULAR),
-	list("Fedora", 12, /obj/item/clothing/head/fedora, null, VENDOR_ITEM_REGULAR),
-<<<<<<< HEAD
-	list("Winter Cap Green", 12, /obj/item/clothing/head/wintercap/green, null, VENDOR_ITEM_REGULAR),
-	list("Winter Cap", 12, /obj/item/clothing/head/wintercap, null, VENDOR_ITEM_REGULAR),
->>>>>>> fb1fbf9458 (Temp_Christmas_Hat)
-=======
->>>>>>> 114ed526ff (Revert "Temp_Christmas_Hat")
 
 /datum/gear/synthetic/uscm/medical_green
 	path = /obj/item/clothing/under/rank/medical/green
@@ -613,8 +604,6 @@ GLOBAL_LIST_INIT(cm_vending_synth_tools, list(
 	list("Compact Defibrillator", 15, /obj/item/device/defibrillator/compact, null, VENDOR_ITEM_REGULAR),
 	list("Compact Nailgun kit", 15, /obj/effect/essentials_set/cnailgun, null, VENDOR_ITEM_REGULAR),
 	list("Telescopic Baton", 15, /obj/item/weapon/telebaton, null, VENDOR_ITEM_REGULAR),
-<<<<<<< HEAD
-<<<<<<< HEAD
 	list("Surgical Webbing Vest", 15, /obj/item/clothing/accessory/storage/surg_vest, null, VENDOR_ITEM_REGULAR),
 	list("Surgical Webbing Vest (Blue)", 15, /obj/item/clothing/accessory/storage/surg_vest/blue, null, VENDOR_ITEM_REGULAR),
 	list("Surgical Drop Pouch", 15, /obj/item/clothing/accessory/storage/surg_vest/drop_green, null, VENDOR_ITEM_REGULAR),
@@ -623,11 +612,7 @@ GLOBAL_LIST_INIT(cm_vending_synth_tools, list(
 	list("Tool Webbing", 15, /obj/item/clothing/accessory/storage/tool_webbing/equipped, null, VENDOR_ITEM_REGULAR),
 	list("Logistics IMP Backpack", 15, /obj/item/storage/backpack/marine/satchel/big, null, VENDOR_ITEM_REGULAR),
 	list("Expedition Chestrig", 15, /obj/item/storage/backpack/marine/satchel/intel/chestrig, null, VENDOR_ITEM_REGULAR),
-=======
-	list("CPR Buddy 9k", 15, /obj/item/cprbot_item, null, VENDOR_ITEM_REGULAR),
->>>>>>> 3c82deb0a6 (CPR Buddy 9000)
-=======
->>>>>>> 36095d5360 (removed from the coin vendor.)
+	list("CPR Buddy 9k", 15, /obj/item/cprbot_item, null, VENDOR_ITEM_REGULAR)
 ))
 
 //------------EXPERIMENTAL TOOL KITS---------------

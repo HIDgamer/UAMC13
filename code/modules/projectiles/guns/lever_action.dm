@@ -140,7 +140,6 @@ their unique feature is that a direct hit will buff your damage and firerate
 /obj/item/weapon/gun/lever_action/proc/reset_hit_buff(mob/user, one_hand_lever)
 	if(!(flags_gun_lever_action & USES_STREAKS))
 		return
-	SIGNAL_HANDLER
 	streak = 0
 	lever_sound = initial(lever_sound)
 	lever_message = initial(lever_message)
@@ -514,9 +513,9 @@ their unique feature is that a direct hit will buff your damage and firerate
 /obj/item/weapon/gun/lever_action/xm88/reset_hit_buff(mob/user, one_hand_lever)
 	if(!(flags_gun_lever_action & USES_STREAKS))
 		return
-	SIGNAL_HANDLER
+	var/message_to_chat = null
 	if(streak > 0)
-		to_chat(user, SPAN_WARNING("[src] beeps as it loses its targeting data, and returns to normal firing procedures."))
+		message_to_chat = SPAN_WARNING("[src] beeps as it loses its targeting data, and returns to normal firing procedures.")
 	streak = 0
 	lever_sound = initial(lever_sound)
 	lever_message = initial(lever_message)
@@ -534,6 +533,8 @@ their unique feature is that a direct hit will buff your damage and firerate
 	recalculate_attachment_bonuses() //stock wield delay
 	if(one_hand_lever)
 		addtimer(VARSET_CALLBACK(src, cur_onehand_chance, reset_onehand_chance), 4 SECONDS, TIMER_OVERRIDE|TIMER_UNIQUE)
+	if(message_to_chat)
+		to_chat(user, message_to_chat)
 
 /obj/item/weapon/gun/lever_action/xm88/direct_hit_buff(mob/user, mob/target, one_hand_lever = FALSE)
 	. = ..()
