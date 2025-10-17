@@ -59,6 +59,9 @@
 	/// Binoculars for ocular designator
 	var/obj/item/device/binoculars/binos
 
+	/// Motion detector for utility
+	var/obj/item/device/motiondetector/integrated/motion_detector
+
 	/// Pair of gloves worn underneath the computer.
 	var/obj/item/clothing/gloves/underglove
 	/// Base color of the bracer. (DEFAULT OR WHITE)
@@ -90,12 +93,31 @@
 	binos = new(src)
 	RegisterSignal(binos, COMSIG_ITEM_DROPPED, PROC_REF(return_binos))
 
+	motion_detector = new(src)
+	motion_detector.iff_signal = faction
+
 /obj/item/clothing/gloves/synth/Destroy()
 	. = ..()
 	QDEL_NULL_LIST(actions_list_actions)
 	QDEL_NULL(internal_transmitter)
 	QDEL_NULL(binos)
+	QDEL_NULL(motion_detector)
 	QDEL_NULL(underglove)
+
+/obj/item/clothing/gloves/synth/proc/deploy_binos(mob/M)
+	if(!M.put_in_active_hand(binos))
+		M.put_in_inactive_hand(binos)
+
+/obj/item/clothing/gloves/synth/proc/return_binos()
+	if(QDELETED(binos))
+		binos = null
+		return
+
+	if(ismob(binos.loc))
+		var/mob/M = binos.loc
+		M.drop_inv_item_to_loc(binos, src)
+	else
+		binos.forceMove(src)
 
 /obj/item/clothing/gloves/synth/examine(mob/user)
 	..()
@@ -130,6 +152,7 @@
 /obj/item/clothing/gloves/synth/dropped(mob/user)
 	disable_anchor()
 	disable_shield()
+	return_binos()
 
 	update_actions(SIMI_ACTIONS_REMOVE, user)
 
@@ -142,6 +165,8 @@
 		internal_transmitter.enabled = FALSE
 
 	wearer = null
+	if(motion_detector && motion_detector_active)
+		toggle_motion_detector(user)
 	return ..()
 
 /obj/item/clothing/gloves/synth/MouseDrop(obj/over_object as obj)
@@ -160,6 +185,9 @@
 			add_fingerprint(usr)
 
 /obj/item/clothing/gloves/synth/attackby(obj/item/attacker, mob/living/carbon/human/user)
+	if(attacker == binos)
+		return_binos()
+		return
 	if((istype(attacker, /obj/item/clothing/gloves)) && !(attacker.flags_item & ITEM_PREDATOR))
 		if(underglove)
 			to_chat(user, SPAN_WARNING("[src] is already attached to [underglove], remove them first."))

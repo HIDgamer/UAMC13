@@ -2518,56 +2518,6 @@ Defined in conflicts.dm of the #defines folder.
 	gun.recalculate_attachment_bonuses()
 	gun.update_overlays(src, "stock")
 
-/obj/item/attachable/stock/rifle/collapsible/m41ae2
-	name = "\improper M41AE2 folding stock"
-	desc = "A standard M41AE2 integrated folding stock."
-	slot = "stock"
-	melee_mod = 5
-	size_mod = 1
-	icon_state = "m41ae2_folding"
-	attach_icon = "m41ae2_folding_a"
-	pixel_shift_x = 29
-	hud_offset_mod = -2
-	collapsible = TRUE
-	stock_activated = FALSE
-	wield_delay_mod = WIELD_DELAY_NONE //starts collapsed so no delay mod
-	collapse_delay = 0.5 SECONDS
-	flags_attach_features = ATTACH_REMOVABLE|ATTACH_ACTIVATION
-	attachment_action_type = /datum/action/item_action/toggle
-
-/obj/item/attachable/stock/rifle/collapsible/m41ae2/New()
-	..()
-
-	//rifle stock starts collapsed so we zero out everything
-	accuracy_mod = 0
-	recoil_mod = 0
-	scatter_mod = 0
-	aim_speed_mod = 0
-	wield_delay_mod = WIELD_DELAY_NONE
-
-/obj/item/attachable/stock/rifle/collapsible/m41ae2/apply_on_weapon(obj/item/weapon/gun/gun)
-	if(stock_activated)
-		accuracy_mod = HIT_ACCURACY_MULT_TIER_1
-		recoil_mod = -RECOIL_AMOUNT_TIER_5
-		scatter_mod = -SCATTER_AMOUNT_TIER_10
-		//it makes stuff worse when one handed
-		aim_speed_mod = CONFIG_GET(number/slowdown_med)
-		hud_offset_mod = -1
-		icon_state = "m41ae2_folding_on"
-		attach_icon = "m41ae2_folding_a_on"
-		wield_delay_mod = WIELD_DELAY_SLOW
-	else
-		accuracy_mod = 0
-		recoil_mod = 0
-		scatter_mod = 0
-		aim_speed_mod = 0
-		hud_offset_mod = -3
-		icon_state = "m41ae2_folding"
-		attach_icon = "m41ae2_folding_a"
-		wield_delay_mod = WIELD_DELAY_NONE //stock is folded so no wield delay
-
-	gun.recalculate_attachment_bonuses()
-	gun.update_overlays(src, "stock")
 
 /obj/item/attachable/stock/xm177
 	name = "\improper collapsible M16 stock"
