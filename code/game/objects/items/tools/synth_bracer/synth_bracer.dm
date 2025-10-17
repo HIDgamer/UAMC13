@@ -56,6 +56,9 @@
 	/// Internal Phone
 	var/obj/structure/transmitter/internal/internal_transmitter
 
+	/// Binoculars for ocular designator
+	var/obj/item/device/binoculars/binos
+
 	/// Pair of gloves worn underneath the computer.
 	var/obj/item/clothing/gloves/underglove
 	/// Base color of the bracer. (DEFAULT OR WHITE)
@@ -84,10 +87,14 @@
 	internal_transmitter.networks_transmit = list(faction)
 	RegisterSignal(internal_transmitter, COMSIG_TRANSMITTER_UPDATE_ICON, PROC_REF(check_for_ringing))
 
+	binos = new(src)
+	RegisterSignal(binos, COMSIG_ITEM_DROPPED, PROC_REF(return_binos))
+
 /obj/item/clothing/gloves/synth/Destroy()
 	. = ..()
 	QDEL_NULL_LIST(actions_list_actions)
 	QDEL_NULL(internal_transmitter)
+	QDEL_NULL(binos)
 	QDEL_NULL(underglove)
 
 /obj/item/clothing/gloves/synth/examine(mob/user)
@@ -285,7 +292,7 @@
 			phone_status = "dnd"
 		else if(internal_transmitter.attached_to.loc != internal_transmitter)
 			phone_status = "listening"
-		else if(internal_transmitter.caller)
+		else if(internal_transmitter.inbound_call)
 			phone_status = "ringing"
 
 	var/image/phone_image = image(icon, src, "phone_[phone_status]")

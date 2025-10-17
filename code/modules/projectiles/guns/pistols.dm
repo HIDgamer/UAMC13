@@ -1046,7 +1046,6 @@ Unlike other pistols, it can be equipped with limited mods (small muzzle, underb
 	fa_scatter_peak = FULL_AUTO_SCATTER_PEAK_TIER_4
 	fa_max_scatter = SCATTER_AMOUNT_TIER_7
 	accuracy_mult = BASE_ACCURACY_MULT
-<<<<<<< HEAD
 	accuracy_mult_unwielded = BASE_ACCURACY_MULT
 	scatter = SCATTER_AMOUNT_TIER_4
 	scatter_unwielded = SCATTER_AMOUNT_TIER_3

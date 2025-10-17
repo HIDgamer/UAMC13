@@ -57,6 +57,7 @@
 		return FALSE
 	if(!issynth(owner) && !is_human_usable())
 		to_chat(owner, SPAN_WARNING("You have no idea how to use this!"))
+		return FALSE
 	if(owner.is_mob_incapacitated())
 		to_chat(owner, SPAN_WARNING("You cannot use this action while incapacitated!"))
 		return FALSE
@@ -116,7 +117,6 @@
 	icon_file = 'icons/obj/items/synth/bracer.dmi'
 	var/mob/living/carbon/human/synth
 	var/obj/item/clothing/gloves/synth/synth_bracer
-	var/ability_used_time = 0
 	var/charge_cost = 0
 	var/handles_cooldown = FALSE // whether the cooldown gets handled by the child, or should be done automatically here
 	var/handles_charge_cost = FALSE
@@ -167,6 +167,7 @@
 /datum/action/human_action/synth_bracer/can_use_action()
 	if(!issynth(owner) && !is_human_usable())
 		to_chat(owner, SPAN_WARNING("You have no idea how to use this!"))
+		return FALSE
 	if(owner.is_mob_incapacitated())
 		to_chat(owner, SPAN_WARNING("You cannot use this action while incapacitated!"))
 		return FALSE

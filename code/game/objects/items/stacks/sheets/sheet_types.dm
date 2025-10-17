@@ -242,8 +242,6 @@ GLOBAL_LIST_INIT_TYPED(cardboard_recipes, /datum/stack_recipe, list ( \
 		new/datum/stack_recipe("empty magazine box (M10 Ext)", /obj/item/ammo_box/magazine/m10/extended/empty), \
 		new/datum/stack_recipe("empty magazine box (M10 Drum)", /obj/item/ammo_box/magazine/m10/drum/empty), \
 		null, \
-<<<<<<< HEAD
-=======
 		new/datum/stack_recipe("empty magazine box (M10)", /obj/item/ammo_box/magazine/m10/empty), \
 		new/datum/stack_recipe("empty magazine box (M10 Ext)", /obj/item/ammo_box/magazine/m10/extended/empty), \
 		new/datum/stack_recipe("empty magazine box (M10 Drum)", /obj/item/ammo_box/magazine/m10/drum/empty), \
@@ -252,7 +250,6 @@ GLOBAL_LIST_INIT_TYPED(cardboard_recipes, /datum/stack_recipe, list ( \
 		new/datum/stack_recipe("empty magazine box (M10 AP Ext)", /obj/item/ammo_box/magazine/m10/ap/extended/empty), \
 		new/datum/stack_recipe("empty magazine box (M10 AP Drum)", /obj/item/ammo_box/magazine/m10/ap/drum/empty), \
 		null, \
->>>>>>> 44751f0cc1 (M10 revamp, new attachments & additions. (#9861))
 		new/datum/stack_recipe("empty magazine box (M39)", /obj/item/ammo_box/magazine/m39/empty), \
 		new/datum/stack_recipe("empty magazine box (M39 AP)", /obj/item/ammo_box/magazine/m39/ap/empty), \
 		new/datum/stack_recipe("empty magazine box (M39 Ext)", /obj/item/ammo_box/magazine/m39/ext/empty), \
