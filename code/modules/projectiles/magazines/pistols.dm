@@ -398,17 +398,10 @@ Unlike other pistols, it can be equipped with limited mods (small muzzle, magazi
 	gun_type = /obj/item/weapon/gun/pistol/m10
 
 /obj/item/ammo_magazine/pistol/m10/extended
-<<<<<<< HEAD
-	name = "\improper M10 HV extended magazine (10x20mm)"
-	desc = "A 78-round high-velocity magazine, offering additional firepower for sustained engagements without significantly increasing reload time."
-	default_ammo = /datum/ammo/bullet/smg/m39
-	caliber = "10x20mm"
-=======
 	name = "\improper M10 HV extended magazine (10x20mm-APC)"
 	desc = "An extended 62-round high-velocity magazine, offering additional firepower for sustained engagements without significantly increasing reload time."
 	default_ammo = /datum/ammo/bullet/pistol/m10
 	caliber = "10x20mm-APC"
->>>>>>> 44751f0cc1 (M10 revamp, new attachments & additions. (#9861))
 	icon_state = "m10_ext"
 	bonus_overlay = "m10_ex_overlay"
 	max_rounds = 62
@@ -416,17 +409,14 @@ Unlike other pistols, it can be equipped with limited mods (small muzzle, magazi
 	mag_jam_modifier = MAG_JAM_MOD_PISTOL_MEDIUM //the blicky
 
 /obj/item/ammo_magazine/pistol/m10/drum
-<<<<<<< HEAD
 	name = "\improper M10 HV drum magazine (10x20mm)"
 	desc = "High-capacity 92-round drum magazine designed for prolonged firefights, delivering maximum ammunition capacity at the cost of a longer reload."
 	default_ammo = /datum/ammo/bullet/smg/m39
 	caliber = "10x20mm"
-=======
 	name = "\improper M10 HV drum magazine (10x20mm-APC)"
 	desc = "A super-extended 84-round drum magazine designed for prolonged firefights, delivering maximum ammunition capacity at the cost of a longer reload."
 	default_ammo = /datum/ammo/bullet/pistol/m10
 	caliber = "10x20mm-APC"
->>>>>>> 44751f0cc1 (M10 revamp, new attachments & additions. (#9861))
 	icon_state = "m10_drum"
 	bonus_overlay = "m10_drum_overlay"
 	max_rounds = 84
