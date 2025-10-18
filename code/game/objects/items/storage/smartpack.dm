@@ -23,7 +23,6 @@
 	worn_accessible = TRUE
 	actions_types = list(/datum/action/item_action/toggle)
 	xeno_types = null
-	var/battery_charge = SMARTPACK_MAX_POWER_STORED
 	var/battery_charge_max = SMARTPACK_MAX_POWER_STORED
 
 	var/show_exoskeleton = TRUE
