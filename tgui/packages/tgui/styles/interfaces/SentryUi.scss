@@ -82,16 +82,7 @@ $large-text: 1.5rem;
   }
 
   .ProgressBar__content {
-    color: $light;
-    mix-blend-mode: difference;
-    font-family: monospace;
-    font-weight: bold;
-    font-size: 1.4rem;
-    span {
-      font-family: Verdana, monospace;
-      font-weight: bold;
-      font-size: 1.4rem;
-    }
+    color: $dark;
   }
 
   .SentryCard {

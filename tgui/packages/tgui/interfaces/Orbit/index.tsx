@@ -31,46 +31,23 @@ import {
 
 type search = {
   value: string;
-  show_ground: boolean;
-  show_ship: boolean;
   setValue: (value: string) => void;
-  setGroundVisibility: (value: boolean) => void;
-  setShipVisibility: (value: boolean) => void;
 };
 
-const SearchContext = createContext<search>({
-  value: '',
-  show_ground: true,
-  show_ship: true,
-  setValue: () => {},
-  setGroundVisibility: () => {},
-  setShipVisibility: () => {},
-});
+const SearchContext = createContext<search>({ value: '', setValue: () => {} });
 
 export const Orbit = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [showGround, setShowGround] = useState<boolean>(true);
-  const [showShip, setShowShip] = useState<boolean>(true);
 
   return (
     <Window title="Orbit" width={500} height={700}>
       <Window.Content scrollable>
         <SearchContext.Provider
-          value={{
-            show_ground: showGround,
-            show_ship: showShip,
-            value: searchQuery,
-            setGroundVisibility: setShowGround,
-            setShipVisibility: setShowShip,
-            setValue: setSearchQuery,
-          }}
+          value={{ value: searchQuery, setValue: setSearchQuery }}
         >
           <Stack fill vertical>
             <Stack.Item>
               <ObservableSearch />
-            </Stack.Item>
-            <Stack.Item mt={0.2}>
-              <ObservableFilter />
             </Stack.Item>
             <Stack.Item mt={0.2} grow>
               <Section fill>
@@ -81,47 +58,6 @@ export const Orbit = () => {
         </SearchContext.Provider>
       </Window.Content>
     </Window>
-  );
-};
-
-const ObservableFilter = () => {
-  const { show_ground, show_ship, setGroundVisibility, setShipVisibility } =
-    useContext(SearchContext);
-  return (
-    <Section>
-      <Stack>
-        <Stack.Item grow>
-          <Icon name="filter" />
-        </Stack.Item>
-        <Stack.Divider />
-        <Stack.Item>
-          <Button.Checkbox
-            checked={!!show_ground}
-            onClick={() => setGroundVisibility(!show_ground)}
-          >
-            Ground
-          </Button.Checkbox>
-        </Stack.Item>
-        <Stack.Item>
-          <Button.Checkbox
-            checked={!!show_ship}
-            onClick={() => setShipVisibility(!show_ship)}
-          >
-            Ship
-          </Button.Checkbox>
-        </Stack.Item>
-        <Stack.Item>
-          <Button
-            onClick={() => {
-              setGroundVisibility(true);
-              setShipVisibility(true);
-            }}
-          >
-            Reset
-          </Button>
-        </Stack.Item>
-      </Stack>
-    </Section>
   );
 };
 
@@ -211,44 +147,6 @@ const xenoSplitter = (members: Array<Observable>) => {
     } else if (x.hivenumber?.includes('mutated')) {
       mutatedHive.push(x);
     } else if (x.hivenumber?.includes('yautja')) {
-      yautjaHive.push(x);
-    } else {
-      otherHives.push(x);
-    }
-  });
-  const squads = [
-    buildSquadObservable('Thunderdome', 'xeno', tdomeHive),
-    buildSquadObservable('Prime', 'xeno', primeHive),
-    buildSquadObservable('Corrupted', 'green', corruptedHive),
-    buildSquadObservable('Forsaken', 'grey', forsakenHive),
-    buildSquadObservable('Mutated', 'pink', mutatedHive),
-    buildSquadObservable('Other', 'light-grey', otherHives),
-    buildSquadObservable('Yautja', 'green', yautjaHive),
-  ];
-  return squads;
-};
-
-const infectedSplitter = (members: Array<Observable>) => {
-  const tdomeHive: Array<Observable> = [];
-  const primeHive: Array<Observable> = [];
-  const corruptedHive: Array<Observable> = [];
-  const forsakenHive: Array<Observable> = [];
-  const mutatedHive: Array<Observable> = [];
-  const otherHives: Array<Observable> = [];
-  const yautjaHive: Array<Observable> = [];
-
-  members.forEach((x) => {
-    if (x.area_name?.includes('Thunderdome')) {
-      tdomeHive.push(x);
-    } else if (x.embryo_hivenumber?.includes('normal')) {
-      primeHive.push(x);
-    } else if (x.embryo_hivenumber?.includes('corrupted')) {
-      corruptedHive.push(x);
-    } else if (x.embryo_hivenumber?.includes('forsaken')) {
-      forsakenHive.push(x);
-    } else if (x.embryo_hivenumber?.includes('mutated')) {
-      mutatedHive.push(x);
-    } else if (x.embryo_hivenumber?.includes('yautja')) {
       yautjaHive.push(x);
     } else {
       otherHives.push(x);
@@ -363,11 +261,7 @@ const GroupedObservable = (props: {
 }) => {
   const { color, section = [], title } = props;
 
-  const {
-    value: searchQuery,
-    show_ground,
-    show_ship,
-  } = useContext(SearchContext);
+  const { value: searchQuery } = useContext(SearchContext);
 
   if (!section.length) {
     return null;
@@ -375,8 +269,6 @@ const GroupedObservable = (props: {
 
   const filteredSection = section
     .filter((observable) => isJobOrNameMatch(observable, searchQuery))
-    .filter((observable) => (observable.in_ground === 1 ? show_ground : true))
-    .filter((observable) => (observable.in_ship === 1 ? show_ship : true))
     .sort((a, b) =>
       a.full_name
         .toLocaleLowerCase()
@@ -496,29 +388,6 @@ const weyyuSplitter = (members: Array<Observable>) => {
   return squads;
 };
 
-const tweSplitter = (members: Array<Observable>) => {
-  const iasf: Array<Observable> = [];
-  const commando: Array<Observable> = [];
-  const other: Array<Observable> = [];
-
-  members.forEach((x) => {
-    if (x.job?.includes('IASF')) {
-      iasf.push(x);
-    } else if (x.job?.includes('RMC')) {
-      commando.push(x);
-    } else {
-      other.push(x);
-    }
-  });
-
-  const squads = [
-    buildSquadObservable('Imperial Armed Space Force', 'Orange', iasf),
-    buildSquadObservable('Royal Marines Commando', 'red', commando),
-    buildSquadObservable('Other', 'grey', other),
-  ];
-  return squads;
-};
-
 /**
  * The primary content display for points of interest.
  * Renders a scrollable section replete with subsections for each
@@ -532,12 +401,10 @@ const ObservableContent = () => {
     marines = [],
     survivors = [],
     xenos = [],
-    infected = [],
     ert_members = [],
     upp = [],
     clf = [],
     wy = [],
-    hyperdyne = [],
     twe = [],
     freelancer = [],
     mercenary = [],
@@ -574,12 +441,6 @@ const ObservableContent = () => {
         splitter={xenoSplitter}
       />
       <ObservableSection color="good" section={survivors} title="Survivors" />
-      <GroupedObservable
-        color="red"
-        section={infected}
-        title="Infected"
-        splitter={infectedSplitter}
-      />
       <ObservableSection
         color="average"
         section={ert_members}
@@ -609,15 +470,9 @@ const ObservableContent = () => {
         splitter={weyyuSplitter}
       />
       <ObservableSection
-        color="orange"
-        section={hyperdyne}
-        title="Hyperdyne Corporation"
-      />
-      <GroupedObservable
         color="red"
         section={twe}
-        title="Three World Empire"
-        splitter={tweSplitter}
+        title="Royal Marines Commando"
       />
       <ObservableSection
         color="orange"
@@ -678,11 +533,7 @@ const ObservableSection = (props: {
 }) => {
   const { color, section = [], title } = props;
 
-  const {
-    value: searchQuery,
-    show_ground,
-    show_ship,
-  } = useContext(SearchContext);
+  const { value: searchQuery } = useContext(SearchContext);
 
   if (!section.length) {
     return null;
@@ -690,8 +541,6 @@ const ObservableSection = (props: {
 
   const filteredSection = section
     .filter((observable) => isJobOrNameMatch(observable, searchQuery))
-    .filter((observable) => (observable.in_ground === 1 ? show_ground : true))
-    .filter((observable) => (observable.in_ship === 1 ? show_ship : true))
     .sort((a, b) =>
       a.full_name
         .toLocaleLowerCase()

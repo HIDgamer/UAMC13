@@ -157,10 +157,7 @@
 
 	var/pslash_delay = 0
 
-	var/hardcore = 0 //Set to 1 in New() when Whiskey Outpost is active. Prevents queen evolution and deactivates dchat death messages
-
-	///Can the xeno rest and passively heal?
-	var/can_heal = TRUE
+	var/hardcore = 0 //Set to 1 in New() when Whiskey Outpost is active. Prevents healing and queen evolution, deactivates dchat death messages
 
 	//Naming variables
 	var/caste_type = "Drone"
@@ -238,6 +235,7 @@
 	/// Caste-based spit windup
 	var/spit_windup = FALSE
 	/// Caste-based spit windup duration (if applicable)
+	var/spit_delay = 0
 	var/tileoffset = 0 	// How much your view will be offset in the direction that you zoom?
 	var/viewsize = 0	//What size your view will be changed to when you zoom?
 	var/banished = FALSE // Banished xenos can be attacked by all other xenos
@@ -309,13 +307,6 @@
 	var/obj/effect/alien/resin/fruit/selected_fruit = null
 	var/list/built_structures = list()
 
-	// Designer stuff
-	var/obj/effect/alien/resin/design/selected_design = null
-	var/list/available_design = list()
-	var/list/current_design = list()
-	var/max_design_nodes = 0
-	var/selected_design_mark
-
 	var/icon_xeno
 	var/icon_xenonid
 
@@ -353,7 +344,7 @@
 	//Taken from update_icon for all xeno's
 	var/list/overlays_standing[X_TOTAL_LAYERS]
 
-	var/atom/movable/vis_obj/wound_icon_holder
+	var/atom/movable/vis_obj/xeno_wounds/wound_icon_holder
 	var/atom/movable/vis_obj/xeno_pack/backpack_icon_holder
 	/// If TRUE, the xeno cannot slash anything
 	var/cannot_slash = FALSE
@@ -484,9 +475,8 @@
 	SStracking.start_tracking("hive_[src.hivenumber]", src)
 
 	//WO GAMEMODE
-	if(SSticker?.mode?.hardcore)  //Prevents healing and queen evolution
-		hardcore = TRUE
-		can_heal = FALSE
+	if(SSticker?.mode?.hardcore)
+		hardcore = 1 //Prevents healing and queen evolution
 	time_of_birth = world.time
 
 	//Minimap
@@ -591,7 +581,6 @@
 
 	//Im putting this in here, because this proc gets called when a player inhabits a SSD xeno and it needs to go somewhere (sorry)
 	hud_set_marks()
-	hud_set_design_marks()
 
 	var/name_prefix = in_hive.prefix
 	var/name_client_prefix = ""
@@ -775,27 +764,13 @@
 	return ..()
 
 /mob/living/carbon/xenomorph/pull_response(mob/puller)
-	if(stat == DEAD)
-		return TRUE
-	if(has_species(puller,"Human")) // If the Xeno is alive, fight back against a grab/pull
+	if(stat != DEAD && has_species(puller,"Human")) // If the Xeno is alive, fight back against a grab/pull
 		var/mob/living/carbon/human/H = puller
 		if(H.ally_of_hivenumber(hivenumber))
 			return TRUE
 		puller.apply_effect(rand(caste.tacklestrength_min,caste.tacklestrength_max), WEAKEN)
 		playsound(puller.loc, 'sound/weapons/pierce.ogg', 25, 1)
 		puller.visible_message(SPAN_WARNING("[puller] tried to pull [src] but instead gets a tail swipe to the head!"))
-		return FALSE
-	if(issynth(puller) && (mob_size >= 4 || istype(src, /mob/living/carbon/xenomorph/warrior)))
-		var/mob/living/carbon/human/synthetic/puller_synth = puller
-		if(puller_synth.ally_of_hivenumber(hivenumber))
-			return TRUE
-		puller.apply_effect(1, DAZE)
-		shake_camera(puller, 2, 1)
-		playsound(puller.loc, 'sound/weapons/alien_claw_block.ogg', 25, 1)
-		var/facing = get_dir(src, puller)
-		throw_carbon(puller, facing, 1, SPEED_SLOW, shake_camera = FALSE, immobilize = FALSE)
-		puller.apply_effect(get_xeno_stun_duration(puller, 1), WEAKEN)
-		puller.visible_message(SPAN_WARNING("[puller] tried to pull [src] but instead gets whacked in the chest!"))
 		return FALSE
 	return TRUE
 
@@ -817,7 +792,6 @@
 	hud_set_plasma()
 	hud_set_pheromone()
 	hud_set_marks()
-	hud_set_design_marks()
 
 
 	//and display them

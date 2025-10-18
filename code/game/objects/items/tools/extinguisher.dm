@@ -203,7 +203,7 @@
 			if(isliving(atm)) //For extinguishing mobs on fire
 				var/mob/living/M = atm
 				M.ExtinguishMob()
-			if(iscarbon(atm) || istype(atm, /obj/structure/barricade) || istype(atm, /obj/effect/xenomorph/acid))
+			if(iscarbon(atm) || istype(atm, /obj/structure/barricade))
 				atm.extinguish_acid()
 		T = get_turf(W)
 		if(T == target)

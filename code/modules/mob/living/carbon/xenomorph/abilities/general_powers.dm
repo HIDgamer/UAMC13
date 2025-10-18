@@ -22,7 +22,7 @@
 		to_chat(xeno, SPAN_WARNING("We can't do that here."))
 		return
 
-	var/is_weedable = turf.is_weedable
+	var/is_weedable = turf.is_weedable()
 	if(!is_weedable)
 		to_chat(xeno, SPAN_WARNING("Bad place for a garden!"))
 		return
@@ -82,7 +82,7 @@
 	return ..()
 
 /mob/living/carbon/xenomorph/lay_down()
-	if(!can_heal && !resting)
+	if(hardcore)
 		to_chat(src, SPAN_WARNING("No time to rest, must KILL!"))
 		return
 
@@ -275,12 +275,11 @@
 		return FALSE
 	var/turf/target_turf = get_turf(A)
 
-	if(!SSmapping.same_z_map(X.loc.z, target_turf.loc.z))
-		to_chat(X, SPAN_XENOWARNING("Our mind cannot reach that far."))
+	if(target_turf.z != X.z)
+		to_chat(X, SPAN_XENOWARNING("This area is too far away to affect!"))
 		return
-
-	if(!X.hive.living_xeno_queen || !SSmapping.same_z_map(X.hive.living_xeno_queen.z, X.z))
-		to_chat(X, SPAN_XENOWARNING("Our psychic link is gone, the Queen is either dead or too far away!"))
+	if(!X.hive.living_xeno_queen || X.hive.living_xeno_queen.z != X.z)
+		to_chat(X, SPAN_XENOWARNING("We have no queen, the psychic link is gone!"))
 		return
 
 	var/tally = 0
@@ -564,7 +563,7 @@
 	return ..()
 
 /turf/proc/check_xeno_trap_placement(mob/living/carbon/xenomorph/xeno)
-	if(is_weedable < FULLY_WEEDABLE || !can_xeno_build(src))
+	if(is_weedable() < FULLY_WEEDABLE || !can_xeno_build(src))
 		to_chat(xeno, SPAN_XENOWARNING("We can't do that here."))
 		return FALSE
 
@@ -594,10 +593,6 @@
 
 		if(locate(/obj/structure/machinery/colony_floodlight) in src)
 			to_chat(xeno, SPAN_XENOWARNING("We cannot make a hole on a light!"))
-			return FALSE
-
-		if(locate(/obj/structure/flora/jungle/vines) in src)
-			to_chat(xeno, SPAN_XENOWARNING("We cannot make a hole under the vines!"))
 			return FALSE
 
 	if(!xeno.check_alien_construction(src, check_doors = TRUE))
@@ -729,7 +724,7 @@
 		qdel(structure_template)
 		return FALSE
 
-	if(T.is_weedable < FULLY_WEEDABLE)
+	if(T.is_weedable() < FULLY_WEEDABLE)
 		to_chat(X, SPAN_WARNING("\The [T] can't support a [structure_template.name]!"))
 		qdel(structure_template)
 		return FALSE
@@ -812,6 +807,7 @@
 		spitting = FALSE
 		return
 
+	xeno_cooldown = xeno.caste.spit_delay + xeno.ammo.added_spit_delay
 	xeno.visible_message(SPAN_XENOWARNING("[xeno] spits at [atom]!"),
 
 	SPAN_XENOWARNING("We spit [xeno.ammo.name] at [atom]!") )

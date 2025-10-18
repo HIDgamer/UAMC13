@@ -10,7 +10,7 @@
 	var/list/debris
 	var/unslashable = FALSE
 	var/wrenchable = FALSE
-	health = STRUCTURE_HEALTH_BASE
+	health = 100
 	anchored = TRUE
 	projectile_coverage = PROJECTILE_COVERAGE_MEDIUM
 	can_block_movement = TRUE

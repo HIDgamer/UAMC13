@@ -3,6 +3,11 @@
 #define STATE_CPRBOT_CPR "cpr"
 #define STATE_CPRBOT_FOLLOWING_OWNER "following_owner"
 
+/obj/item/cprbot_item
+	name = "Placeholder"
+
+/obj/item/cprbot_broken
+	name = "Placeholder"
 
 /obj/structure/machinery/bot/cprbot
 	name = "\improper CPRbot"
@@ -53,7 +58,7 @@
 		"The skin is the largest organ in the human body.",
 		"Did you know? The liver can regenerate itself if a portion is removed.",
 		"Fun fact: Your sense of smell is closely linked to your memory.",
-		"The only muscle that never tires is that heart.",
+		"The only muscle that never tires is the heart.",
 		"Did you know? Not breathing can lead to a premature cessation of life!"
 	)
 
@@ -61,11 +66,11 @@
 		"Stay still, I'm assessing the situation.",
 		"Just a routine check-up, don't worry.",
 		"Scanning the area for any casualties.",
-		"I’m ready to save lives, one compression at a time.",
+		"I'm ready to save lives, one compression at a time.",
 		"I hope everyone is feeling alright today!",
 		"It's not magic, it's CPR Buddy 9000!",
 		"I should have been a plastic surgeon.",
-		"What kind of medbay is this? Everyone’s dropping like flies.",
+		"What kind of medbay is this? Everyone's dropping like flies.",
 		"Each breath a day keeps me at bay!",
 		"I sense a disturbance in my circuit board, as if a million people stopped breathing and were suddenly silent."
 	)
@@ -477,8 +482,7 @@
 			collided_door.open()
 	else if ((istype(collided_atom, /mob/living/)) && (!anchored))
 		forceMove(collided_atom.loc)
-	else if ((istype(collided_atom, /mob/living/)) && (!anchored))
-		forceMove(collided_atom.loc)
+
 #undef STATE_CPRBOT_IDLE
 #undef STATE_CPRBOT_MOVING
 #undef STATE_CPRBOT_CPR

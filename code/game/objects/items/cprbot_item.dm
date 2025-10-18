@@ -34,7 +34,6 @@
 		var/turf/target_turf = target
 		if(!target_turf.density)
 			deploy_cprbot(user, target_turf)
-
 /obj/item/cprbot_broken
 	name = "CPRbot"
 	desc = "A compact CPRbot 9000 assembly, it appears to be in bad shape"

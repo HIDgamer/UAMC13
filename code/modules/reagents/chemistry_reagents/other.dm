@@ -849,7 +849,13 @@
 	chemfiresupp = TRUE
 	burncolor = "#ff9300"
 	chemclass = CHEM_CLASS_UNCOMMON
-	properties = list(PROPERTY_CORROSIVE = 8, PROPERTY_TOXIC = 6, PROPERTY_OXIDIZING = 9, PROPERTY_IGNITING = 1)
+	properties = list(PROPERTY_CORROSIVE = 8, PROPERTY_TOXIC = 6, PROPERTY_OXIDIZING = 9)
+
+/datum/reagent/chlorinetrifluoride/on_mob_life(mob/living/M) // Not a good idea, instantly messes you up from the inside out.
+	. = ..()
+	M.adjust_fire_stacks(max(M.fire_stacks, 15))
+	M.IgniteMob(TRUE)
+	to_chat(M, SPAN_DANGER("It burns! It burns worse than you could ever have imagined!"))
 
 /datum/reagent/methane
 	name = "Methane"
@@ -1034,17 +1040,6 @@
 	overdose = REAGENTS_OVERDOSE
 	overdose_critical = REAGENTS_OVERDOSE_CRITICAL
 	properties = list(PROPERTY_NEUROSHIELDING = 1)
-
-/datum/reagent/plasma/nutrient
-	name = "Nutrient Plasma"
-	id = PLASMA_NUTRIENT
-	description = "A tarquise plasma..."
-	color = "#2fbe88"
-	overdose = REAGENTS_OVERDOSE
-	overdose_critical = REAGENTS_OVERDOSE_CRITICAL
-	chemclass = CHEM_CLASS_SPECIAL
-	objective_value = OBJECTIVE_EXTREME_VALUE
-	properties = list(PROPERTY_FUELING = 1, PROPERTY_VISCOUS = 3, PROPERTY_ADDICTIVE = 4, PROPERTY_NUTRITIOUS = 3)
 
 /datum/reagent/plasma/purple
 	name = "Purple Plasma"

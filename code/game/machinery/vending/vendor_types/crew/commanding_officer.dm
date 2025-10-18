@@ -35,6 +35,7 @@ GLOBAL_LIST_INIT(cm_vending_gear_commanding_officer, list(
 
 		list("RAIL ATTACHMENTS", 0, null, null, null),
 		list("Red-Dot Sight", 15, /obj/item/attachable/reddot, null, VENDOR_ITEM_REGULAR),
+		list("S5-Micro Dot Sight", 15, /obj/item/attachable/reddot/small, VENDOR_ITEM_REGULAR),
 		list("Reflex Sight", 15, /obj/item/attachable/reflex, null, VENDOR_ITEM_REGULAR),
 		list("S4 2x Telescopic Mini-Scope", 15, /obj/item/attachable/scope/mini, null, VENDOR_ITEM_REGULAR),
 
@@ -54,8 +55,11 @@ GLOBAL_LIST_INIT(cm_vending_gear_commanding_officer, list(
 
 		list("BARREL ATTACHMENTS", 0, null, null, null),
 		list("Extended Barrel", 15, /obj/item/attachable/extended_barrel, null, VENDOR_ITEM_REGULAR),
+		list("Extended Recoil Compensator", 15, /obj/item/attachable/extended_barrel/vented, null, VENDOR_ITEM_REGULAR),
 		list("Recoil Compensator", 15, /obj/item/attachable/compensator, null, VENDOR_ITEM_REGULAR),
+		list("M10 Compensator", 15, /obj/item/attachable/compensator/m10, null, VENDOR_ITEM_REGULAR),
 		list("Suppressor", 15, /obj/item/attachable/suppressor, null, VENDOR_ITEM_REGULAR),
+		list("Suppressor, Compact", 15, /obj/item/attachable/suppressor/sleek, null, VENDOR_ITEM_REGULAR),
 ))
 
 /obj/structure/machinery/cm_vending/gear/commanding_officer
@@ -73,7 +77,7 @@ GLOBAL_LIST_INIT(cm_vending_gear_commanding_officer, list(
 
 GLOBAL_LIST_INIT(cm_vending_clothing_commanding_officer, list(
 		list("STANDARD EQUIPMENT (TAKE ALL)", 0, null, null, null),
-		list("Headset", 0, /obj/item/device/radio/headset/almayer/mcom/cdrcom/co, MARINE_CAN_BUY_EAR, VENDOR_ITEM_MANDATORY),
+		list("Headset", 0, /obj/item/device/radio/headset/almayer/mcom/cdrcom, MARINE_CAN_BUY_EAR, VENDOR_ITEM_MANDATORY),
 		list("MRE", 0, /obj/item/storage/box/mre, MARINE_CAN_BUY_MRE, VENDOR_ITEM_MANDATORY),
 
 		list("COMMANDING OFFICER ESSENTIALS KIT (TAKE ALL)", 0, null, null, null),
@@ -84,11 +88,9 @@ GLOBAL_LIST_INIT(cm_vending_clothing_commanding_officer, list(
 		list("Secure Satchel", 0, /obj/item/storage/backpack/satchel/lockable, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_MANDATORY),
 		list("RTO Telephone Pack", 0, /obj/item/storage/backpack/marine/satchel/rto, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_MANDATORY),
 		list("Intel Expedition Pack", 0, /obj/item/storage/backpack/marine/satchel/intel, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_MANDATORY),
-		list("Expedition Chestrig", 0, /obj/item/storage/backpack/marine/satchel/intel/chestrig, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_RECOMMENDED),
-		list("Expedition Satchel", 0, /obj/item/storage/backpack/marine/satchel/intel/expeditionsatchel, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_RECOMMENDED),
 
 		list("ARMOR (CHOOSE 1)", 0, null, null, null),
-		list("Commanding Officer's M3 Armor", 0, /obj/item/clothing/suit/storage/marine/CIC/CO, MARINE_CAN_BUY_ARMOR, VENDOR_ITEM_MANDATORY),
+		list("Commanding Officer's M3 Armor", 0, /obj/item/clothing/suit/storage/marine/MP/CO, MARINE_CAN_BUY_ARMOR, VENDOR_ITEM_MANDATORY),
 
 		list("COMBAT EQUIPMENT (TAKE ALL)", 0, null, null, null),
 		list("M11C Helmet", 0, /obj/item/clothing/head/helmet/marine/leader/CO, MARINE_CAN_BUY_HELMET, VENDOR_ITEM_MANDATORY),
@@ -98,13 +100,10 @@ GLOBAL_LIST_INIT(cm_vending_clothing_commanding_officer, list(
 		list("ACCESSORIES (CHOOSE 1)", 0, null, null, null),
 		list("Brown Webbing Vest", 0, /obj/item/clothing/accessory/storage/black_vest/brown_vest, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_RECOMMENDED),
 		list("Black Webbing Vest", 0, /obj/item/clothing/accessory/storage/black_vest, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_RECOMMENDED),
-		list("Leg Pouch", 0, /obj/item/clothing/accessory/storage/black_vest/leg_pouch, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_REGULAR),
-		list("Leg Pouch (Black)", 0, /obj/item/clothing/accessory/storage/black_vest/black_leg_pouch, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_REGULAR),
 		list("Shoulder Holster", 0, /obj/item/clothing/accessory/storage/holster, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_REGULAR),
 		list("Webbing", 0, /obj/item/clothing/accessory/storage/webbing, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_REGULAR),
 		list("Black Webbing", 0, /obj/item/clothing/accessory/storage/webbing/black, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_REGULAR),
 		list("Drop Pouch", 0, /obj/item/clothing/accessory/storage/droppouch, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_REGULAR),
-		list("Black Drop Pouch", 0, /obj/item/clothing/accessory/storage/droppouch/black, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_REGULAR),
 
 		list("HUDS (CHOOSE 1)", 0, null, null, null),
 		list("Medical HUD Glasses", 0, /obj/item/clothing/glasses/hud/health, MARINE_CAN_BUY_GLASSES, VENDOR_ITEM_RECOMMENDED),

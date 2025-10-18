@@ -237,7 +237,6 @@
 
 
 /mob/proc/Life(delta_time)
-	SHOULD_CALL_PARENT(TRUE)
 	SHOULD_NOT_SLEEP(TRUE)
 	if(client == null)
 		away_timer++
@@ -478,9 +477,6 @@
 		return
 
 	if(throwing || is_mob_incapacitated())
-		return
-
-	if(HAS_TRAIT(src, TRAIT_HAULED))
 		return
 
 	if(pulling)
@@ -1070,7 +1066,3 @@ note dizziness decrements automatically in the mob's Life() proc.
 	mind.transfer_to(new_player)
 
 	qdel(src)
-
-/mob/proc/update_cursor()
-
-	client?.mouse_pointer_icon = client?.prefs.chosen_pointer

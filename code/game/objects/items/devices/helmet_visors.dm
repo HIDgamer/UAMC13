@@ -350,4 +350,35 @@
 		current_mob_hud.remove_hud_from(user, attached_helmet)
 
 /obj/item/device/helmet_visor/night_vision/marine_raider/process(delta_time)
-	return PROCESS_KILL
+/obj/item/device/helmet_visor/po_visor
+	name = "MK30 flight visor"
+	desc = "An insertable visor HUD into a standard USCM helmet. This model is designed for pilots and provides enhanced visibility and HUD overlays during flight operations."
+	icon_state = "po_visor"
+	hud_type = null // No HUD, just cosmetic or future implementation
+	action_icon_string = "po_visor_down"
+	helmet_overlay = "po_visor_right"
+
+/obj/item/device/helmet_visor/po_visor/purple
+	name = "MK30 flight visor, purple"
+	icon_state = "po_visor_purple"
+	helmet_overlay = "po_visor_purple_right"
+
+/obj/item/device/helmet_visor/po_visor/lightblue
+	name = "MK30 flight visor, light-blue"
+	icon_state = "po_visor_lightblue"
+	helmet_overlay = "po_visor_lightblue_right"
+
+/obj/item/device/helmet_visor/po_visor/red
+	name = "MK30 flight visor, red"
+	icon_state = "po_visor_red"
+	helmet_overlay = "po_visor_red_right"
+
+/obj/item/device/helmet_visor/po_visor/darkblue
+	name = "MK30 flight visor, dark-blue"
+	icon_state = "po_visor_darkblue"
+	helmet_overlay = "po_visor_darkblue_right"
+
+/obj/item/device/helmet_visor/po_visor/yellow
+	name = "MK30 flight visor, yellow"
+	icon_state = "po_visor_yellow"
+	helmet_overlay = "po_visor_yellow_right"

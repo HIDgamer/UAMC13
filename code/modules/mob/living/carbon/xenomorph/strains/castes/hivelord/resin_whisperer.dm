@@ -31,8 +31,9 @@
 		// Also update the choose_resin icon since it resets
 		if(istype(action, /datum/action/xeno_action/onclick/choose_resin))
 			var/datum/action/xeno_action/onclick/choose_resin/choose_resin_ability = action
-			choose_resin_ability.update_button_icon(hivelord.selected_resin)
-			break // Don't need to keep looking
+			if(choose_resin_ability)
+				choose_resin_ability.update_button_icon(hivelord.selected_resin)
+				break // Don't need to keep looking
 
 /*
  * Coerce Resin ability

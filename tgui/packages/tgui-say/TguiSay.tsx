@@ -2,17 +2,18 @@ import './styles/main.scss';
 
 import { isEscape, KEY } from 'common/keys';
 import { type BooleanLike, classes } from 'common/react';
-import { useEffect, useRef, useState } from 'react';
+import {
+  type FormEvent,
+  type KeyboardEvent,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { dragStartHandler } from 'tgui/drag';
 
 import { type Channel, ChannelIterator } from './ChannelIterator';
 import { ChatHistory } from './ChatHistory';
-import {
-  LANGUAGE_PREFIXES,
-  LineLength,
-  RADIO_PREFIXES,
-  WindowSize,
-} from './constants';
+import { LineLength, RADIO_PREFIXES, WindowSize } from './constants';
 import { getPrefix, windowClose, windowOpen, windowSet } from './helpers';
 import { byondMessages } from './timers';
 
@@ -27,8 +28,14 @@ type ByondProps = {
   lightMode: BooleanLike;
   scale: BooleanLike;
   extraChannels: Array<Channel>;
-  languages: Array<string>;
 };
+
+const ROWS: Record<keyof typeof WindowSize, number> = {
+  Small: 1,
+  Medium: 2,
+  Large: 3,
+  Width: 1, // not used
+} as const;
 
 export function TguiSay() {
   const innerRef = useRef<HTMLTextAreaElement>(null);
@@ -41,17 +48,14 @@ export function TguiSay() {
   // You lose the granulatity and add a lot of boilerplate.
   const [buttonContent, setButtonContent] = useState('');
   const [currentPrefix, setCurrentPrefix] = useState<
-    keyof typeof RADIO_PREFIXES | keyof typeof LANGUAGE_PREFIXES | null
+    keyof typeof RADIO_PREFIXES | null
   >(null);
-  const [maxLength, setMaxLength] = useState(1024);
   const [size, setSize] = useState(WindowSize.Small);
+  const [maxLength, setMaxLength] = useState(1024);
   const [lightMode, setLightMode] = useState(false);
+  const [position, setPosition] = useState([window.screenX, window.screenY]);
   const [value, setValue] = useState('');
   const [extraChannels, setExtraChennels] = useState<Array<Channel>>([]);
-  const [languages, setLanguages] = useState<Array<string>>([]);
-
-  const position = useRef([window.screenX, window.screenY]);
-  const isDragging = useRef(false);
 
   function handleArrowKeys(direction: KEY.Up | KEY.Down): void {
     const chat = chatHistory.current;
@@ -97,30 +101,6 @@ export function TguiSay() {
     }
   }
 
-  function handleButtonClick(event: React.MouseEvent<HTMLButtonElement>): void {
-    isDragging.current = true;
-
-    setTimeout(() => {
-      // So the button doesn't jump around accidentally
-      if (isDragging.current) {
-        dragStartHandler(event.nativeEvent);
-      }
-    }, 50);
-  }
-
-  // Prevents the button from changing channels if it's dragged
-  function handleButtonRelease(): void {
-    isDragging.current = false;
-    const currentPosition = [window.screenX, window.screenY];
-
-    if (JSON.stringify(position.current) !== JSON.stringify(currentPosition)) {
-      position.current = currentPosition;
-      return;
-    }
-
-    handleIncrementChannel();
-  }
-
   function handleClose(): void {
     innerRef.current?.blur();
     windowClose(scale.current);
@@ -161,6 +141,9 @@ export function TguiSay() {
   }
 
   function handleIncrementChannel(): void {
+    const xPos = window.screenX;
+    const yPos = window.screenY;
+    if (JSON.stringify(position) !== JSON.stringify([xPos, yPos])) return;
     const iterator = channelIterator.current;
 
     iterator.next(extraChannels);
@@ -169,18 +152,14 @@ export function TguiSay() {
     messages.current.channelIncrementMsg(iterator.isVisible());
   }
 
-  function handleInput(event: React.FormEvent<HTMLTextAreaElement>): void {
+  function handleInput(event: FormEvent<HTMLTextAreaElement>): void {
     const iterator = channelIterator.current;
     let newValue = event.currentTarget.value;
 
-    const newPrefix = getPrefix(newValue) || currentPrefix;
+    let newPrefix = getPrefix(newValue) || currentPrefix;
     // Handles switching prefixes
-    if (canChangePrefix(newPrefix)) {
-      if (RADIO_PREFIXES[newPrefix!]) {
-        setButtonContent(RADIO_PREFIXES[newPrefix!]?.label);
-      } else if (LANGUAGE_PREFIXES[newPrefix!]) {
-        setButtonContent(LANGUAGE_PREFIXES[newPrefix!]?.label);
-      }
+    if (newPrefix && newPrefix !== currentPrefix) {
+      setButtonContent(RADIO_PREFIXES[newPrefix]?.label);
       setCurrentPrefix(newPrefix);
       newValue = newValue.slice(3);
       iterator.set('Say');
@@ -198,37 +177,7 @@ export function TguiSay() {
     setValue(newValue);
   }
 
-  function canChangePrefix(newPrefix: string | null) {
-    if (!newPrefix || newPrefix === currentPrefix) {
-      return false;
-    }
-
-    if (RADIO_PREFIXES[newPrefix]) {
-      return true;
-    }
-
-    const newLanguage = LANGUAGE_PREFIXES[newPrefix];
-    if (newLanguage) {
-      // Do we know this language?
-      if (!languages.includes(newLanguage.id)) {
-        return false;
-      }
-
-      // Are we on the default channel with no prefix?
-      if (
-        !channelIterator.current.isSay() ||
-        (currentPrefix && RADIO_PREFIXES[currentPrefix])
-      ) {
-        return false;
-      }
-    }
-
-    return true;
-  }
-
-  function handleKeyDown(
-    event: React.KeyboardEvent<HTMLTextAreaElement>,
-  ): void {
+  function handleKeyDown(event: KeyboardEvent<HTMLTextAreaElement>): void {
     if (event.getModifierState('AltGraph')) return;
 
     switch (event.key) {
@@ -260,29 +209,37 @@ export function TguiSay() {
     }
   }
 
+  function handleButtonDrag(e: React.MouseEvent<Element, MouseEvent>): void {
+    const xPos = window.screenX;
+    const yPos = window.screenY;
+    setPosition([xPos, yPos]);
+    dragStartHandler(e);
+  }
+
   function handleOpen(data: ByondOpen): void {
     setTimeout(() => {
       innerRef.current?.focus();
     }, 1);
 
-    const { mapfocus, lobbyfocus } = data;
+    const { channel, mapfocus, lobbyfocus } = data;
 
     if (!mapfocus && !lobbyfocus) {
       return;
     }
-    channelIterator.current.set(data.channel);
+    const iterator = channelIterator.current;
+    // Catches the case where the modal is already open
+    if (iterator.isSay()) {
+      iterator.set(channel);
+    }
 
-    setCurrentPrefix(null);
-    setButtonContent(channelIterator.current.current());
-    windowOpen(channelIterator.current.current(), scale.current);
-    innerRef.current?.focus();
+    setButtonContent(iterator.current());
+    windowOpen(iterator.current(), scale.current);
   }
 
   function handleProps(data: ByondProps): void {
     setMaxLength(data.maxLength);
     setLightMode(!!data.lightMode);
     setExtraChennels(data.extraChannels);
-    setLanguages(data.languages);
     scale.current = !!data.scale;
   }
 
@@ -313,8 +270,8 @@ export function TguiSay() {
     }
 
     if (size !== newSize) {
-      windowSet(newSize, scale.current);
       setSize(newSize);
+      windowSet(newSize, scale.current);
     }
   }, [value]);
 
@@ -342,24 +299,21 @@ export function TguiSay() {
       >
         <button
           className={`button button-${theme}`}
-          onMouseDown={handleButtonClick}
-          onMouseUp={handleButtonRelease}
+          onClick={handleIncrementChannel}
+          onMouseDown={handleButtonDrag}
           type="button"
         >
           {buttonContent}
         </button>
         <textarea
-          spellCheck
           autoCorrect="off"
-          className={classes([
-            'textarea',
-            `textarea-${theme}`,
-            value.length > LineLength.Large && 'textarea-large',
-          ])}
+          className={`textarea textarea-${theme}`}
           maxLength={maxLength}
           onInput={handleInput}
           onKeyDown={handleKeyDown}
           ref={innerRef}
+          spellCheck={false}
+          rows={ROWS[size] || 1}
           value={value}
         />
         <button

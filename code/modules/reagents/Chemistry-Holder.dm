@@ -482,6 +482,12 @@
 			return R.volume
 	return 0
 
+/datum/reagents/proc/contains_harmful_substances()
+	for(var/datum/reagent/R in reagent_list)
+		if(R.id != "water")
+			return TRUE
+	return FALSE
+
 /datum/reagents/proc/get_reagents()
 	var/res = ""
 	for(var/datum/reagent/A in reagent_list)
@@ -718,13 +724,6 @@
 
 	new /obj/flamer_fire(sourceturf, create_cause_data("chemical fire", source_mob?.resolve()), R, radius, FALSE, flameshape)
 	addtimer(CALLBACK(GLOBAL_PROC, GLOBAL_PROC_REF(playsound), sourceturf, 'sound/weapons/gun_flamethrower1.ogg', 25, 1), 0.5 SECONDS)
-
-/// Checks if any of the reagents contained within are harmful
-/datum/reagents/proc/contains_harmful_substances()
-	for(var/datum/reagent/reagent as anything in reagent_list)
-		for(var/datum/chem_property/property as anything in reagent.properties)
-			if(property.can_cause_harm())
-				return TRUE
 
 /turf/proc/reset_chemexploded()
 	chemexploded = FALSE

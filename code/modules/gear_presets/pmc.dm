@@ -2,11 +2,10 @@
 /datum/equipment_preset/pmc
 	name = "PMC"
 	faction = FACTION_PMC
-	job_title = FACTION_PMC
+	rank = FACTION_PMC
 	idtype = /obj/item/card/id/pmc
 	faction = FACTION_PMC
 	faction_group = FACTION_LIST_WY
-	origin_override = ORIGIN_WY_PMC
 	languages = list(LANGUAGE_ENGLISH, LANGUAGE_JAPANESE)
 	minimap_background = "background_pmc"
 	var/human_versus_human = FALSE
@@ -63,7 +62,7 @@
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = JOB_PMC_STANDARD
-	job_title = JOB_PMC_STANDARD
+	rank = JOB_PMC_STANDARD
 	minimap_icon = "pmc_gun"
 	paygrades = list(PAY_SHORT_PMC_OP = JOB_PLAYTIME_TIER_0)
 	skills = /datum/skills/pmc
@@ -236,7 +235,6 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 		list("Webbing", 10, /obj/item/clothing/accessory/storage/webbing, null, VENDOR_ITEM_REGULAR),
 		list("Black Webbing", 10, /obj/item/clothing/accessory/storage/webbing/black, null, VENDOR_ITEM_REGULAR),
 		list("Drop Pouch", 10, /obj/item/clothing/accessory/storage/droppouch, null, VENDOR_ITEM_REGULAR),
-		list("Black Drop Pouch", 10, /obj/item/clothing/accessory/storage/droppouch/black, VENDOR_ITEM_REGULAR),
 	)
 
 //*****************************************************************************************************/
@@ -245,7 +243,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = JOB_PMC_DETAINER
-	job_title = JOB_PMC_DETAINER
+	rank = JOB_PMC_DETAINER
 	minimap_icon = "pmc_mp"
 	paygrades = list(PAY_SHORT_PMC_EN = JOB_PLAYTIME_TIER_0)
 	skills = /datum/skills/pmc
@@ -260,7 +258,6 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	else
 		new_human.equip_to_slot_or_del(new /obj/item/clothing/suit/storage/marine/veteran/pmc/light/bulletproof/guard, WEAR_JACKET)
 	new_human.equip_to_slot_or_del(new /obj/item/reagent_container/spray/pepper, WEAR_IN_JACKET)
-	new_human.equip_to_slot_or_del(new /obj/item/explosive/grenade/flashbang, WEAR_IN_JACKET)
 
 	new_human.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine/veteran/pmc, WEAR_HANDS)
 	new_human.equip_to_slot_or_del(new /obj/item/clothing/head/helmet/marine/veteran/pmc/guard, WEAR_HEAD)
@@ -379,7 +376,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = JOB_PMC_CROWD_CONTROL
-	job_title = JOB_PMC_CROWD_CONTROL
+	rank = JOB_PMC_CROWD_CONTROL
 	minimap_icon = "pmc_riot"
 	paygrades = list(PAY_SHORT_PMC_EN = JOB_PLAYTIME_TIER_0)
 	skills = /datum/skills/pmc
@@ -437,7 +434,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = JOB_PMC_MEDIC
-	job_title = JOB_PMC_MEDIC
+	rank = JOB_PMC_MEDIC
 	minimap_icon = "pmc_md"
 	paygrades = list(PAY_SHORT_PMC_MS = JOB_PLAYTIME_TIER_0)
 	role_comm_title = "CM"
@@ -626,7 +623,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = JOB_PMC_INVESTIGATOR
-	job_title = JOB_PMC_INVESTIGATOR
+	rank = JOB_PMC_INVESTIGATOR
 	minimap_icon = "pmc_mi"
 	paygrades = list(PAY_SHORT_PMC_MS = JOB_PLAYTIME_TIER_0)
 	skills = /datum/skills/pmc/medic/chem
@@ -817,7 +814,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = JOB_PMC_LEADER
-	job_title = JOB_PMC_LEADER
+	rank = JOB_PMC_LEADER
 	paygrades = list(PAY_SHORT_PMC_TL = JOB_PLAYTIME_TIER_0)
 	role_comm_title = "SL"
 
@@ -977,7 +974,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = JOB_PMC_LEAD_INVEST
-	job_title = JOB_PMC_LEAD_INVEST
+	rank = JOB_PMC_LEAD_INVEST
 	paygrades = list(PAY_SHORT_PMC_TL = JOB_PLAYTIME_TIER_0)
 	role_comm_title = "SL"
 	minimap_icon = "cia_lo"
@@ -1124,7 +1121,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = JOB_PMC_GUNNER
-	job_title = JOB_PMC_GUNNER
+	rank = JOB_PMC_GUNNER
 	paygrades = list(PAY_SHORT_PMC_SS = JOB_PLAYTIME_TIER_0)
 	role_comm_title = "SG"
 
@@ -1235,7 +1232,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = JOB_PMC_SNIPER
-	job_title = JOB_PMC_SNIPER
+	rank = JOB_PMC_SNIPER
 	paygrades = list(PAY_SHORT_PMC_WS = JOB_PLAYTIME_TIER_0)
 	role_comm_title = "Spc"
 	minimap_icon = "pmc_spec"
@@ -1359,7 +1356,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = JOB_PMC_CREWMAN
-	job_title = JOB_PMC_CREWMAN
+	rank = JOB_PMC_CREWMAN
 	minimap_icon = "pmc_vc"
 	paygrades = list(PAY_SHORT_PMC_VS = JOB_PLAYTIME_TIER_0)
 	skills = /datum/skills/pmc/tank_crew
@@ -1494,7 +1491,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = JOB_PMC_DOCTOR
-	job_title = JOB_PMC_DOCTOR
+	rank = JOB_PMC_DOCTOR
 	paygrades = list(PAY_SHORT_PMC_DOC = JOB_PLAYTIME_TIER_0)
 	role_comm_title = "SGN"
 
@@ -1674,7 +1671,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = JOB_PMC_ENGINEER
-	job_title = JOB_PMC_ENGINEER
+	rank = JOB_PMC_ENGINEER
 	paygrades = list(PAY_SHORT_PMC_TEC = JOB_PLAYTIME_TIER_0)
 	role_comm_title = "TEC"
 
@@ -1837,7 +1834,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	languages = ALL_HUMAN_LANGUAGES
 
 	assignment = JOB_PMC_DIRECTOR
-	job_title = JOB_PMC_DIRECTOR
+	rank = JOB_PMC_DIRECTOR
 	paygrades = list(PAY_SHORT_PMC_DIR = JOB_PLAYTIME_TIER_0)
 	role_comm_title = "DIR"
 	skills = /datum/skills/pmc/director
@@ -1880,7 +1877,7 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 	skills = /datum/skills/synthetic
 	idtype = /obj/item/card/id/pmc
 	assignment = JOB_PMC_SYNTH
-	job_title = JOB_PMC_SYNTH
+	rank = JOB_PMC_SYNTH
 	minimap_icon = "pmc_syn"
 	paygrades = list(PAY_SHORT_SYN = JOB_PLAYTIME_TIER_0)
 	role_comm_title = "WY Syn"
@@ -1930,10 +1927,10 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 		new_human.equip_to_slot_or_del(new headset_type, WEAR_L_EAR)
 		new_human.equip_to_slot_or_del(new /obj/item/clothing/glasses/night/experimental_mesons, WEAR_EYES)
 
-		new_human.equip_to_slot_or_del(new /obj/item/clothing/gloves/marine/veteran/pmc, WEAR_HANDS)
+		new_human.equip_to_slot_or_del(new /obj/item/clothing/gloves/synth/wy/pmc/preset, WEAR_HANDS)
 		new_human.equip_to_slot_or_del(new /obj/item/clothing/shoes/veteran/pmc/knife, WEAR_FEET)
 
-		new_human.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/smartpack/a1/white, WEAR_BACK)
+		new_human.equip_to_slot_or_del(new /obj/item/storage/backpack/marine/smartpack/white, WEAR_BACK)
 		new_human.equip_to_slot_or_del(new /obj/item/roller, WEAR_IN_BACK)
 		new_human.equip_to_slot_or_del(new /obj/item/roller/surgical, WEAR_IN_BACK)
 		new_human.equip_to_slot_or_del(new /obj/item/tool/extinguisher/mini, WEAR_IN_BACK)
@@ -1959,9 +1956,10 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 /datum/equipment_preset/pmc/synth/get_antag_clothing_equipment()
 	return list(
 		list("STANDARD EQUIPMENT (TAKE ALL)", 0, null, null, null),
+		list("PK-130 SIMI wrist-mounted computer", 0, /obj/item/clothing/gloves/synth/wy/pmc, MARINE_CAN_BUY_ATTACHMENT, VENDOR_ITEM_MANDATORY),
+		list("Gloves", 0, /obj/item/clothing/gloves/marine/veteran/pmc, MARINE_CAN_BUY_GLOVES, VENDOR_ITEM_MANDATORY),
 		list("Boots", 0, /obj/item/clothing/shoes/veteran/pmc/knife, MARINE_CAN_BUY_SHOES, VENDOR_ITEM_MANDATORY),
 		list("Fatigues", 0, /obj/item/clothing/under/marine/veteran/pmc, MARINE_CAN_BUY_UNIFORM, VENDOR_ITEM_MANDATORY),
-		list("Gloves", 0, /obj/item/clothing/gloves/marine/veteran/pmc, MARINE_CAN_BUY_GLOVES, VENDOR_ITEM_MANDATORY),
 		list("Headset", 0, /obj/item/device/radio/headset/distress/pmc/hvh, MARINE_CAN_BUY_EAR, VENDOR_ITEM_MANDATORY),
 		list("CFR", 0,  /obj/item/storage/box/mre/pmc, MARINE_CAN_BUY_MRE, VENDOR_ITEM_MANDATORY),
 		list("Armored Balaclava", 0, /obj/item/clothing/mask/gas/pmc, MARINE_CAN_BUY_MASK, VENDOR_ITEM_MANDATORY),
@@ -1979,16 +1977,11 @@ list("POUCHES (CHOOSE 2)", 0, null, null, null),
 		list("Drop Pouch", 0, /obj/item/clothing/accessory/storage/droppouch, MARINE_CAN_BUY_ACCESSORY, VENDOR_ITEM_REGULAR),
 
 		list("BACKPACK (CHOOSE 1)", 0, null, null, null),
-		list("S-V42 Smartpack, Blue", 0, /obj/item/storage/backpack/marine/smartpack, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
-		list("S-V42 Smartpack, Green", 0, /obj/item/storage/backpack/marine/smartpack/green, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
-		list("S-V42 Smartpack, Tan", 0, /obj/item/storage/backpack/marine/smartpack/tan, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
-		list("S-V42 Smartpack, White", 0, /obj/item/storage/backpack/marine/smartpack/white, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
-		list("S-V42 Smartpack, Black", 0, /obj/item/storage/backpack/marine/smartpack/black, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
-		list("S-V42A1 Smartpack, Blue", 0, /obj/item/storage/backpack/marine/smartpack/a1, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
-		list("S-V42A1 Smartpack, Green", 0, /obj/item/storage/backpack/marine/smartpack/a1/green, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
-		list("S-V42A1 Smartpack, Tan", 0, /obj/item/storage/backpack/marine/smartpack/a1/tan, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
-		list("S-V42A1 Smartpack, Black", 0, /obj/item/storage/backpack/marine/smartpack/a1/black, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
-		list("S-V42A1 Smartpack, White", 0, /obj/item/storage/backpack/marine/smartpack/a1/white, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
+		list("Smartpack, Blue", 0, /obj/item/storage/backpack/marine/smartpack, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
+		list("Smartpack, Green", 0, /obj/item/storage/backpack/marine/smartpack/green, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
+		list("Smartpack, Tan", 0, /obj/item/storage/backpack/marine/smartpack/tan, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
+		list("Smartpack, White", 0, /obj/item/storage/backpack/marine/smartpack/white, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
+		list("Smartpack, Black", 0, /obj/item/storage/backpack/marine/smartpack/black, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
 		list("Logistics IMP Backpack", 0, /obj/item/storage/backpack/marine/satchel/big, MARINE_CAN_BUY_BACKPACK, VENDOR_ITEM_REGULAR),
 
 		list("BELT (CHOOSE 1)", 0, null, null, null),

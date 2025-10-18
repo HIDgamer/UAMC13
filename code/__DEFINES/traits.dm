@@ -285,6 +285,8 @@
 // GUN TRAITS
 #define TRAIT_GUN_SILENCED "t_gun_silenced"
 
+#define TRAIT_GUN_SILENCED_ALT "t_gun_silenced_alt" // Different sound
+
 #define TRAIT_GUN_BIPODDED "t_gun_bipodded"
 
 #define TRAIT_GUN_LIGHT_FORCE_DEACTIVATED "t_gun_light_deactivated"
@@ -310,9 +312,6 @@
 
 // This item can't be implanted into someone, regardless of the size of the item.
 #define TRAIT_ITEM_NOT_IMPLANTABLE "t_item_not_implantable"
-
-//This item is being dissolved. Used by yautja_cleaner.
-#define TRAIT_ITEM_DISSOLVING "item_dissolving"
 
 //-- structure traits --
 // TABLE TRAITS

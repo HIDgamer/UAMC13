@@ -285,12 +285,10 @@
 		"kelotane",
 		"anti_toxin",
 		"dexalin",
-		"dexalinp",
 		"inaprovaline",
 		"adrenaline",
 		"peridaxon",
 		"tramadol",
-		"oxycodone",
 		"tricordrazine",
 	)
 
