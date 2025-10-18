@@ -849,6 +849,16 @@
 	desc = "A stylish black waistcoat with plenty of discreet pouches, to be both utilitarian and fashionable without compromising looks."
 	icon_state = "waistcoat"
 
+/obj/item/clothing/accessory/storage/black_vest/leg_pouch
+	name = "leg pouch"
+	desc = "A leg-mounted storage pouch."
+	icon_state = "leg_pouch"
+
+/obj/item/clothing/accessory/storage/black_vest/black_leg_pouch
+	name = "black leg pouch"
+	desc = "A black leg-mounted storage pouch."
+	icon_state = "black_leg_pouch"
+
 /obj/item/clothing/accessory/storage/tool_webbing
 	name = "Tool Webbing"
 	desc = "A brown synthcotton webbing that is similar in function to civilian tool aprons, but is more durable for field usage."

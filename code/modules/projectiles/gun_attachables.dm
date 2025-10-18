@@ -2277,7 +2277,88 @@ Defined in conflicts.dm of the #defines folder.
 	gun.recalculate_attachment_bonuses()
 	gun.update_overlays(src, "stock")
 
+/obj/item/attachable/stock/rifle/collapsible/m41ae2
+	name = "\improper M41AE2 heavy pulse rifle collapsible stock"
+	desc = "The stock issued with the M41AE2 heavy pulse rifle. It's made to be collapsed for easier carrying."
+	slot = "stock"
+	melee_mod = 5
+	size_mod = 1
+	icon_state = "m41ae2_folding"
+	attach_icon = "m41ae2_folding_a"
+	pixel_shift_x = 40
+	pixel_shift_y = 14
+	hud_offset_mod = 3
+	collapsible = TRUE
+	stock_activated = FALSE
+	wield_delay_mod = WIELD_DELAY_NONE //starts collapsed so no delay mod
+	collapse_delay = 0.5 SECONDS
+	flags_attach_features = ATTACH_REMOVABLE|ATTACH_ACTIVATION
+	attachment_action_type = /datum/action/item_action/toggle
 
+/obj/item/attachable/stock/rifle/collapsible/m41ae2/New()
+	..()
+
+	//it makes stuff much better when two-handed
+	accuracy_mod = HIT_ACCURACY_MULT_TIER_4
+	recoil_mod = -RECOIL_AMOUNT_TIER_3
+	scatter_mod = -SCATTER_AMOUNT_TIER_9
+
+/obj/item/attachable/stock/rifle/collapsible/ak4047
+	name = "\improper AK-4047 pulse assault rifle collapsible stock"
+	desc = "The stock issued with the AK-4047 pulse assault rifle. It's made to be collapsed for easier carrying."
+	slot = "stock"
+	melee_mod = 5
+	size_mod = 1
+	icon_state = "ak4047_folding"
+	attach_icon = "ak4047_folding_a"
+	pixel_shift_x = 40
+	pixel_shift_y = 14
+	hud_offset_mod = 3
+	collapsible = TRUE
+	stock_activated = FALSE
+	wield_delay_mod = WIELD_DELAY_NONE //starts collapsed so no delay mod
+	collapse_delay = 0.5 SECONDS
+	flags_attach_features = ATTACH_REMOVABLE|ATTACH_ACTIVATION
+	attachment_action_type = /datum/action/item_action/toggle
+
+/obj/item/attachable/stock/rifle/collapsible/ak4047/New()
+	..()
+
+	//it makes stuff much better when two-handed
+	accuracy_mod = HIT_ACCURACY_MULT_TIER_4
+	recoil_mod = -RECOIL_AMOUNT_TIER_3
+	scatter_mod = -SCATTER_AMOUNT_TIER_9
+
+/obj/item/attachable/bipod/m41ae2
+	name = "M41AE2 heavy pulse rifle bipod"
+	desc = "A set of rugged telescopic poles to keep a weapon stabilized during firing."
+	icon_state = "bipod_m41ae2"
+	attach_icon = "bipod_m41ae2_a"
+	heavy_bipod = TRUE
+	camo_bipod = TRUE // this bipod has a camo skin
+
+/obj/item/attachable/bipod/m41ae2/select_gamemode_skin(expected_type, list/override_icon_state, list/override_protection)
+	. = ..() // We are forcing attach_icon skin
+	var/new_attach_icon
+	var/new_icon_state
+	switch(SSmapping.configs[GROUND_MAP].camouflage_type)
+		if("snow")
+			attach_icon = new_attach_icon ? new_attach_icon : "s_" + attach_icon
+			icon_state = new_icon_state ? new_icon_state : "s_" + icon_state
+			. = TRUE
+		if("desert")
+			attach_icon = new_attach_icon ? new_attach_icon : "d_" + attach_icon
+			icon_state = new_icon_state ? new_icon_state : "d_" + icon_state
+			. = TRUE
+		if("classic")
+			attach_icon = new_attach_icon ? new_attach_icon : "c_" + attach_icon
+			icon_state = new_icon_state ? new_icon_state : "c_" + icon_state
+			. = TRUE
+		if("urban")
+			attach_icon = new_attach_icon ? new_attach_icon : "u_" + attach_icon
+			icon_state = new_icon_state ? new_icon_state : "u_" + icon_state
+			. = TRUE
+	return .
 
 /obj/item/attachable/stock/xm177
 	name = "\improper collapsible M16 stock"
@@ -2467,6 +2548,62 @@ Defined in conflicts.dm of the #defines folder.
 	desc = "A special issue stock made of sturdy, yet lightweight materials. Attaches to the L42A3 Battle Rifle. Not effective as a blunt force weapon."
 
 	wield_delay_mod = WIELD_DELAY_FAST
+/obj/item/attachable/stock/synth/collapsible
+	name = "\improper M37A2 Collapsible Stock"
+	desc = "A collapsible stock for the M37A2 shotgun, offering better handling when deployed at the cost of bulk when collapsed."
+	slot = "stock"
+	icon_state = "shotgun_folding"
+	attach_icon = "shotgun_folding_a"
+	pixel_shift_x = 32
+	pixel_shift_y = 15
+	hud_offset_mod = 6
+	collapsible = TRUE
+	stock_activated = FALSE
+	collapse_delay = 0.5 SECONDS
+	flags_attach_features = ATTACH_REMOVABLE|ATTACH_ACTIVATION
+	attachment_action_type = /datum/action/item_action/toggle
+
+/obj/item/attachable/stock/synth/collapsible/New()
+	..()
+	accuracy_mod = 0
+	recoil_mod = 0
+	scatter_mod = 0
+	movement_onehanded_acc_penalty_mod = 0
+	accuracy_unwielded_mod = 0
+	recoil_unwielded_mod = 0
+	scatter_unwielded_mod = 0
+	aim_speed_mod = 0
+	wield_delay_mod = WIELD_DELAY_NONE
+
+/obj/item/attachable/stock/synth/collapsible/apply_on_weapon(obj/item/weapon/gun/gun)
+	if(stock_activated)
+		accuracy_mod = HIT_ACCURACY_MULT_TIER_4
+		recoil_mod = -RECOIL_AMOUNT_TIER_4
+		scatter_mod = -SCATTER_AMOUNT_TIER_8
+		aim_speed_mod = CONFIG_GET(number/slowdown_med)
+		hud_offset_mod = 6
+		icon_state = "shotgun_folding_on"
+		attach_icon = "shotgun_folding_a_on"
+		wield_delay_mod = WIELD_DELAY_FAST
+		//it makes stuff much worse when one handed
+		accuracy_unwielded_mod = -HIT_ACCURACY_MULT_TIER_3
+		recoil_unwielded_mod = RECOIL_AMOUNT_TIER_4
+		scatter_unwielded_mod = SCATTER_AMOUNT_TIER_8
+	else
+		accuracy_mod = 0
+		recoil_mod = 0
+		scatter_mod = 0
+		aim_speed_mod = 0
+		hud_offset_mod = 3
+		icon_state = "shotgun_folding"
+		attach_icon = "shotgun_folding_a"
+		wield_delay_mod = WIELD_DELAY_NONE
+		accuracy_unwielded_mod = 0
+		recoil_unwielded_mod = 0
+		scatter_unwielded_mod = 0
+
+	gun.recalculate_attachment_bonuses()
+	gun.update_overlays(src, "stock")
 
 /obj/item/attachable/stock/smg
 	name = "submachinegun stock"
@@ -3834,29 +3971,6 @@ Defined in conflicts.dm of the #defines folder.
 /obj/item/attachable/bipod/m41ae2/Initialize(mapload, ...)
 	. = ..()
 	update_icon()
-
-/obj/item/attachable/bipod/m41ae2/select_gamemode_skin(expected_type, list/override_icon_state, list/override_protection)
-	. = ..() // We are forcing attach_icon skin
-	var/new_attach_icon
-	var/new_icon_state
-	switch(SSmapping.configs[GROUND_MAP].camouflage_type)
-		if("snow")
-			attach_icon = new_attach_icon ? new_attach_icon : "s_" + attach_icon
-			icon_state = new_icon_state ? new_icon_state : "s_" + icon_state
-			. = TRUE
-		if("desert")
-			attach_icon = new_attach_icon ? new_attach_icon : "d_" + attach_icon
-			icon_state = new_icon_state ? new_icon_state : "d_" + icon_state
-			. = TRUE
-		if("classic")
-			attach_icon = new_attach_icon ? new_attach_icon : "c_" + attach_icon
-			icon_state = new_icon_state ? new_icon_state : "c_" + icon_state
-			. = TRUE
-		if("urban")
-			attach_icon = new_attach_icon ? new_attach_icon : "u_" + attach_icon
-			icon_state = new_icon_state ? new_icon_state : "u_" + icon_state
-			. = TRUE
-	return .
 
 /obj/item/attachable/burstfire_assembly
 	name = "burst fire assembly"

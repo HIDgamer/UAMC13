@@ -102,6 +102,7 @@ It DOES NOT control where your bullets go, that's scatter and projectile varianc
 #define RECOIL_AMOUNT_TIER_0 6
 #define RECOIL_AMOUNT_TIER_1 5
 #define RECOIL_AMOUNT_TIER_2 4
+#define RECOIL_AMOUNT_TIER_2_5 3
 #define RECOIL_AMOUNT_TIER_3 3
 #define RECOIL_AMOUNT_TIER_4 2
 #define RECOIL_AMOUNT_TIER_5 1
@@ -426,5 +427,3 @@ Fire Variant = Markers for special fire types that behave outside of chemfire co
 #define MAG_JAM_MOD_RIFLE_HIGH 0.30
 #define MAG_JAM_MOD_RIFLE_CRITICAL 0.35
 #define MAG_JAM_MOD_RIFLE_RUBBER 0.50
-
-

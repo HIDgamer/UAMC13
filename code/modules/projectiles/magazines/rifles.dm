@@ -194,6 +194,25 @@
 	mag_jam_modifier = MAG_JAM_MOD_RIFLE_LOW
 
 //-------------------------------------------------------
+//L64A3 Battle Rifle
+
+/obj/item/ammo_magazine/rifle/l64
+	name = "\improper L64 magazine (10x24mm)"
+	desc = "A 10x24mm magazine for the L64A3 battle rifle."
+	caliber = "10x24mm"
+	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/TWE/marksman_rifles.dmi'
+	icon_state = "l64"
+	default_ammo = /datum/ammo/bullet/rifle
+	max_rounds = 25
+	gun_type = /obj/item/weapon/gun/rifle/l64a3
+
+/obj/item/ammo_magazine/rifle/l64/ap
+	name = "\improper L64 AP magazine (10x24mm)"
+	desc = "A 10x24mm armor piercing magazine for the L64A3 battle rifle."
+	default_ammo = /datum/ammo/bullet/rifle/ap
+	ammo_band_color = AMMO_BAND_COLOR_AP
+
+//-------------------------------------------------------
 //XM40 AKA SOF RIFLE FROM HELL (It's an EM-2, a prototype of the real world L85A1 way back from the 1940s. We've given it a blue plastic shell and an integral suppressor)
 /obj/item/ammo_magazine/rifle/xm40
 	name = "\improper XM40 magazine (10x24mm)"
@@ -355,6 +374,16 @@
 	desc = "A 5.45x39mm high-capacity casket magazine containing armor piercing rounds for the Type 71 rifle."
 	default_ammo = /datum/ammo/bullet/rifle/type71/ap
 	ammo_band_color = AMMO_BAND_COLOR_AP
+
+/obj/item/ammo_magazine/rifle/ak4047
+	name = "\improper AK-4047 magazine (5.45x39mm)"
+	desc = "A 5.45x39mm casket magazine for the AK-4047 rifle."
+	caliber = "5.45x39mm"
+	icon = 'icons/obj/items/weapons/guns/ammo_by_faction/UPP/assault_rifles.dmi'
+	icon_state = "ak4047"
+	default_ammo = /datum/ammo/bullet/rifle/type71
+	max_rounds = 60
+	gun_type = /obj/item/weapon/gun/rifle/ak4047
 
 /obj/item/ammo_magazine/rifle/type71/heap
 	name = "\improper Type 71 HEAP magazine (5.45x39mm)"

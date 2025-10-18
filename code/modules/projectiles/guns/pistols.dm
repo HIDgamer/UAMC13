@@ -999,7 +999,7 @@ L54 service pistol
 /obj/item/weapon/gun/pistol/l54
 	name = "\improper L54 service pistol"
 	desc = "Standard issue semi-automatic service pistol of the NSPA. Chambered in 9mm, it is comparable to the popular M4A3 pistol utilized by the USCM."
-	icon = 'icons/obj/items/weapons/guns/guns_by_faction/TWE/pistols.dmi'
+	icon = 'icons/obj/items/weapons/guns/guns_by_faction/USCM/pistols.dmi'
 	icon_state = "l54"
 	item_state = "l54"
 	fire_sound = 'sound/weapons/gun_vp78_v2.ogg'
@@ -1037,7 +1037,7 @@ L54 service pistol
 /obj/item/weapon/gun/pistol/l54_custom
 	name = "\improper L54 custom service pistol"
 	desc = "The standard-issue semi-automatic sidearm of the NSPA and various military forces within the Three World Empire, chambered in 9mm. Functionally comparable to the USCM’s M4A3 service pistol, this particular example has been heavily customized—featuring a gold-alloy finish, extended barrel with an integrated compensator, and precision-tuned internals, as well as an auto-eject feature. These modifications push its performance well beyond standard service specifications."
-	icon = 'icons/obj/items/weapons/guns/guns_by_faction/TWE/pistols.dmi'
+	icon = 'icons/obj/items/weapons/guns/guns_by_faction/USCM/pistols.dmi'
 	icon_state = "l54_custom"
 	item_state = "l54_custom"
 	current_mag = /obj/item/ammo_magazine/pistol/l54_custom
