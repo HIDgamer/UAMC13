@@ -11,7 +11,7 @@
 	anchored = FALSE
 	throwpass = 1 //prevents moving crates by hurling things at them
 	store_mobs = FALSE
-	var/rigged = FALSE
+	var/rigged = 0
 	/// Types this crate can be made into
 	var/list/crate_customizing_types = list(
 		"Plain" = /obj/structure/closet/crate,
@@ -32,7 +32,6 @@
 		"Charlie" = /obj/structure/closet/crate/charlie,
 		"Delta" = /obj/structure/closet/crate/delta,
 	)
-	COOLDOWN_DECLARE(rigged_activation_cooldown)
 
 /obj/structure/closet/crate/initialize_pass_flags(datum/pass_flags_container/PF)
 	..()
@@ -56,34 +55,32 @@
 
 	return ..()
 
-/obj/structure/closet/crate/open(mob/user, force)
+/obj/structure/closet/crate/open()
 	if(opened)
-		return FALSE
-	if(!force && !can_open())
-		return FALSE
+		return 0
+	if(!can_open())
+		return 0
 
 	if(rigged && locate(/obj/item/device/radio/electropack) in src)
-		if(isliving(user) && COOLDOWN_FINISHED(src, rigged_activation_cooldown))
-			var/mob/living/living_user = user
-			if(living_user.electrocute_act(17, src))
-				COOLDOWN_START(src, rigged_activation_cooldown, 3 SECONDS)
-				var/datum/effect_system/spark_spread/sparker = new /datum/effect_system/spark_spread
-				sparker.set_up(5, 1, src)
-				sparker.start()
-				if(!force)
-					return 2
+		if(isliving(usr))
+			var/mob/living/L = usr
+			if(L.electrocute_act(17, src))
+				var/datum/effect_system/spark_spread/s = new /datum/effect_system/spark_spread
+				s.set_up(5, 1, src)
+				s.start()
+				return 2
 
 	playsound(src.loc, 'sound/machines/click.ogg', 15, 1)
-	for(var/obj/thing in src)
-		thing.forceMove(get_turf(src))
-	opened = TRUE
+	for(var/obj/O in src)
+		O.forceMove(get_turf(src))
+	opened = 1
 	update_icon()
 	if(climbable)
 		structure_shaken()
-		climbable = FALSE //Open crate is not a surface that works when climbing around
-	return TRUE
+		climbable = 0 //Open crate is not a surface that works when climbing around
+	return 1
 
-/obj/structure/closet/crate/close(mob/user)
+/obj/structure/closet/crate/close()
 	if(!opened)
 		return 0
 	if(!can_close())
@@ -110,68 +107,36 @@
 	update_icon()
 	return 1
 
-/obj/structure/closet/crate/attackby(obj/item/object, mob/user)
-	if(object.flags_item & ITEM_ABSTRACT)
+/obj/structure/closet/crate/attackby(obj/item/W as obj, mob/user as mob)
+	if(W.flags_item & ITEM_ABSTRACT)
 		return
 	if(opened)
-		user.drop_inv_item_to_loc(object, loc)
+		user.drop_inv_item_to_loc(W, loc)
+	else if(istype(W, /obj/item/packageWrap) || istype(W, /obj/item/stack/fulton))
 		return
-	if(istype(object, /obj/item/packageWrap) || istype(object, /obj/item/stack/fulton) || istype(object, /obj/item/tool/hand_labeler)) //If it does something to the crate, don't open it.
-		return
-	if(attempt_rigging(object, user))
-		return
-	return attack_hand(user)
-
-/// Returns TRUE if any rigging handling was performed (even if nothing changed)
-/obj/structure/closet/crate/proc/attempt_rigging(obj/item/object, mob/user)
-	if(istype(object, /obj/item/stack/cable_coil))
-		var/obj/item/stack/cable_coil/cable = object
+	else if(istype(W, /obj/item/stack/cable_coil))
+		var/obj/item/stack/cable_coil/C = W
 		if(rigged)
-			to_chat(user, SPAN_NOTICE("[src] is already wired for rigging!"))
-			return TRUE
-		if(cable.use(1))
-			var/pack = locate(/obj/item/device/radio/electropack) in src
-			if(pack)
-				to_chat(user, SPAN_NOTICE("You wire [src] and rig it with [pack]."))
-			else
-				to_chat(user, SPAN_NOTICE("You wire [src] for rigging."))
-			rigged = TRUE
-			update_icon()
-		return TRUE
-	if(istype(object, /obj/item/device/radio/electropack))
-		if(rigged && !(locate(/obj/item/device/radio/electropack) in src))
-			to_chat(user, SPAN_NOTICE("You attach [object] to [src] and rig it."))
+			to_chat(user, SPAN_NOTICE("[src] is already rigged!"))
+			return
+		if (C.use(1))
+			to_chat(user, SPAN_NOTICE("You rig [src]."))
+			rigged = 1
+			return
+	else if(istype(W, /obj/item/device/radio/electropack))
+		if(rigged)
+			to_chat(user, SPAN_NOTICE("You attach [W] to [src]."))
 			user.drop_held_item()
-			object.forceMove(src)
-		return TRUE
-	if(HAS_TRAIT(object, TRAIT_TOOL_WIRECUTTERS))
+			W.forceMove(src)
+			return
+	else if(HAS_TRAIT(W, TRAIT_TOOL_WIRECUTTERS))
 		if(rigged)
 			to_chat(user, SPAN_NOTICE("You cut away the wiring."))
 			playsound(loc, 'sound/items/Wirecutter.ogg', 25, 1)
-			rigged = FALSE
-			update_icon()
-		return TRUE
-	return FALSE
-
-/obj/structure/closet/crate/foodcart/attempt_rigging(obj/item/object, mob/user)
-	return FALSE // No rigging
-
-/obj/structure/closet/crate/miningcar/attempt_rigging(obj/item/object, mob/user)
-	return FALSE // No rigging
-
-/obj/structure/closet/crate/trashcart/attempt_rigging(obj/item/object, mob/user)
-	return FALSE // No rigging
-
-/obj/structure/closet/crate/freezer/cooler/attempt_rigging(obj/item/object, mob/user)
-	return FALSE // No rigging
-
-/obj/structure/closet/crate/supply/attempt_rigging(obj/item/object, mob/user)
-	return FALSE // No rigging because its wooden I guess
-
-/obj/structure/closet/crate/update_icon()
-	. = ..()
-	if(rigged)
-		overlays += "securecrate_tampered"
+			rigged = 0
+			return
+	else
+		return attack_hand(user)
 
 /obj/structure/closet/crate/ex_act(severity)
 	switch(severity)

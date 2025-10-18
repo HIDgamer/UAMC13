@@ -83,17 +83,16 @@
 	new /obj/item/reagent_container/glass/canister/oxygen(src)
 	new /obj/item/tool/extinguisher(src)
 	new /obj/item/clothing/head/hardhat/red(src)
-	new /obj/item/storage/box/m94(src)
 
 /obj/structure/closet/firecloset/full/Initialize()
 	. = ..()
 	contents = list()
 
 	new /obj/item/clothing/suit/fire/firefighter(src)
+	new /obj/item/device/flashlight(src)
 	new /obj/item/reagent_container/glass/canister/oxygen(src)
 	new /obj/item/tool/extinguisher(src)
 	new /obj/item/clothing/head/hardhat/red(src)
-	new /obj/item/storage/box/m94(src)
 
 /obj/structure/closet/firecloset/update_icon()
 	if(!opened)
@@ -214,10 +213,10 @@
 	. = ..()
 	if(!spawn_empty)
 		new /obj/item/clothing/suit/fire/firefighter(src)
+		new /obj/item/device/flashlight(src)
 		new /obj/item/reagent_container/glass/canister/oxygen(src)
 		new /obj/item/tool/extinguisher(src)
 		new /obj/item/clothing/head/hardhat/red(src)
-		new /obj/item/storage/box/m94(src)
 
 /obj/structure/closet/hydrant/empty
 	spawn_empty = TRUE

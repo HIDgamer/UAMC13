@@ -25,7 +25,6 @@
 	ability_primacy = XENO_PRIMARY_ACTION_1
 	action_type = XENO_ACTION_CLICK
 	xeno_cooldown = 8 SECONDS
-	var/cross_map_heal = FALSE
 
 /datum/action/xeno_action/onclick/screech
 	name = "Screech (250)"
@@ -37,6 +36,11 @@
 	cooldown_message = "You feel your throat muscles vibrate. You are ready to screech again."
 	no_cooldown_msg = FALSE // Needed for onclick actions
 	ability_primacy = XENO_SCREECH
+
+/datum/action/xeno_action/onclick/queen_tacmap
+	name = "View Xeno Tacmap"
+	action_icon_state = "toggle_queen_zoom"
+	plasma_cost = 0
 
 
 /datum/action/xeno_action/activable/queen_give_plasma

@@ -54,7 +54,7 @@ type AccessTicketRecord = {
   ref: string;
 };
 
-export type VentRecord = { vent_tag: string; ref: string; available: boolean };
+type VentRecord = { vent_tag: string; ref: string; available: boolean };
 
 type DiscussionRecord = BasicRecord & {
   user: string;

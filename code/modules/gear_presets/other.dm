@@ -9,7 +9,7 @@
 	name = "Freelancer"
 
 	assignment = "Freelancer"
-	job_title = FACTION_FREELANCER
+	rank = FACTION_FREELANCER
 	idtype = /obj/item/card/id/data
 	faction = FACTION_FREELANCER
 
@@ -18,18 +18,15 @@
 	access = get_access(ACCESS_LIST_EMERGENCY_RESPONSE) //ACCESS_COME_BACK_TO_ME
 
 /datum/equipment_preset/other/freelancer/load_name(mob/living/carbon/human/new_human, randomise)
-	new_human.gender = pick(MALE, FEMALE)
+	new_human.gender = pick(60;MALE,40;FEMALE)
 	var/datum/preferences/A = new()
 	A.randomize_appearance(new_human)
 	var/random_name
-	switch(new_human.gender)
-		if(MALE)
-			random_name = "[pick(GLOB.first_names_male_colonist)] [pick(GLOB.last_names_colonist)]"
-			new_human.f_style = "5 O'clock Shadow"
-		if(FEMALE)
-			random_name = "[pick(GLOB.first_names_female_colonist)] [pick(GLOB.last_names_colonist)]"
-		if(PLURAL)
-			random_name = "[pick(pick(GLOB.first_names_male_colonist), pick(GLOB.first_names_female_colonist))] [pick(GLOB.last_names_colonist)]"
+	if(new_human.gender == MALE)
+		random_name = "[pick(GLOB.first_names_male_colonist)] [pick(GLOB.last_names_colonist)]"
+		new_human.f_style = "5 O'clock Shadow"
+	else
+		random_name = "[pick(GLOB.first_names_female_colonist)] [pick(GLOB.last_names_colonist)]"
 	new_human.change_real_name(new_human, random_name)
 	new_human.age = rand(20,45)
 	new_human.r_hair = 25
@@ -275,7 +272,7 @@
 	name = "Elite Mercenary"
 
 	assignment = "Elite Mercenary"
-	job_title = "Mercenary"
+	rank = "Mercenary"
 	idtype = /obj/item/card/id/centcom
 	faction = FACTION_MERCENARY
 
@@ -284,18 +281,15 @@
 	access = get_access(ACCESS_LIST_EMERGENCY_RESPONSE)
 
 /datum/equipment_preset/other/elite_merc/load_name(mob/living/carbon/human/new_human, randomise)
-	new_human.gender = pick(MALE, FEMALE)
+	new_human.gender = pick(70;MALE,30;FEMALE)
 	var/datum/preferences/A = new()
 	A.randomize_appearance(new_human)
 	var/random_name
-	switch(new_human.gender)
-		if(MALE)
-			random_name = "[pick(GLOB.first_names_male_colonist)] [pick(GLOB.last_names_colonist)]"
-			new_human.f_style = "5 O'clock Shadow"
-		if(FEMALE)
-			random_name = "[pick(GLOB.first_names_female_colonist)] [pick(GLOB.last_names_colonist)]"
-		if(PLURAL)
-			random_name = "[pick(pick(GLOB.first_names_male_colonist), pick(GLOB.first_names_female_colonist))] [pick(GLOB.last_names_colonist)]"
+	if(new_human.gender == MALE)
+		random_name = "[pick(GLOB.first_names_male_colonist)] [pick(GLOB.last_names_colonist)]"
+		new_human.f_style = "5 O'clock Shadow"
+	else
+		random_name = "[pick(GLOB.first_names_female_colonist)] [pick(GLOB.last_names_colonist)]"
 	new_human.change_real_name(new_human, random_name)
 	new_human.age = rand(20,45)
 	new_human.r_hair = rand(15,35)
@@ -311,7 +305,7 @@
 
 	idtype = /obj/item/card/id/centcom
 	assignment = "Mercenary Miner"
-	job_title = "Mercenary"
+	rank = "Mercenary"
 	skills = /datum/skills/mercenary/elite
 	faction = FACTION_MERCENARY
 
@@ -348,7 +342,7 @@
 
 	idtype = /obj/item/card/id/centcom
 	assignment = "Mercenary Heavy"
-	job_title = "Mercenary"
+	rank = "Mercenary"
 	skills = /datum/skills/mercenary/elite/heavy
 	faction = FACTION_MERCENARY
 
@@ -388,7 +382,7 @@
 
 	idtype = /obj/item/card/id/data
 	assignment = "Mercenary Engineer"
-	job_title = "Mercenary"
+	rank = "Mercenary"
 	skills = /datum/skills/mercenary/elite/engineer
 	faction = FACTION_MERCENARY
 
@@ -442,7 +436,7 @@
 
 	idtype = /obj/item/card/id/centcom
 	assignment = "Mercenary Medic"
-	job_title = "Mercenary"
+	rank = "Mercenary"
 	skills = /datum/skills/mercenary/elite/medic
 	faction = FACTION_MERCENARY
 
@@ -488,7 +482,7 @@
 
 	idtype = /obj/item/card/id/centcom
 	assignment = "Mercenary Warlord"
-	job_title = "Mercenary"
+	rank = "Mercenary"
 	skills = /datum/skills/mercenary/elite/leader
 	faction = FACTION_MERCENARY
 
@@ -519,6 +513,31 @@
 
 //*****************************************************************************************************/
 
+/datum/equipment_preset/other/business_person
+	name = "Business Person"
+	flags = EQUIPMENT_PRESET_EXTRA
+	faction = FACTION_MARINE
+	idtype = /obj/item/card/id/silver/cl
+	assignment = "Corporate Representative"
+	rank = "Corporate Representative"
+	skills = /datum/skills/civilian
+
+/datum/equipment_preset/other/business_person/New()
+	. = ..()
+	access = get_access(ACCESS_LIST_CIVIL_LIAISON)
+
+/datum/equipment_preset/other/business_person/load_gear(mob/living/carbon/human/new_human)
+	//TODO: add backpacks and satchels
+	new_human.equip_if_possible(new /obj/item/clothing/under/lawyer/bluesuit, WEAR_BODY)
+	new_human.equip_if_possible(new /obj/item/clothing/shoes/centcom, WEAR_FEET)
+	new_human.equip_if_possible(new /obj/item/clothing/gloves/white, WEAR_HANDS)
+
+	new_human.equip_if_possible(new /obj/item/clothing/glasses/sunglasses, WEAR_EYES)
+	new_human.equip_if_possible(new /obj/item/clipboard, WEAR_WAIST)
+
+
+//*****************************************************************************************************/
+
 /datum/equipment_preset/other/pizza
 	name = "Pizza"
 	flags = EQUIPMENT_PRESET_EXTRA
@@ -526,7 +545,7 @@
 	languages = list(LANGUAGE_ENGLISH, LANGUAGE_RUSSIAN, LANGUAGE_JAPANESE, LANGUAGE_CHINESE) //Just in case they are delivering to UPP or CLF...
 	idtype = /obj/item/card/id/pizza
 	assignment = "Pizza Deliverer"
-	job_title = FACTION_PIZZA
+	rank = FACTION_PIZZA
 	skills = /datum/skills/civilian
 	paygrades = list(PAY_SHORT_CIV = JOB_PLAYTIME_TIER_0)
 	faction = FACTION_PIZZA
@@ -536,7 +555,7 @@
 	access = get_access(ACCESS_LIST_DELIVERY)
 
 /datum/equipment_preset/other/pizza/load_name(mob/living/carbon/human/new_human, randomise)
-	new_human.gender = pick(MALE, FEMALE)
+	new_human.gender = pick(MALE,FEMALE)
 	var/datum/preferences/A = new()
 	A.randomize_appearance(new_human)
 	var/random_name
@@ -565,8 +584,6 @@
 	new_human.equip_to_slot_or_del(new /obj/item/reagent_container/food/drinks/cans/dr_gibb, WEAR_IN_BACK)
 	new_human.equip_to_slot_or_del(new /obj/item/reagent_container/food/drinks/cans/thirteenloko, WEAR_IN_BACK)
 
-//*****************************************************************************************************/
-
 /datum/equipment_preset/other/souto
 	name = "Souto Man"
 	flags = EQUIPMENT_PRESET_EXTRA
@@ -574,7 +591,7 @@
 	languages = list(LANGUAGE_ENGLISH, LANGUAGE_RUSSIAN, LANGUAGE_JAPANESE, LANGUAGE_CHINESE) //Just in case they are delivering to UPP or CLF...
 	idtype = /obj/item/card/id/souto
 	assignment = FACTION_SOUTO
-	job_title = "Souto Man"
+	rank = "Souto Man"
 	skills = /datum/skills/souto
 	faction = FACTION_SOUTO
 
@@ -610,7 +627,7 @@
 /datum/equipment_preset/other/zombie
 	name = "Zombie"
 	flags = EQUIPMENT_PRESET_EXTRA
-	job_title = FACTION_ZOMBIE
+	rank = FACTION_ZOMBIE
 	languages = list("Zombie")
 	skills = null //no restrictions
 	faction = FACTION_ZOMBIE
@@ -633,7 +650,7 @@
 	new_human.gender = pick(MALE, FEMALE)
 	var/datum/preferences/A = new
 	A.randomize_appearance(new_human)
-	var/random_name = random_name(new_human.gender)
+	var/random_name = capitalize(pick(new_human.gender == MALE ? GLOB.first_names_male : GLOB.first_names_female)) + " " + capitalize(pick(GLOB.last_names))
 	new_human.change_real_name(new_human, random_name)
 	new_human.age = rand(21,45)
 
@@ -665,14 +682,14 @@
 	skills = /datum/skills/gladiator
 
 	assignment = "Bestiarius"
-	job_title = FACTION_GLADIATOR
+	rank = FACTION_GLADIATOR
 	faction = FACTION_GLADIATOR
 
 /datum/equipment_preset/other/gladiator/load_name(mob/living/carbon/human/new_human, randomise)
 	new_human.gender = pick(MALE, FEMALE)
 	var/datum/preferences/A = new
 	A.randomize_appearance(new_human)
-	var/random_name = capitalize(pick(new_human.gender == MALE ? GLOB.first_names_male_gladiator : FEMALE ? GLOB.first_names_female_gladiator : pick(pick(GLOB.first_names_male_gladiator), pick(GLOB.first_names_female_gladiator))))
+	var/random_name = capitalize(pick(new_human.gender == MALE ? GLOB.first_names_male_gladiator : GLOB.first_names_female_gladiator))
 	new_human.change_real_name(new_human, random_name)
 	new_human.age = rand(21,45)
 
@@ -700,7 +717,7 @@
 	flags = EQUIPMENT_PRESET_EXTRA
 	skills = /datum/skills/gladiator/champion
 	assignment = "Samnite"
-	job_title = "Samnite"
+	rank = "Samnite"
 
 /datum/equipment_preset/other/gladiator/champion/load_gear(mob/living/carbon/human/new_human)
 	new_human.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/UPP, WEAR_L_EAR)
@@ -726,7 +743,7 @@
 	flags = EQUIPMENT_PRESET_EXTRA
 	skills = /datum/skills/gladiator/champion/leader
 	assignment = "Spartacus"
-	job_title = "Spartacus"
+	rank = "Spartacus"
 
 /datum/equipment_preset/other/gladiator/leader/load_gear(mob/living/carbon/human/new_human)
 	new_human.equip_to_slot_or_del(new /obj/item/device/radio/headset/distress/UPP, WEAR_L_EAR)
@@ -757,7 +774,7 @@
 	languages = list(LANGUAGE_XENOMORPH, LANGUAGE_ENGLISH)
 
 	assignment = "Cultist"
-	job_title = "Cultist"
+	rank = "Cultist"
 
 	minimap_icon = "cultist"
 	minimap_background = "background_cultist"
@@ -821,7 +838,7 @@
 	skills = /datum/skills/cultist_leader
 
 	assignment = "Cultist Leader"
-	job_title = "Cultist Leader"
+	rank = "Cultist Leader"
 
 	minimap_icon = "cult_leader"
 
@@ -845,7 +862,7 @@
 	name = "DUMMY"
 	flags = EQUIPMENT_PRESET_EXTRA
 	assignment = "DUMMY"
-	job_title = "DUMMY"
+	rank = "DUMMY"
 	paygrades = list(PAY_SHORT_CCMO)
 	idtype = /obj/item/card/id/dogtag
 	uses_special_name = TRUE
@@ -879,7 +896,7 @@
 
 	idtype = /obj/item/card/id/dogtag
 	assignment = JOB_TANK_CREW
-	job_title = JOB_TANK_CREW
+	rank = JOB_TANK_CREW
 	paygrades = list(PAY_SHORT_ME4 = JOB_PLAYTIME_TIER_0)
 	role_comm_title = "CRMN"
 	minimum_age = 30
@@ -919,7 +936,7 @@
 
 	idtype = /obj/item/card/id/dogtag
 	assignment = "Crewman Trainee"
-	job_title = "Crewman Trainee"
+	rank = "Crewman Trainee"
 	paygrades = list(PAY_SHORT_ME3 = JOB_PLAYTIME_TIER_0)
 	role_comm_title = "CRTR"
 	minimum_age = 25
@@ -973,7 +990,7 @@
 	name = "Tutorial Rifleman"
 	flags = EQUIPMENT_PRESET_EXTRA
 	assignment = JOB_SQUAD_MARINE
-	job_title = JOB_SQUAD_MARINE
+	rank = JOB_SQUAD_MARINE
 	paygrades = list(PAY_SHORT_ME1 = JOB_PLAYTIME_TIER_0)
 	role_comm_title = "RFN"
 	skills = /datum/skills/pfc/crafty

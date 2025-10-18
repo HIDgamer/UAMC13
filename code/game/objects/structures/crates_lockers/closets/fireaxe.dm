@@ -187,8 +187,8 @@
 		hasaxe = 1
 	icon_state = text("fireaxe[][][][]",hasaxe,src.localopened,src.hitstaken,src.smashed)
 
-/obj/structure/closet/fireaxecabinet/open(mob/user, force)
+/obj/structure/closet/fireaxecabinet/open()
 	return
 
-/obj/structure/closet/fireaxecabinet/close(mob/user)
+/obj/structure/closet/fireaxecabinet/close()
 	return

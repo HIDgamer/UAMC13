@@ -1,7 +1,7 @@
 /datum/equipment_preset/contractor
 	name = "Military Contractor"
 	faction = FACTION_CONTRACTOR
-	job_title = JOB_CONTRACTOR
+	rank = JOB_CONTRACTOR
 	idtype = /obj/item/card/id/data
 	faction = FACTION_CONTRACTOR
 	faction_group = list(FACTION_CONTRACTOR)
@@ -15,10 +15,11 @@
 
 
 /datum/equipment_preset/contractor/load_name(mob/living/carbon/human/new_human)
-	new_human.gender = pick(MALE, FEMALE)
+	new_human.gender = pick(60;MALE,40;FEMALE)
 	var/datum/preferences/A = new()
 	A.randomize_appearance(new_human)
-	var/random_name = random_name(new_human.gender)
+	var/random_name
+	random_name = capitalize(pick(new_human.gender == MALE ? GLOB.first_names_male : GLOB.first_names_female)) + " " + capitalize(pick(GLOB.last_names))
 	new_human.change_real_name(new_human, random_name)
 	new_human.name = new_human.real_name
 	new_human.age = rand(22,45)
@@ -63,7 +64,7 @@
 	role_comm_title = "Merc"
 	flags = EQUIPMENT_PRESET_EXTRA
 	assignment = "VAIPO Mercenary"
-	job_title = JOB_CONTRACTOR_ST
+	rank = JOB_CONTRACTOR_ST
 	skills = /datum/skills/contractor
 	faction = FACTION_CONTRACTOR
 
@@ -172,7 +173,7 @@
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = "VAIPO Automatic Rifleman"
-	job_title = JOB_CONTRACTOR_MG
+	rank = JOB_CONTRACTOR_MG
 	skills = /datum/skills/contractor/heavy
 	faction = FACTION_CONTRACTOR
 
@@ -234,7 +235,7 @@
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = "VAIPO Engineering Specialist"
-	job_title = JOB_CONTRACTOR_ENGI
+	rank = JOB_CONTRACTOR_ENGI
 	skills = /datum/skills/contractor/engi
 	faction = FACTION_CONTRACTOR
 
@@ -280,7 +281,7 @@
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = "VAIMS Medical Specialist"
-	job_title = JOB_CONTRACTOR_MEDIC
+	rank = JOB_CONTRACTOR_MEDIC
 	skills = /datum/skills/contractor/medic
 	faction = FACTION_CONTRACTOR
 
@@ -326,7 +327,7 @@
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = "VAIPO Team Leader"
-	job_title = JOB_CONTRACTOR_TL
+	rank = JOB_CONTRACTOR_TL
 	skills = /datum/skills/contractor/leader
 	faction = FACTION_CONTRACTOR
 
@@ -377,7 +378,7 @@
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = "VAIPO Support Synthetic"
-	job_title = JOB_CONTRACTOR_SYN
+	rank = JOB_CONTRACTOR_SYN
 	faction = FACTION_CONTRACTOR
 	languages = ALL_SYNTH_LANGUAGES
 
@@ -386,17 +387,14 @@
 		new_human.allow_gun_usage = FALSE
 
 /datum/equipment_preset/contractor/duty/synth/load_name(mob/living/carbon/human/new_human, randomise)
-	new_human.gender = pick(MALE, FEMALE)
+	new_human.gender = pick(50;MALE,50;FEMALE)
 	var/datum/preferences/A = new()
 	A.randomize_appearance(new_human)
 	var/random_name
-	switch(new_human.gender)
-		if(MALE)
-			random_name = "[pick(GLOB.first_names_male)]"
-		if(FEMALE)
-			random_name = "[pick(GLOB.first_names_female)]"
-		if(PLURAL)
-			random_name = "[pick(pick(GLOB.first_names_male), pick(GLOB.first_names_female))]"
+	if(new_human.gender == MALE)
+		random_name = "[pick(GLOB.first_names_male)]"
+	else
+		random_name = "[pick(GLOB.first_names_female)]"
 
 	if(new_human.gender == MALE)
 		new_human.f_style = pick("3 O'clock Shadow", "3 O'clock Moustache", "5 O'clock Shadow", "5 O'clock Moustache")
@@ -471,7 +469,7 @@
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = "VAISO Mercenary"
-	job_title = JOB_CONTRACTOR_COVST
+	rank = JOB_CONTRACTOR_COVST
 	skills = /datum/skills/contractor
 	faction = FACTION_CONTRACTOR
 
@@ -580,7 +578,7 @@
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = "VAISO Automatic Rifleman"
-	job_title = JOB_CONTRACTOR_COVMG
+	rank = JOB_CONTRACTOR_COVMG
 	skills = /datum/skills/contractor/heavy
 	faction = FACTION_CONTRACTOR
 
@@ -631,7 +629,7 @@
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = "VAISO Engineering Specialist"
-	job_title = JOB_CONTRACTOR_COVENG
+	rank = JOB_CONTRACTOR_COVENG
 	skills = /datum/skills/contractor/engi
 	faction = FACTION_CONTRACTOR
 
@@ -678,7 +676,7 @@
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = "VAIMS Medical Specialist"
-	job_title = JOB_CONTRACTOR_COVMED
+	rank = JOB_CONTRACTOR_COVMED
 	skills = /datum/skills/contractor/medic
 	faction = FACTION_CONTRACTOR
 
@@ -725,7 +723,7 @@
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = "VAISO Team Leader"
-	job_title = JOB_CONTRACTOR_COVTL
+	rank = JOB_CONTRACTOR_COVTL
 	skills = /datum/skills/contractor/leader
 	faction = FACTION_CONTRACTOR
 
@@ -776,7 +774,7 @@
 	flags = EQUIPMENT_PRESET_EXTRA
 
 	assignment = "VAISO Support Synthetic"
-	job_title = JOB_CONTRACTOR_COVSYN
+	rank = JOB_CONTRACTOR_COVSYN
 	skills = /datum/skills/synthetic
 	faction = FACTION_CONTRACTOR
 	languages = ALL_SYNTH_LANGUAGES
@@ -786,17 +784,14 @@
 		new_human.allow_gun_usage = FALSE
 
 /datum/equipment_preset/contractor/covert/synth/load_name(mob/living/carbon/human/new_human, randomise)
-	new_human.gender = pick(MALE, FEMALE)
+	new_human.gender = pick(50;MALE,50;FEMALE)
 	var/datum/preferences/A = new()
 	A.randomize_appearance(new_human)
 	var/random_name
-	switch(new_human.gender)
-		if(MALE)
-			random_name = "[pick(GLOB.first_names_male)]"
-		if(FEMALE)
-			random_name = "[pick(GLOB.first_names_female)]"
-		if(PLURAL)
-			random_name = "[pick(pick(GLOB.first_names_male), pick(GLOB.first_names_female))]"
+	if(new_human.gender == MALE)
+		random_name = "[pick(GLOB.first_names_male)]"
+	else
+		random_name = "[pick(GLOB.first_names_female)]"
 
 	if(new_human.gender == MALE)
 		new_human.f_style = pick("3 O'clock Shadow", "3 O'clock Moustache", "5 O'clock Shadow", "5 O'clock Moustache")

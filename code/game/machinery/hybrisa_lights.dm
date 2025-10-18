@@ -43,7 +43,6 @@
 	return FALSE
 
 // Hybrisa Streetlights
-
 /obj/structure/machinery/colony_floodlight/street
 	name = "colony streetlight"
 	icon = 'icons/obj/structures/props/streetlights.dmi'
@@ -51,7 +50,6 @@
 	layer = BILLBOARD_LAYER
 	light_color = LIGHT_COLOR_XENON
 	explo_proof = FALSE
-	lum_value = 12
 
 /obj/structure/machinery/colony_floodlight/street/Initialize(mapload, ...)
 	. = ..()

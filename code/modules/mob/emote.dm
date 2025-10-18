@@ -55,7 +55,6 @@
 	key = "me"
 	key_third_person = "custom"
 	keybind = FALSE
-	replace_pronouns = FALSE
 
 /datum/emote/custom/run_emote(mob/user, params, type_override, intentional = FALSE, prefix)
 	if(user.client && user.client.prefs.muted & MUTE_IC)

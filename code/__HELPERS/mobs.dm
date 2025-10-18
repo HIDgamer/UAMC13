@@ -54,13 +54,10 @@
 		return f_style
 
 /proc/random_name(gender, species = "Human")
-	switch(gender)
-		if(FEMALE)
-			return capitalize(pick(GLOB.first_names_female)) + " " + capitalize(pick(GLOB.last_names))
-		if(MALE)
-			return capitalize(pick(GLOB.first_names_male)) + " " + capitalize(pick(GLOB.last_names))
-		if(PLURAL)
-			return capitalize(pick(pick(GLOB.first_names_male), pick(GLOB.first_names_female))) + " " + capitalize(pick(GLOB.last_names))
+	if(gender==FEMALE)
+		return capitalize(pick(GLOB.first_names_female)) + " " + capitalize(pick(GLOB.last_names))
+	else
+		return capitalize(pick(GLOB.first_names_male)) + " " + capitalize(pick(GLOB.last_names))
 
 /proc/has_species(mob/M, species)
 	if(!M || !istype(M,/mob/living/carbon/human))

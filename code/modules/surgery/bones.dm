@@ -49,6 +49,7 @@
 		if(!gel.use_gel(gel.fracture_fix_cost))
 			to_chat(user, SPAN_BOLDWARNING("[gel] is empty!"))
 			return FALSE
+
 	else //Otherwise, use metal rods
 		var/obj/item/stack/rods/rods = user.get_inactive_hand()
 		if(!istype(rods))

@@ -37,8 +37,5 @@
 /// REB, Rebel
 #define PAY_SHORT_REB "REB"
 
-/// REBC, Rebel Commander
+/// REBC, Rebel Commander "REBC"
 #define PAY_SHORT_REBC "REBC"
-
-/// CADMIN, Administrator
-#define PAY_SHORT_CADMIN "CADMIN"

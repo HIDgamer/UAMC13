@@ -13,7 +13,7 @@
 	icon_state = "pred_mask1_ebony"
 	item_state = "helmet"
 	item_state_slots = list(WEAR_FACE = "pred_mask1_ebony")
-	valid_accessory_slots = list(ACCESSORY_SLOT_YAUTJA_MASK)
+	valid_accessory_slots = list(ACCESSORY_SLOT_MASK)
 
 	armor_melee = CLOTHING_ARMOR_MEDIUM
 	armor_bullet = CLOTHING_ARMOR_MEDIUMHIGH
@@ -28,7 +28,7 @@
 	min_cold_protection_temperature = SPACE_HELMET_MIN_COLD_PROT
 	flags_armor_protection = BODY_FLAG_HEAD|BODY_FLAG_FACE|BODY_FLAG_EYES
 	flags_cold_protection = BODY_FLAG_HEAD
-	flags_inventory = COVEREYES|COVERMOUTH|NOPRESSUREDMAGE|ALLOWINTERNALS|ALLOWREBREATH|BLOCKGASEFFECT|SPOREPROOF
+	flags_inventory = COVEREYES|COVERMOUTH|NOPRESSUREDMAGE|ALLOWINTERNALS|ALLOWREBREATH|BLOCKGASEFFECT
 	flags_inv_hide = HIDEEARS|HIDEEYES|HIDEFACE|HIDELOWHAIR
 	flags_item = ITEM_PREDATOR
 	filtered_gases = list("phoron", "sleeping_agent", "carbon_dioxide")
@@ -78,9 +78,9 @@
 	LAZYSET(item_state_slots, WEAR_FACE, "pred_mask[mask_number]_[armor_material]")
 
 /obj/item/clothing/mask/gas/yautja/pickup(mob/living/user)
-	. = ..()
 	if(isyautja(user))
 		remove_from_missing_pred_gear(src)
+	..()
 
 /obj/item/clothing/mask/gas/yautja/Destroy()
 	remove_from_missing_pred_gear(src)
@@ -229,13 +229,13 @@
 /obj/item/clothing/mask/gas/yautja/thrall
 	name = "alien mask"
 	desc = "A simplistic metallic face mask with advanced capabilities."
-	icon_state = "thrallmask_ebony"
-	item_state = "thrallmask_ebony"
+	icon_state = "thrall_mask"
+	item_state = "thrall_mask"
 	icon = 'icons/obj/items/hunter/thrall_gear.dmi'
 	item_icons = list(
 		WEAR_FACE = 'icons/mob/humans/onmob/hunter/thrall_gear.dmi'
 	)
-	item_state_slots = list(WEAR_FACE = "thrallmask_ebony")
+	item_state_slots = list(WEAR_FACE = "thrall_mask")
 	thrall = TRUE
 
 /obj/item/clothing/mask/gas/yautja/thrall/toggle_zoom()
@@ -319,4 +319,4 @@
 	icon = 'icons/obj/items/hunter/pred_mask_accessories.dmi'
 	accessory_icons = list(WEAR_FACE = 'icons/mob/humans/onmob/hunter/pred_mask_accessories.dmi')
 	icon_state = null
-	worn_accessory_slot = ACCESSORY_SLOT_YAUTJA_MASK
+	slot = ACCESSORY_SLOT_MASK

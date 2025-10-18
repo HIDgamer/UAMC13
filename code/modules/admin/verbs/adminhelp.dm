@@ -361,7 +361,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 
 //Removes the ahelp verb and returns it after 2 minutes
 /datum/admin_help/proc/TimeoutVerb()
-	remove_verb(initiator, /client/proc/adminhelp)
+	remove_verb(initiator, /client/verb/adminhelp)
 	initiator.adminhelptimerid = addtimer(CALLBACK(initiator, /client/proc/giveadminhelpverb), 1200, TIMER_STOPPABLE) //2 minute cooldown of admin helps
 
 //private
@@ -792,7 +792,7 @@ GLOBAL_DATUM_INIT(ahelp_tickets, /datum/admin_help_tickets, new)
 /client/proc/giveadminhelpverb()
 	if(!src)
 		return
-	add_verb(src, /client/proc/adminhelp)
+	add_verb(src, /client/verb/adminhelp)
 	deltimer(adminhelptimerid)
 	adminhelptimerid = 0
 
@@ -868,7 +868,7 @@ GLOBAL_DATUM_INIT(admin_help_ui_handler, /datum/admin_help_ui_handler, new)
 
 	new /datum/admin_help(message, user_client, FALSE, urgent)
 
-CLIENT_VERB(no_tgui_adminhelp, message as message)
+/client/verb/no_tgui_adminhelp(message as message)
 	set name = "NoTguiAdminhelp"
 	set hidden = TRUE
 
@@ -879,13 +879,13 @@ CLIENT_VERB(no_tgui_adminhelp, message as message)
 
 	GLOB.admin_help_ui_handler.perform_adminhelp(src, message, FALSE)
 
-CLIENT_VERB(adminhelp)
+/client/verb/adminhelp()
 	set category = "Admin"
 	set name = "Adminhelp"
 	GLOB.admin_help_ui_handler.tgui_interact(mob)
 	to_chat(src, SPAN_BOLDNOTICE("Adminhelp failing to open or work? <a href='byond://?src=[REF(src)];tguiless_adminhelp=1'>Click here</a>"))
 
-CLIENT_VERB(mentorhelp)
+/client/verb/mentorhelp()
 	set category = "Admin"
 	set name = "Mentorhelp"
 
@@ -900,7 +900,7 @@ CLIENT_VERB(mentorhelp)
 	if(!current_mhelp.broadcast_request(src))
 		QDEL_NULL(current_mhelp)
 
-CLIENT_VERB(view_latest_ticket)
+/client/verb/view_latest_ticket()
 	set category = "Admin"
 	set name = "View Latest Ticket"
 

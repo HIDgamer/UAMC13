@@ -639,8 +639,6 @@
 
 	if(hivenumber == "everything")
 		xeno_announcement(input, hivenumber, HIGHER_FORCE_ANNOUNCE)
-	else if(hivenumber == XENO_HIVE_PATHOGEN)
-		xeno_announcement(input, hivenumber, PATHOGEN_ANNOUNCE)
 	else
 		xeno_announcement(input, hivenumber, SPAN_ANNOUNCEMENT_HEADER_BLUE("[hive_prefix][QUEEN_MOTHER_ANNOUNCE]"))
 
@@ -799,7 +797,6 @@
 		<B>Research</B><BR>
 		<A href='byond://?src=\ref[src];[HrefToken()];events=change_clearance'>Change Research Clearance</A><BR>
 		<A href='byond://?src=\ref[src];[HrefToken()];events=give_research_credits'>Give Research Credits</A><BR>
-		<A href='byond://?src=\ref[src];[HrefToken()];events=reroll_contracts'>Reroll Contract Chemicals</A><BR>
 		<BR>
 		<B>Power</B><BR>
 		<A href='byond://?src=\ref[src];[HrefToken()];events=unpower'>Unpower ship SMESs and APCs</A><BR>

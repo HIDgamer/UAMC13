@@ -19,11 +19,6 @@
 #define SPAN_XENOWARNING(X) "<span class='xenowarning'>[X]</span>"
 #define SPAN_XENOMINORWARNING(X) "<span class='xenominorwarning'>[X]</span>"
 
-#define SPAN_PATHOGEN(X) "<span class='pathogen'>[X]</span>"
-#define SPAN_PATHOGEN_LEADER(X) "<span class='pathogenleader'>[X]</span>"
-#define SPAN_PATHOGEN_QUEEN(X) "<span class='pathogenqueen'>[X]</span>"
-#define SPAN_PATHOGEN_ANNOUNCE(X) "<span class='pathogenannounce'>[X]</span>"
-
 #define SPAN_PSYTALK(X) "<span class='psy_talk'>[X]</span>"
 
 // Yautja related
@@ -33,7 +28,6 @@
 // Announcements
 #define SPAN_ANNOUNCEMENT_HEADER(X) "<span class='announce_header'>[X]</span>"
 #define SPAN_ANNOUNCEMENT_HEADER_BLUE(X) "<span class='announce_header_blue'>[X]</span>"
-#define SPAN_ANNOUNCEMENT_HEADER_BEIGE(X) "<span class='announce_header_beige'>[X]</span>"
 #define SPAN_ANNOUNCEMENT_HEADER_ADMIN(X) "<span class='announce_header_admin'>[X]</span>"
 #define SPAN_ANNOUNCEMENT_BODY(X) "<span class='announce_body linkify'>[X]</span>"
 
@@ -82,7 +76,6 @@
 #define SPAN_DANGER(X) "<span class='danger'>[X]</span>"
 #define SPAN_USERDANGER(X) "<span class='userdanger'>[X]</span>"
 #define SPAN_HIGHDANGER(X) "<span class='highdanger'>[X]</span>"
-#define SPAN_EFFINGHIGHDANGER(X) "<span class='effinghighdanger'>[X]</span>"
 
 #define SPAN_CENTERBOLD(X) "<span class='centerbold'>[X]</span>"
 

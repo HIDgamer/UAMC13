@@ -5,16 +5,18 @@
 /datum/origin/upp/generate_human_name(gender = MALE)
 	var/first_name
 	var/last_name
-	if(prob(40))
-		first_name = "[capitalize(randomly_generate_chinese_word(1))]"
+
+	if(gender == MALE)
+		if(prob(40))
+			first_name = "[capitalize(randomly_generate_chinese_word(1))]"
+		else
+			first_name = "[pick(GLOB.first_names_male_upp)]"
 	else
-		switch(gender)
-			if(FEMALE)
-				first_name = capitalize(pick(GLOB.first_names_female_upp))
-			if(MALE)
-				first_name = capitalize(pick(GLOB.first_names_male_upp))
-			if(PLURAL)
-				first_name = capitalize(pick(pick(GLOB.first_names_male_upp), pick(GLOB.first_names_female_upp)))
+		if(prob(40))
+			first_name = "[capitalize(randomly_generate_chinese_word(1))]"
+		else
+			first_name = "[pick(GLOB.first_names_female_upp)]"
+
 	if(prob(35))
 		last_name = "[capitalize(randomly_generate_chinese_word(pick(20;1, 80;2)))]"
 	else

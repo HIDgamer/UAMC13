@@ -30,26 +30,31 @@
 		return default
 	if(LAZYLEN(List))return List[1]
 
-/// Cleans up the provided List by ensuring it has nothing in filter and only items in allow (if allow is non-null)
-/// Default is used if List is not a list. No work is performed if filter and allow are not lists.
-/proc/sanitize_list(list/List, list/filter = list(null), list/allow = null, default = list())
+/proc/sanitize_list(list/List, list/filter = list(null), default = list())
 	if(!islist(List))
 		return default
-	if(!islist(filter) && !islist(allow))
+	if(!islist(filter))
 		return List
 	. = list()
-	for(var/current in List)
-		if(islist(filter) && (current in filter))
+	for(var/E in List)
+		if(E in filter)
 			continue
-		if(islist(allow) && !(current in allow))
-			continue
-		. += current
+		. += E
 
 //more specialised stuff
-/proc/sanitize_gender(gender, default = MALE)
+/proc/sanitize_gender(gender,neuter=0,plural=0, default="male")
 	switch(gender)
-		if(MALE, FEMALE, PLURAL)
-			return gender
+		if(MALE, FEMALE)return gender
+		if(NEUTER)
+			if(neuter)
+				return gender
+			else
+				return default
+		if(PLURAL)
+			if(plural)
+				return gender
+			else
+				return default
 	return default
 
 /proc/sanitize_skin_color(skin_color, default = "Pale 2")

@@ -42,7 +42,7 @@
 	return
 
 //This gets called when you press the delete button.
-CLIENT_VERB(delete_key_pressed)
+/client/verb/delete_key_pressed()
 	set hidden = TRUE
 
 	if(!usr.pulling)
@@ -50,7 +50,7 @@ CLIENT_VERB(delete_key_pressed)
 		return
 	usr.stop_pulling()
 
-CLIENT_VERB(swap_hand)
+/client/verb/swap_hand()
 	set name = ".SwapMobHand"
 	set hidden = TRUE
 
@@ -60,13 +60,13 @@ CLIENT_VERB(swap_hand)
 
 
 
-CLIENT_VERB(attack_self)
+/client/verb/attack_self()
 	set hidden = TRUE
 	if(mob)
 		mob.mode()
 	return
 
-CLIENT_VERB(drop_item)
+/client/verb/drop_item()
 	set hidden = TRUE
 	mob.drop_item_v()
 	return
@@ -185,9 +185,8 @@ CLIENT_VERB(drop_item)
 		if(mob.next_move_slowdown)
 			move_delay += mob.next_move_slowdown
 			mob.next_move_slowdown = 0
-		if(mob.dirlock_slowdown) //humans can dirlock with no slowdown
-			if((mob.flags_atom & DIRLOCK) && mob.dir != direct)
-				move_delay += MOVE_REDUCTION_DIRECTION_LOCKED // by Geeves
+		if((mob.flags_atom & DIRLOCK) && mob.dir != direct)
+			move_delay += MOVE_REDUCTION_DIRECTION_LOCKED // by Geeves
 
 		mob.cur_speed = clamp(10/(move_delay + 0.5), MIN_SPEED, MAX_SPEED)
 		next_movement = world.time + MINIMAL_MOVEMENT_INTERVAL // We pre-set this now for the crawling case. If crawling do_after fails, next_movement would be set after the attempt end instead of now.

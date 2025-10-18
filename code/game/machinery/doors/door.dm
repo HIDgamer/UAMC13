@@ -153,8 +153,6 @@
 
 /obj/structure/machinery/door/emp_act(severity)
 	. = ..()
-	if(. == FALSE)
-		return .
 	if(prob(20/severity) && use_power)
 		open()
 	if(prob(40/severity))

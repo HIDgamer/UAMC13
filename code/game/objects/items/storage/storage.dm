@@ -43,7 +43,7 @@
 	var/required_skill_level_for_nest_opening = null
 
 /obj/item/storage/MouseDrop(obj/over_object as obj)
-	if(CAN_PICKUP(usr, src) && !HAS_TRAIT(usr, TRAIT_HAULED))
+	if(CAN_PICKUP(usr, src))
 		if(over_object == usr) // this must come before the screen objects only block
 			open(usr)
 			return
@@ -466,9 +466,6 @@ GLOBAL_LIST_EMPTY_TYPED(item_storage_box_cache, /datum/item_storage_box)
 		if(L.mode)
 			return 0
 
-	if(istype(W, /obj/item/tool/yautja_cleaner) && user.a_intent == INTENT_HARM) //Cleaner both needs to be able to melt containers and be stored within them.
-		return
-
 	if(W.heat_source && !(W.flags_item & IGNITING_ITEM))
 		to_chat(usr, SPAN_ALERT("[W] is ignited, you can't store it!"))
 		return
@@ -589,47 +586,34 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 	_item_removal(W, new_location, user)
 	return TRUE
 
-/obj/item/storage/proc/remove_item_from_screen(obj/item/item)
-	for(var/mob/player in can_see_content())
-		if(player.client)
-			player.client.remove_from_screen(item)
-
-/obj/item/storage/proc/redraw_items_on_screen(obj/item/item)
-	orient2hud()
-	for(var/mob/player in can_see_content())
-		show_to(player)
-	if(item.maptext && (storage_flags & STORAGE_CONTENT_NUM_DISPLAY))
-		item.maptext = ""
-	item.on_exit_storage(src)
-	update_icon()
-
 ///Separate proc because remove_from_storage isn't guaranteed to finish. Can be called directly if the target atom exists and is an item. Updates icon when done.
-/obj/item/storage/proc/_item_removal(obj/item/item, atom/new_location, mob/user)
-	remove_item_from_screen(item)
+/obj/item/storage/proc/_item_removal(obj/item/W as obj, atom/new_location, mob/user)
+	for(var/mob/M in can_see_content())
+		if(M.client)
+			M.client.remove_from_screen(W)
 
 	if(new_location)
 		if(ismob(new_location))
-			item.pickup(new_location)
-		item.forceMove(new_location)
+			W.pickup(new_location)
+		W.forceMove(new_location)
 	else
-		var/turf/turf = get_turf(src)
-		if(turf)
-			item.forceMove(turf)
+		var/turf/T = get_turf(src)
+		if(T)
+			W.forceMove(T)
 		else
-			item.moveToNullspace()
+			W.moveToNullspace()
 
-	redraw_items_on_screen(item)
+	orient2hud()
+	for(var/mob/M in can_see_content())
+		show_to(M)
+	if(W.maptext && (storage_flags & STORAGE_CONTENT_NUM_DISPLAY))
+		W.maptext = ""
+	W.on_exit_storage(src)
+	update_icon()
 	if(user)
 		user.update_inv_l_hand()
 		user.update_inv_r_hand()
-	item.mouse_opacity = initial(item.mouse_opacity)
-
-///Call this proc to just remove item from storage list.
-/obj/item/storage/proc/forced_item_removal(obj/item/item)
-	remove_item_from_screen(item)
-	LAZYREMOVE(contents, item)
-
-	redraw_items_on_screen(item)
+	W.mouse_opacity = initial(W.mouse_opacity)
 
 //This proc is called when you want to place an item into the storage item.
 /obj/item/storage/attackby(obj/item/W as obj, mob/user as mob)
@@ -654,11 +638,9 @@ W is always an item. stop_warning prevents messaging. user may be null.**/
 	return handle_item_insertion(W, prevent_warning, user)
 
 /obj/item/storage/attack_hand(mob/user, mods)
-	if(HAS_TRAIT(user, TRAIT_HAULED) && !HAS_FLAG(storage_flags, STORAGE_ALLOW_WHILE_HAULED))
-		if(loc == user)
-			open(user)
+	if(HAS_TRAIT(user, TRAIT_HAULED))
 		return
-	if(loc == user)
+	if (loc == user)
 		if((mods && mods[ALT_CLICK] || storage_flags & STORAGE_USING_DRAWING_METHOD) && ishuman(user) && length(contents)) //Alt mod can reach attack_hand through the clicked() override.
 			var/obj/item/I
 			if(storage_flags & STORAGE_USING_FIFO_DRAWING)

@@ -109,9 +109,6 @@
 		return
 	amount = GetStunDuration(amount)
 	var/datum/status_effect/incapacitating/stun/S = IsStun()
-	for(var/datum/reagent/nst_stim as anything in reagents.reagent_list) //reduce amount of NST stim in blood for every stun
-		if(nst_stim.get_property(PROPERTY_NERVESTIMULATING))
-			nst_stim.volume += max(min((-1*amount)/10, 0), -10)
 	if(S)
 		S.update_duration(amount, increment = TRUE)
 	else if(amount > 0)
@@ -136,9 +133,6 @@
 		return
 	amount = GetStunDuration(amount)
 	var/datum/status_effect/incapacitating/stun/S = IsStun()
-	for(var/datum/reagent/nst_stim as anything in reagents.reagent_list) //reduce amount of NST stim in blood for every stun
-		if(nst_stim.get_property(PROPERTY_NERVESTIMULATING))
-			nst_stim.volume += max(min((-1*amount)/10, 0), -10)
 	if(S)
 		S.adjust_duration(amount)
 	else if(amount > 0)
@@ -577,7 +571,6 @@
 	//Reset any surgeries.
 	active_surgeries = DEFENSE_ZONES_LIVING
 	initialize_incision_depths()
-	remove_surgery_overlays()
 
 	// remove the character from the list of the dead
 	if(stat == DEAD)
@@ -629,14 +622,6 @@
 	if(ishuman(src))
 		var/mob/living/carbon/human/H = src
 		H.update_body()
-
-/mob/living/proc/remove_surgery_overlays() // Mainly for ahealing
-	if(overlays)
-		overlays -= image('icons/mob/humans/dam_human.dmi', "skull_surgery_closed")
-		overlays -= image('icons/mob/humans/dam_human.dmi', "skull_surgery_open")
-		overlays -= image('icons/mob/humans/dam_human.dmi', "chest_surgery_closed")
-		overlays -= image('icons/mob/humans/dam_human.dmi', "chest_surgery_open")
-
 
 /mob/living/keybind_face_direction(direction)
 	if(!canface())

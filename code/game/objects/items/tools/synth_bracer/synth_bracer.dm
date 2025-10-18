@@ -59,9 +59,6 @@
 	/// Binoculars for ocular designator
 	var/obj/item/device/binoculars/binos
 
-	/// Motion detector for utility
-	var/obj/item/device/motiondetector/integrated/motion_detector
-
 	/// Pair of gloves worn underneath the computer.
 	var/obj/item/clothing/gloves/underglove
 	/// Base color of the bracer. (DEFAULT OR WHITE)

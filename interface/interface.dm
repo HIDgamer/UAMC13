@@ -1,5 +1,5 @@
 //Please use mob or src (not usr) in these procs. This way they can be called in the same fashion as procs.
-CLIENT_VERB(wiki)
+/client/verb/wiki()
 	set name = "wiki"
 	set desc = "Visit the wiki."
 	set hidden = TRUE
@@ -11,7 +11,7 @@ CLIENT_VERB(wiki)
 		to_chat(src, SPAN_DANGER("The wiki URL is not set in the server configuration."))
 	return
 
-CLIENT_VERB(forum)
+/client/verb/forum()
 	set name = "forum"
 	set desc = "Visit the forum."
 	set hidden = TRUE
@@ -23,7 +23,7 @@ CLIENT_VERB(forum)
 		to_chat(src, SPAN_DANGER("The forum URL is not set in the server configuration."))
 	return
 
-CLIENT_VERB(rules)
+/client/verb/rules()
 	set name = "rules"
 	set desc = "Read our rules."
 	set hidden = TRUE
@@ -35,7 +35,7 @@ CLIENT_VERB(rules)
 		to_chat(src, SPAN_DANGER("The rules URL is not set in the server configuration."))
 	return
 
-CLIENT_VERB(changelog)
+/client/verb/changelog()
 	set name = "Changelog"
 	set category = "OOC"
 	if(!GLOB.changelog_tgui)
@@ -47,7 +47,7 @@ CLIENT_VERB(changelog)
 		prefs.save_preferences()
 		stat_panel.send_message("changelog_read", TRUE)
 
-CLIENT_VERB(discord)
+/client/verb/discord()
 	set name = "Discord"
 	set desc = "Join our Discord! Meet and talk with other players in the server."
 	set hidden = TRUE
@@ -58,7 +58,7 @@ CLIENT_VERB(discord)
 	src << link("[CONFIG_GET(string/discordurl)]")
 	return
 
-CLIENT_VERB(submitbug)
+/client/verb/submitbug()
 	set name = "Submit Bug"
 	set desc = "Submit a bug."
 	set hidden = TRUE
@@ -69,7 +69,7 @@ CLIENT_VERB(submitbug)
 	report.tgui_interact(usr)
 	return
 
-CLIENT_VERB(set_fps)
+/client/verb/set_fps()
 	set name = "Set FPS"
 	set desc = "Set client FPS. 20 is the default"
 	set category = "Preferences"
@@ -80,7 +80,7 @@ CLIENT_VERB(set_fps)
 		prefs.save_preferences()
 	return
 
-CLIENT_VERB(edit_hotkeys)
+/client/verb/edit_hotkeys()
 	set name = "Edit Hotkeys"
 	set category = "Preferences"
 	prefs.macros.tgui_interact(usr)

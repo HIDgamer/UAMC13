@@ -1,4 +1,4 @@
-/mob/living/verb/pray(msg as text)
+/mob/verb/pray(msg as text)
 	set category = "IC"
 	set name = "Pray"
 

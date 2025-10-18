@@ -67,9 +67,6 @@
 /obj/structure/machinery/disposal/Destroy()
 	if(length(contents))
 		eject()
-	var/obj/structure/disposalpipe/trunk/T = trunk
-	if(T)
-		T.linked = null
 	trunk = null
 	return ..()
 
@@ -401,6 +398,8 @@
 	var/obj/structure/disposalholder/H = new() //Virtual holder object which actually
 												//Travels through the pipes.
 	//Hacky test to get drones to mail themselves through disposals.
+	for(var/mob/living/silicon/robot/drone/D in src)
+		wrapcheck = 1
 
 	for(var/obj/item/smallDelivery/O in src)
 		wrapcheck = 1
@@ -443,9 +442,10 @@
 			target = get_offset_target_turf(loc, rand(5) - rand(5), rand(5) - rand(5))
 			AM.forceMove(loc)
 			AM.pipe_eject(0)
-			spawn(1)
-				if(AM)
-					AM.throw_atom(target, 5, SPEED_FAST)
+			if(!istype(AM, /mob/living/silicon/robot/drone)) //Poor drones kept smashing windows and taking system damage being fired out of disposals. ~Z
+				spawn(1)
+					if(AM)
+						AM.throw_atom(target, 5, SPEED_FAST)
 		qdel(H)
 
 /obj/structure/machinery/disposal/hitby(atom/movable/mover)
@@ -483,7 +483,7 @@
 	//Check for any living mobs trigger hasmob.
 	//hasmob effects whether the package goes to cargo or its tagged destination.
 	for(var/mob/living/M in D)
-		if(M && M.stat != DEAD)
+		if(M && M.stat != DEAD && !istype(M, /mob/living/silicon/robot/drone))
 			hasmob = 1
 
 	//Checks 1 contents level deep. This means that players can be sent through disposals...
@@ -491,7 +491,7 @@
 	for(var/obj/O in D)
 		if(O.contents)
 			for(var/mob/living/M in O.contents)
-				if(M && M.stat != 2)
+				if(M && M.stat != 2 && !istype(M, /mob/living/silicon/robot/drone))
 					hasmob = 1
 
 	//Now everything inside the disposal gets put into the holder
@@ -526,7 +526,8 @@
 	while(active)
 		if(hasmob && prob(3))
 			for(var/mob/living/H in src)
-				H.take_overall_damage(20, 0, "Blunt Trauma") //Horribly maim any living creature jumping down disposals.  c'est la vie
+				if(!istype(H, /mob/living/silicon/robot/drone)) //Drones use the mailing code to move through the disposal system,
+					H.take_overall_damage(20, 0, "Blunt Trauma") //Horribly maim any living creature jumping down disposals.  c'est la vie
 
 		if(has_fat_guy && prob(2)) //Chance of becoming stuck per segment if contains a fat guy
 			active = 0
@@ -687,10 +688,7 @@
 //If visible, use regular icon_state
 /obj/structure/disposalpipe/proc/updateicon()
 
-	if(!isnull(base_icon_state))
-		icon_state = base_icon_state
-	else
-		base_icon_state = icon_state
+	icon_state = base_icon_state
 
 //Expel the held objects into a turf. called when there is a break in the pipe
 /obj/structure/disposalpipe/proc/expel(obj/structure/disposalholder/H, turf/T, direction)
@@ -1268,9 +1266,6 @@
 	getlinked()
 
 /obj/structure/disposalpipe/trunk/Destroy()
-	var/obj/structure/machinery/disposal/D = linked
-	if(istype(D, /obj/structure/machinery/disposal))
-		D.trunk = null
 	linked = null
 	return ..()
 
@@ -1379,12 +1374,6 @@
 	if(trunk)
 		trunk.linked = src //Link the pipe trunk to self
 
-/obj/structure/disposaloutlet/Destroy()
-	var/obj/structure/disposalpipe/trunk/trunk = locate() in loc //Outlets don't record the trunk they're linked to, so we need to find it again.
-	if(trunk)
-		trunk.linked = null
-	return ..()
-
 //Expel the contents of the holder object, then delete it. Called when the holder exits the outlet
 /obj/structure/disposaloutlet/proc/expel(obj/structure/disposalholder/H)
 
@@ -1397,8 +1386,9 @@
 		for(var/atom/movable/AM in H)
 			AM.forceMove(loc)
 			AM.pipe_eject(dir)
-			spawn(5)
-				AM.throw_atom(target, 3, SPEED_FAST)
+			if(!istype(AM, /mob/living/silicon/robot/drone)) //Drones keep smashing windows from being fired out of chutes. Bad for the station. ~Z
+				spawn(5)
+					AM.throw_atom(target, 3, SPEED_FAST)
 		qdel(H)
 
 /obj/structure/disposaloutlet/attackby(obj/item/I, mob/user)

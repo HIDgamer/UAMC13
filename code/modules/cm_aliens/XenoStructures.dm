@@ -9,9 +9,6 @@
 	health = 1
 	flags_obj = OBJ_ORGANIC
 
-	var/datum/hive_status/linked_hive
-	var/hivenumber = XENO_HIVE_NORMAL
-
 /*
  * Resin
  */
@@ -160,7 +157,7 @@
 	layer = RESIN_STRUCTURE_LAYER
 	plane = FLOOR_PLANE
 	var/slow_amt = 8
-	hivenumber = XENO_HIVE_NORMAL
+	var/hivenumber = XENO_HIVE_NORMAL
 
 /obj/effect/alien/resin/sticky/Initialize(mapload, hive)
 	. = ..()
@@ -199,7 +196,7 @@
 	health = HEALTH_RESIN_XENO_SPIKE
 	layer = RESIN_STRUCTURE_LAYER
 	should_track_build = TRUE
-	hivenumber = XENO_HIVE_NORMAL
+	var/hivenumber = XENO_HIVE_NORMAL
 	var/damage = 8
 	var/penetration = 50
 
@@ -280,6 +277,7 @@
 	var/list/xenos_tracking = list()
 	var/datum/xeno_mark_define/mark_meaning = null
 	var/image/seenMeaning //this needs to be a static image because it needs to be dynamically added/removed from xenos' huds as resin marks are created/destroyed
+	var/datum/hivenumber = null
 	var/createdby = null
 	var/createdTime = null
 
@@ -363,10 +361,8 @@
 	mineralType = "resin"
 	hardness = 1.5
 	health = HEALTH_DOOR_XENO
-	unacidable = TRUE
 	var/close_delay = 100
 	var/hivenumber = XENO_HIVE_NORMAL
-	var/upgrading_now = FALSE //flag to track upgrading/thickening process
 
 	flags_obj = OBJ_ORGANIC
 	layer = DOOR_CLOSED_LAYER
@@ -567,7 +563,7 @@
 	icon_state = "acid_pillar_idle"
 
 	health = HEALTH_RESIN_XENO_ACID_PILLAR
-	hivenumber = XENO_HIVE_NORMAL
+	var/hivenumber = XENO_HIVE_NORMAL
 	should_track_build = TRUE
 	anchored = TRUE
 
@@ -706,7 +702,7 @@
 	pixel_y = -16
 
 	health = HEALTH_RESIN_XENO_SHIELD_PILLAR
-	hivenumber = XENO_HIVE_NORMAL
+	var/hivenumber = XENO_HIVE_NORMAL
 	anchored = TRUE
 
 	var/decay_rate = AMOUNT_PER_TIME(1, 10 SECONDS)
@@ -1170,8 +1166,6 @@
 
 	for(var/mob/living/carbon/xenomorph/candidate in votes)
 		if(votes[candidate] > primary_votes)
-			secondary_votes = primary_votes
-			secondary_candidate = primary_candidate
 			primary_votes = votes[candidate]
 			primary_candidate = candidate
 		else if(votes[candidate] > secondary_votes)

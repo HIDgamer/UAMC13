@@ -61,7 +61,6 @@
 	icon_xenonid = 'icons/mob/xenonids/castes/tier_2/warrior.dmi'
 
 	weed_food_icon = 'icons/mob/xenos/weeds_64x64.dmi'
-	mycelium_food_icon = 'icons/mob/pathogen/pathogen_weeds_64x64.dmi'
 	weed_food_states = list("Warrior_1","Warrior_2","Warrior_3")
 	weed_food_states_flipped = list("Warrior_1","Warrior_2","Warrior_3")
 
@@ -406,7 +405,7 @@
 
 	punch_user.visible_message(SPAN_XENOWARNING("[punch_user] hits [carbon] in the [target_limb ? target_limb.display_name : "chest"] with a devastatingly powerful punch!"),
 	SPAN_XENOWARNING("We hit [carbon] in the [target_limb ? target_limb.display_name : "chest"] with a devastatingly powerful punch!"))
-	var/sound = pick('sound/weapons/punch1.ogg','sound/weapons/punch2.ogg','sound/weapons/punch3.ogg','sound/weapons/punch4.ogg',)
+	var/sound = pick('sound/weapons/punch1.ogg','sound/weapons/punch2.ogg','sound/weapons/punch3.ogg','sound/weapons/punch4.ogg')
 	playsound(carbon, sound, 50, 1)
 	do_base_warrior_punch(carbon, target_limb)
 	apply_cooldown()

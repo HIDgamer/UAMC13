@@ -14,29 +14,26 @@
 	unacidable = TRUE
 	anchored = TRUE
 	block_range = 1
-	var/boosted_structure = FALSE
+
+	var/datum/hive_status/linked_hive
+
 	plane = FLOOR_PLANE
 
 	/// Tells the structure if they are being deleted because of hijack
 	var/hijack_delete = FALSE
-	/// Whether or not this has a forced hive
-	var/forced_hive = FALSE
-	var/failed_build = FALSE
-	var/broadcast_destroy = TRUE
 
 /obj/effect/alien/resin/special/Initialize(mapload, hive_ref)
 	. = ..()
 	maxhealth = health
 
-	if(!forced_hive && hive_ref)
+	if(hive_ref)
 		linked_hive = hive_ref
 	else
-		linked_hive = GLOB.hive_datum[hivenumber]
+		linked_hive = GLOB.hive_datum[XENO_HIVE_NORMAL]
 
-	set_hive_data(src, hivenumber)
+	set_hive_data(src, linked_hive.hivenumber)
 
 	if(!linked_hive.add_special_structure(src))
-		failed_build = TRUE
 		return INITIALIZE_HINT_QDEL
 
 	START_PROCESSING(SSfastobj, src)
@@ -45,7 +42,7 @@
 /obj/effect/alien/resin/special/Destroy()
 	if(linked_hive)
 		linked_hive.remove_special_structure(src)
-		if(linked_hive.living_xeno_queen && !failed_build && broadcast_destroy)
+		if(linked_hive.living_xeno_queen)
 			xeno_message("Hive: \A [name] has been destroyed at [sanitize_area(get_area_name(src))]!", 3, linked_hive.hivenumber)
 	linked_hive = null
 	STOP_PROCESSING(SSfastobj, src)
@@ -61,18 +58,3 @@
 		return TRUE
 
 	return FALSE
-
-/obj/effect/alien/resin/special/proc/enable_boost(source, hive_purchaser)
-	SIGNAL_HANDLER
-	if(hive_purchaser != src.linked_hive.hivenumber)
-		return
-	else
-		boosted_structure = TRUE
-/obj/effect/alien/resin/special/proc/disable_boost(source, hive_purchaser)
-	SIGNAL_HANDLER
-	if(hive_purchaser != src.linked_hive.hivenumber)
-		return
-	else
-		boosted_structure = FALSE
-
-

@@ -14,21 +14,17 @@ GLOBAL_LIST_INIT_TYPED(huds, /datum/mob_hud, list(
 	MOB_HUD_FACTION_OBSERVER = new /datum/mob_hud/faction/observer(),
 	MOB_HUD_FACTION_UPP = new /datum/mob_hud/faction/upp(),
 	MOB_HUD_FACTION_WY = new /datum/mob_hud/faction/wy(),
-	MOB_HUD_FACTION_HC = new /datum/mob_hud/faction/hyperdyne(),
 	MOB_HUD_FACTION_TWE = new /datum/mob_hud/faction/twe(),
-	MOB_HUD_FACTION_IASF = new /datum/mob_hud/faction/iasf(),
 	MOB_HUD_FACTION_CLF = new /datum/mob_hud/faction/clf(),
 	MOB_HUD_FACTION_PMC = new /datum/mob_hud/faction/pmc(),
 	MOB_HUD_FACTION_CMB = new /datum/mob_hud/faction/cmb(),
 	MOB_HUD_FACTION_NSPA = new /datum/mob_hud/faction/nspa(),
-	MOB_HUD_FACTION_PAP = new /datum/mob_hud/faction/pap(),
 	MOB_HUD_FACTION_WO = new /datum/mob_hud/faction/wo(),
 	MOB_HUD_HUNTER = new /datum/mob_hud/hunter_hud(),
 	MOB_HUD_HUNTER_CLAN = new /datum/mob_hud/hunter_clan(),
 	MOB_HUD_EXECUTE = new /datum/mob_hud/execute_hud(),
 	MOB_HUD_NEW_PLAYER = new /datum/mob_hud/new_player(),
 	MOB_HUD_SPYCAMS = new /datum/mob_hud/spy_cams(),
-	MOB_HUD_MYCOTOXIN = new /datum/mob_hud/pathogen_myco(),
 	))
 
 /datum/mob_hud
@@ -38,7 +34,8 @@ GLOBAL_LIST_INIT_TYPED(huds, /datum/mob_hud, list(
 								// which is the list of the images maintenenced by this HUD
 								// Actually managing those images is left up to clients.
 
-/// Stop displaying a HUD to a specific person (e.g. took off medical glasses)
+// Stop displaying a HUD to a specific person
+// (took off medical glasses)
 /datum/mob_hud/proc/remove_hud_from(mob/user, source)
 	if(length(hudusers[user]) && (source in hudusers[user]))
 		hudusers[user] -= source
@@ -50,13 +47,15 @@ GLOBAL_LIST_INIT_TYPED(huds, /datum/mob_hud, list(
 	hudusers -= user
 	return TRUE
 
-/// Stop rendering a HUD on a target ("unenroll" them so to speak)
+// Stop rendering a HUD on a target
+// "unenroll" them so to speak
 /datum/mob_hud/proc/remove_from_hud(mob/target)
 	for(var/mob/user in hudusers)
 		remove_from_single_hud(user, target)
 	hudmobs -= target
 
-/// Removes target from user's client's images.
+// Always invoked on every 'user'
+// Removes target from user's client's images.
 /datum/mob_hud/proc/remove_from_single_hud(mob/user, mob/target)
 	if(!user.client)
 		return
@@ -65,7 +64,7 @@ GLOBAL_LIST_INIT_TYPED(huds, /datum/mob_hud, list(
 		if(target.clone)
 			user.client.images -= target.clone.hud_list[i]
 
-/// Allow user to view a HUD (e.g. putting on medical glasses)
+// Allow user to view a HUD (putting on medical glasses)
 /datum/mob_hud/proc/add_hud_to(mob/user, source)
 	hudusers |= user
 	if(hudusers[user])
@@ -87,7 +86,7 @@ GLOBAL_LIST_INIT_TYPED(huds, /datum/mob_hud, list(
 	for(var/mob/target in hudmobs)
 		add_to_single_hud(user, target)
 
-/// "Enroll" a target into the HUD. (let others see the HUD on target)
+// "Enroll" a target into the HUD. (let others see the HUD on target)
 /datum/mob_hud/proc/add_to_hud(mob/target)
 	hudmobs |= target
 	for(var/mob/user in hudusers)
@@ -165,8 +164,7 @@ GLOBAL_LIST_INIT_TYPED(huds, /datum/mob_hud, list(
 /datum/mob_hud/xeno_infection
 	hud_icons = list(STATUS_HUD_XENO_INFECTION, STATUS_HUD_XENO_CULTIST)
 
-/datum/mob_hud/pathogen_myco
-	hud_icons = list(STATUS_HUD_MYCO)
+
 
 /datum/mob_hud/new_player
 	hud_icons = list(NEW_PLAYER_HUD)
@@ -213,14 +211,8 @@ GLOBAL_LIST_INIT_TYPED(huds, /datum/mob_hud, list(
 /datum/mob_hud/faction/wy
 	faction_to_check = FACTION_WY
 
-/datum/mob_hud/faction/hyperdyne
-	faction_to_check = FACTION_HYPERDYNE
-
 /datum/mob_hud/faction/twe
 	faction_to_check = FACTION_TWE
-
-/datum/mob_hud/faction/iasf
-	faction_to_check = FACTION_IASF
 
 /datum/mob_hud/faction/clf
 	faction_to_check = FACTION_CLF
@@ -233,9 +225,6 @@ GLOBAL_LIST_INIT_TYPED(huds, /datum/mob_hud, list(
 
 /datum/mob_hud/faction/nspa
 	faction_to_check = FACTION_NSPA
-
-/datum/mob_hud/faction/pap
-	faction_to_check = FACTION_PAP
 
 /datum/mob_hud/faction/cmb
 	faction_to_check = FACTION_MARSHAL
@@ -260,17 +249,14 @@ GLOBAL_LIST_INIT_TYPED(huds, /datum/mob_hud, list(
 	for(var/datum/mob_hud/hud in GLOB.huds)
 		if(istype(hud, /datum/mob_hud/xeno)) //this one is xeno only
 			continue
-		if(istype(hud, /datum/mob_hud/faction))
-			// Only add to a faction hud if we are that faction
-			var/datum/mob_hud/faction/faction_hud = hud
-			if(faction_hud.faction_to_check != faction)
-				continue
 		hud.add_to_hud(src)
 	hud_set_new_player()
 
 /mob/living/carbon/xenomorph/add_to_all_mob_huds()
-	var/datum/mob_hud/hud = GLOB.huds[MOB_HUD_XENO_STATUS]
-	hud.add_to_hud(src)
+	for(var/datum/mob_hud/hud in GLOB.huds)
+		if(!istype(hud, /datum/mob_hud/xeno))
+			continue
+		hud.add_to_hud(src)
 
 
 /mob/proc/remove_from_all_mob_huds()
@@ -302,11 +288,6 @@ GLOBAL_LIST_INIT_TYPED(huds, /datum/mob_hud, list(
 		execute_hud = FALSE
 		var/datum/mob_hud/execute = GLOB.huds[MOB_HUD_EXECUTE]
 		execute.remove_hud_from(src, src)
-
-	if(is_pathogen_creature(src))
-		var/datum/mob_hud/myco = GLOB.huds[MOB_HUD_MYCOTOXIN]
-		myco.remove_hud_from(src, src)
-
 
 
 
@@ -415,18 +396,15 @@ GLOBAL_LIST_INIT_TYPED(huds, /datum/mob_hud, list(
 	holder2.overlays.Cut()
 	var/image/holder3 = hud_list[STATUS_HUD_XENO_INFECTION]
 	var/image/holder4 = hud_list[STATUS_HUD_XENO_CULTIST]
-	var/image/holder5 = hud_list[STATUS_HUD_MYCO]
 
 	holder2.color = null
 	holder3.color = null
 	holder4.color = null
-	holder5.color = null
 
 	holder2.alpha = alpha
 	holder3.alpha = alpha
 
 	holder4.icon_state = "hudblank"
-	holder5.icon_state = "hudblank"
 
 	if(species && species.flags & IS_SYNTHETIC)
 		holder3.icon_state = "hudsynth" // xenos have less awareness of synth status
@@ -454,9 +432,7 @@ GLOBAL_LIST_INIT_TYPED(huds, /datum/mob_hud, list(
 			revive_enabled = check_tod() && is_revivable()
 
 		var/holder2_set = 0
-		if(iswalker(src))
-			holder4.icon_state = "hudalien_walker"
-		else if(hivenumber)
+		if(hivenumber)
 			holder4.icon_state = "hudalien"
 
 			if(GLOB.hive_datum[hivenumber])
@@ -472,12 +448,8 @@ GLOBAL_LIST_INIT_TYPED(huds, /datum/mob_hud, list(
 			holder2.icon_state = "hudxeno"//Observer and admin HUD only
 			holder2_set = 1
 			var/obj/item/alien_embryo/E = locate(/obj/item/alien_embryo) in src
-			var/base_state = "infected"
 			if(E)
-				if(E.hivenumber == XENO_HIVE_PATHOGEN)
-					holder2.icon_state = "hudpathogen"
-					base_state = "spored"
-				holder3.icon_state = "[base_state][E.stage]"
+				holder3.icon_state = "infected[E.stage]"
 				var/datum/hive_status/hive = GLOB.hive_datum[E.hivenumber]
 
 				if(hive && hive.color)
@@ -501,15 +473,12 @@ GLOBAL_LIST_INIT_TYPED(huds, /datum/mob_hud, list(
 							holder2.icon_state = "huddeaddnr"
 							holder3.icon_state = "huddead"
 							holder2_set = 1
-						if(world.time > timeofdeath + revive_grace_period - 1 MINUTES)
-							holder5.icon_state = "hudalien_mycoready"
 						return
 					else if(!G.client)
 						holder.overlays += image('icons/mob/hud/hud.dmi', "hudnoclient")
 						holder2.overlays += image('icons/mob/hud/hud.dmi', "hudnoclient")
 				if(world.time > timeofdeath + revive_grace_period - 1 MINUTES)
 					holder.icon_state = "huddeadalmost"
-					holder5.icon_state = "hudalien_mycoready"
 					if(!holder2_set)
 						holder2.icon_state = "huddeadalmost"
 						holder3.icon_state = "huddead"
@@ -563,13 +532,6 @@ GLOBAL_LIST_INIT_TYPED(huds, /datum/mob_hud, list(
 		return
 	for(var/obj/effect/alien/resin/marker/i in hive.resin_marks)
 		client.images |= i.seenMeaning
-
-/mob/living/carbon/xenomorph/proc/hud_set_design_marks()
-	if(!client)
-		return
-	for(var/obj/effect/alien/resin/design/des in hive.designer_marks)
-		if(des.choosenMark)
-			client.images |= des.choosenMark
 
 /mob/living/carbon/xenomorph/proc/hud_set_plasma()
 	var/image/holder = hud_list[PLASMA_HUD]
@@ -725,11 +687,11 @@ GLOBAL_LIST_INIT_TYPED(huds, /datum/mob_hud, list(
 	holder.overlays.Cut()
 
 	if(mob_flags & MUTINY_MUTINEER)
-		holder.overlays += image('icons/mob/hud/human_status.dmi', src, "hudmutineer", pixel_y = 12)
+		holder.overlays += image('icons/mob/hud/marine_hud.dmi', src, "hudmutineer", pixel_y = 12)
 	else if(mob_flags & MUTINY_LOYALIST)
-		holder.overlays += image('icons/mob/hud/human_status.dmi', src, "hudloyalist", pixel_y = 12)
+		holder.overlays += image('icons/mob/hud/marine_hud.dmi', src, "hudloyalist", pixel_y = 12)
 	else if(mob_flags & MUTINY_NONCOMBAT)
-		holder.overlays += image('icons/mob/hud/human_status.dmi', src, "hudnoncombat", pixel_y = 9)
+		holder.overlays += image('icons/mob/hud/marine_hud.dmi', src, "hudnoncombat", pixel_y = 9)
 
 	hud_set_new_player()
 	F.modify_hud_holder(holder, src)
@@ -738,13 +700,8 @@ GLOBAL_LIST_INIT_TYPED(huds, /datum/mob_hud, list(
 	set waitfor = FALSE
 
 	var/image/holder = hud_list[HUNTER_CLAN]
-	var/new_icon_state = "predhud"
-	if(client?.check_whitelist_status(WHITELIST_YAUTJA_LEADER))
-		new_icon_state = "leaderhud"
-	else if(client?.check_whitelist_status(WHITELIST_YAUTJA_COUNCIL))
-		new_icon_state = "councilhud"
 
-	holder.icon_state = new_icon_state
+	holder.icon_state = "predhud"
 
 	if(client && client.clan_info && client.clan_info.clan_id)
 		var/datum/entity/clan/player_clan = GET_CLAN(client.clan_info.clan_id)
@@ -765,7 +722,7 @@ GLOBAL_DATUM_INIT(hud_icon_hunter_hunted, /image, image('icons/mob/hud/hud_yautj
 GLOBAL_DATUM_INIT(hud_icon_hunter_dishonored, /image, image('icons/mob/hud/hud_yautja.dmi', src, "hunter_dishonored"))
 GLOBAL_DATUM_INIT(hud_icon_hunter_honored, /image, image('icons/mob/hud/hud_yautja.dmi', src, "hunter_honored"))
 GLOBAL_DATUM_INIT(hud_icon_hunter_thralled, /image, image('icons/mob/hud/hud_yautja.dmi', src, "hunter_thralled"))
-GLOBAL_DATUM_INIT(hud_icon_hunter_blooded, /image, image('icons/mob/hud/hud_yautja.dmi', src, "hunter_thrall_blooded"))
+
 
 /mob/living/carbon/hud_set_hunter()
 	var/image/holder = hud_list[HUNTER_HUD]
@@ -783,9 +740,6 @@ GLOBAL_DATUM_INIT(hud_icon_hunter_blooded, /image, image('icons/mob/hud/hud_yaut
 		holder.overlays += GLOB.hud_icon_hunter_thralled
 	else if(hunter_data.gear)
 		holder.overlays += GLOB.hud_icon_hunter_gear
-
-	if(hunter_data.blooded)
-		holder.overlays += GLOB.hud_icon_hunter_blooded
 
 	hud_list[HUNTER_HUD] = holder
 
@@ -808,9 +762,9 @@ GLOBAL_DATUM_INIT(hud_icon_hunter_blooded, /image, image('icons/mob/hud/hud_yaut
 /mob/proc/hud_set_order()
 	return
 
-GLOBAL_DATUM_INIT(hud_icon_hudmove, /image, image('icons/mob/hud/human_status.dmi', src, "hudmove"))
-GLOBAL_DATUM_INIT(hud_icon_hudhold, /image, image('icons/mob/hud/human_status.dmi', src, "hudhold"))
-GLOBAL_DATUM_INIT(hud_icon_hudfocus, /image, image('icons/mob/hud/human_status.dmi', src, "hudfocus"))
+GLOBAL_DATUM_INIT(hud_icon_hudmove, /image, image('icons/mob/hud/marine_hud.dmi', src, "hudmove"))
+GLOBAL_DATUM_INIT(hud_icon_hudhold, /image, image('icons/mob/hud/marine_hud.dmi', src, "hudhold"))
+GLOBAL_DATUM_INIT(hud_icon_hudfocus, /image, image('icons/mob/hud/marine_hud.dmi', src, "hudfocus"))
 // ORDER HUD
 /mob/living/carbon/human/hud_set_order()
 	var/image/holder = hud_list[ORDER_HUD]
@@ -831,7 +785,6 @@ GLOBAL_DATUM_INIT(hud_icon_hudfocus, /image, image('icons/mob/hud/human_status.d
 /mob/living/carbon/human/hud_set_holocard()
 	var/image/holder = hud_list[HOLOCARD_HUD]
 	holder.icon_state = holo_card_color ? "holo_card_[holo_card_color]" : "hudblank"
-	SEND_SIGNAL(src, COMSIG_HUMAN_TRIAGE_CARD_UPDATED)
 
 // Vampire Execute HUD
 /mob/living/carbon/human/proc/update_execute_hud()

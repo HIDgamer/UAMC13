@@ -7,7 +7,7 @@
 *
 * @return nothing
 */
-CLIENT_VERB(nanoclose, uiref as text)
+/client/verb/nanoclose(uiref as text)
 	set hidden = TRUE // hide this verb from the user's panel
 	set name = "nanoclose"
 

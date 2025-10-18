@@ -1,4 +1,4 @@
-CLIENT_VERB(ooc, msg as text)
+/client/verb/ooc(msg as text)
 	set name = "OOC" //Gave this shit a shorter name so you only have to time out "ooc" rather than "ooc message" to use it --NeoFite
 	set category = "OOC.OOC"
 
@@ -55,8 +55,6 @@ CLIENT_VERB(ooc, msg as text)
 			display_colour = CONFIG_GET(string/ooc_color_mods)
 		if(admin_holder.rights & R_ADMIN)
 			display_colour = CONFIG_GET(string/ooc_color_admin)
-		if(admin_holder.rights & R_PROFILER)
-			display_colour  = CONFIG_GET(string/ooc_color_maint)
 		if(admin_holder.rights & R_COLOR)
 			display_colour = prefs.ooccolor
 	else if(donator)
@@ -68,7 +66,8 @@ CLIENT_VERB(ooc, msg as text)
 	var/ooc_prefix = handle_ooc_prefix()
 	for(var/client/C in GLOB.clients)
 		if(C.prefs.toggles_chat & CHAT_OOC)
-			to_chat(C, "<font color='[display_colour]'><span class='ooc linkify'>[ooc_prefix]<span class='prefix'>OOC: [username()]</span>: <span class='message'>[msg]</span></span></font>")
+			var/display_name = src.key
+			to_chat(C, "<font color='[display_colour]'><span class='ooc linkify'>[ooc_prefix]<span class='prefix'>OOC: [display_name]</span>: <span class='message'>[msg]</span></span></font>")
 
 /client/proc/set_ooc_color_global(newColor as color)
 	set name = "OOC Text Color - Global"
@@ -106,7 +105,7 @@ CLIENT_VERB(ooc, msg as text)
 		prefix = "[prefix] "
 	return prefix
 
-CLIENT_VERB(looc, msg as text)
+/client/verb/looc(msg as text)
 	set name = "LOOC" //Gave this shit a shorter name so you only have to time out "ooc" rather than "ooc message" to use it --NeoFite
 	set desc = "Local OOC, seen only by those in view."
 	set category = "OOC.OOC"
@@ -190,7 +189,7 @@ CLIENT_VERB(looc, msg as text)
 				prefix = "LOOC"
 			to_chat(C, "<font color='#f557b8'><span class='ooc linkify'><span class='prefix'>[prefix]:</span> <EM>[display_name]:</EM> <span class='message'>[msg]</span></span></font>")
 
-CLIENT_VERB(round_info)
+/client/verb/round_info()
 	set name = "Current Map" //Gave this shit a shorter name so you only have to time out "ooc" rather than "ooc message" to use it --NeoFite
 	set desc = "Information about the current round"
 	set category = "OOC"
@@ -198,7 +197,7 @@ CLIENT_VERB(round_info)
 
 // Sometimes the game fails to close NanoUIs, seemingly at random. This makes it impossible to open new ones
 // If this happens, let the player manually close them all
-CLIENT_VERB(fixnanoui)
+/client/verb/fixnanoui()
 	set name = "Fix Interfaces"
 	set desc = "Fixes all broken interfaces by forcing all existing ones to close"
 	set category = "OOC.Fix"
@@ -220,7 +219,7 @@ CLIENT_VERB(fixnanoui)
 
 	to_chat(mob, SPAN_NOTICE("<b>All interfaces have been forcefully closed. Please try re-opening them. (Closed [closed_windows] windows)</b>"))
 
-CLIENT_VERB(fit_viewport)
+/client/verb/fit_viewport()
 	set name = "Fit Viewport"
 	set category = "OOC"
 	set desc = "Fit the width of the map window to match the viewport"

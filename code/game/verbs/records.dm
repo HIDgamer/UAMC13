@@ -1,4 +1,4 @@
-CLIENT_VERB(own_records)
+/client/verb/own_records()
 	set name = "View Own Records"
 	set category = "OOC.Records"
 
@@ -217,7 +217,7 @@ GLOBAL_DATUM_INIT(medals_view_tgui, /datum/medals_view_tgui, new)
 		get_asset_datum(/datum/asset/spritesheet/medal)
 	)
 
-CLIENT_VERB(view_own_medals)
+/client/verb/view_own_medals()
 	set name = "View Own Medals"
 	set category = "OOC.Records"
 
@@ -237,7 +237,7 @@ GLOBAL_DATUM_INIT(medals_view_given_tgui, /datum/medals_view_tgui/given_medals, 
 		ui.open()
 
 
-CLIENT_VERB(view_given_medals)
+/client/verb/view_given_medals()
 	set name = "View Medals Given to Others"
 	set category = "OOC.Records"
 

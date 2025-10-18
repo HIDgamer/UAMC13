@@ -152,14 +152,14 @@
 
 /obj/structure/machinery/door/poddoor/hybrisa/open_shutters
 	name = "\improper shutters"
-	desc = "Thin metal shutters, more for show than security. They redirect light and add a bit of structure to the space."
+	desc = null
 	icon_state = "almayer_pdoor1"
 	base_icon_state = "almayer_pdoor"
 	opacity = FALSE
 	vehicle_resistant = FALSE
 	unslashable = FALSE
 	gender = PLURAL
-	health = 10
+	health = 200
 
 /obj/structure/machinery/door/poddoor/hybrisa/open_shutters/bullet_act(obj/projectile/P)
 	health -= P.damage

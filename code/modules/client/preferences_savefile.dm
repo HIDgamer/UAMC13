@@ -387,8 +387,6 @@
 
 	S["show_cooldown_messages"] >> show_cooldown_messages
 
-	S["chem_presets"] >> chem_presets
-
 	//Sanitize
 	ooccolor = sanitize_hexcolor(ooccolor, CONFIG_GET(string/ooc_color_default))
 	lastchangelog = sanitize_text(lastchangelog, initial(lastchangelog))
@@ -482,8 +480,6 @@
 	loadout_slot_names = sanitize_islist(loadout_slot_names, list())
 
 	show_cooldown_messages = sanitize_integer(show_cooldown_messages, FALSE, TRUE, FALSE)
-
-	chem_presets = sanitize_islist(chem_presets, list())
 
 	check_keybindings()
 	S["key_bindings"] << key_bindings
@@ -640,8 +636,6 @@
 
 	S["show_cooldown_messages"] << show_cooldown_messages
 
-	S["chem_presets"] << chem_presets
-
 	return TRUE
 
 /datum/preferences/proc/load_character(slot)
@@ -698,7 +692,7 @@
 	S["underwear"] >> underwear
 	S["undershirt"] >> undershirt
 	S["backbag"] >> backbag
-	//S["blood_type"] >> blood_type
+	//S["b_type"] >> b_type
 
 	//Jobs
 	S["alternate_option"] >> alternate_option
@@ -714,9 +708,6 @@
 	S["flavor_texts_hands"] >> flavor_texts["hands"]
 	S["flavor_texts_legs"] >> flavor_texts["legs"]
 	S["flavor_texts_feet"] >> flavor_texts["feet"]
-	S["flavor_texts_helmet"] >> flavor_texts["helmet"]
-	S["flavor_texts_armor"] >> flavor_texts["armor"]
-
 
 	//Miscellaneous
 	S["med_record"] >> med_record
@@ -730,7 +721,6 @@
 	S["traits"] >> traits
 
 	S["preferred_squad"] >> preferred_squad
-	S["preferred_spec"] >> preferred_spec
 	S["preferred_armor"] >> preferred_armor
 	S["night_vision_preference"] >> night_vision_preference
 	S["weyland_yutani_relation"] >> weyland_yutani_relation
@@ -790,7 +780,7 @@
 	backbag = sanitize_integer(backbag, 1, length(GLOB.backbaglist), initial(backbag))
 	preferred_armor = sanitize_inlist(preferred_armor, GLOB.armor_style_list, "Random")
 	night_vision_preference = sanitize_inlist(night_vision_preference, GLOB.nvg_color_list, "Green")
-	//blood_type = sanitize_text(blood_type, initial(blood_type))
+	//b_type = sanitize_text(b_type, initial(b_type))
 
 	alternate_option = sanitize_integer(alternate_option, 0, 3, initial(alternate_option))
 	if(!job_preference_list)
@@ -817,7 +807,6 @@
 		religion = RELIGION_AGNOSTICISM
 	if(!preferred_squad)
 		preferred_squad = "None"
-	preferred_spec = sanitize_list(preferred_spec, allow=GLOB.specialist_set_name_dict)
 
 	return 1
 
@@ -863,7 +852,7 @@
 	S["underwear"] << underwear
 	S["undershirt"] << undershirt
 	S["backbag"] << backbag
-	//S["blood_type"] << blood_type
+	//S["b_type"] << b_type
 	S["spawnpoint"] << spawnpoint
 
 	//Jobs
@@ -880,8 +869,6 @@
 	S["flavor_texts_hands"] << flavor_texts["hands"]
 	S["flavor_texts_legs"] << flavor_texts["legs"]
 	S["flavor_texts_feet"] << flavor_texts["feet"]
-	S["flavor_texts_helmet"] << flavor_texts["helmet"]
-	S["flavor_texts_armor"] << flavor_texts["armor"]
 
 	//Miscellaneous
 	S["med_record"] << med_record
@@ -897,7 +884,6 @@
 
 	S["weyland_yutani_relation"] << weyland_yutani_relation
 	S["preferred_squad"] << preferred_squad
-	S["preferred_spec"] << preferred_spec
 	S["preferred_armor"] << preferred_armor
 	S["night_vision_preference"] << night_vision_preference
 	//S["skin_style"] << skin_style

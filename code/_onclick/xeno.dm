@@ -5,8 +5,6 @@
 /mob/living/carbon/xenomorph/UnarmedAttack(atom/target, proximity, click_parameters, tile_attack = FALSE, ignores_resin = FALSE)
 	if(body_position == LYING_DOWN || HAS_TRAIT(src, TRAIT_ABILITY_BURROWED) || cannot_slash) //No attacks while laying down
 		return FALSE
-	if(status_flags & INCORPOREAL)
-		return FALSE
 	var/mob/alt
 
 	if(target == src) //Clicking self.

@@ -30,9 +30,6 @@
 	anchored = TRUE
 	mouse_opacity = MOUSE_OPACITY_TRANSPARENT
 
-/obj/effect/mist/steam
-	name = "steam"
-	icon_state = "steam"
 
 /obj/structure/machinery/shower/attack_hand(mob/M as mob)
 	on = !on
@@ -224,6 +221,6 @@
 		if(watertemp == "boiling")
 			C.bodytemperature = min(T90C, C.bodytemperature + BODYTEMP_HEATING_MAX)
 			C.recalculate_move_delay = TRUE
-			C.apply_damage(5, BURN, enviro=TRUE)
+			C.apply_damage(5, BURN)
 			to_chat(C, SPAN_DANGER("The water is searing!"))
 			return

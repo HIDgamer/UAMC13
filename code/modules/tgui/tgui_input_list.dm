@@ -155,8 +155,7 @@
 /datum/tgui_list_input/Destroy(force, ...)
 	SStgui.close_uis(src)
 	state = null
-	buttons?.Cut()
-	buttons_map?.Cut()
+	buttons = null // TG QDEL_NULLs this
 	return ..()
 
 /**

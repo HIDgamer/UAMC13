@@ -52,7 +52,7 @@ GLOBAL_DATUM_INIT(revdata, /datum/getrev, new)
 			continue
 		. += "<a href=\"[CONFIG_GET(string/githuburl)]/pull/[tm.number]\">#[tm.number][details]</a><br>"
 
-CLIENT_VERB(showrevinfo)
+/client/verb/showrevinfo()
 	set category = "OOC"
 	set name = "Show Server Revision"
 	set desc = "Check the current server code revision"

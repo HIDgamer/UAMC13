@@ -95,11 +95,3 @@
 
 /// From /mob/living/carbon/xenomorph/proc/do_evolve()
 #define COMSIG_XENO_EVOLVE_TO_NEW_CASTE "xeno_evolve_to_new_caste"
-
-/// From /mob/living/carbon/human/death(cause, gibbed)
-#define COMSIG_XENO_REVEAL_TACMAP "xeno_reveal_tacmap"
-
-
-#define COMSIG_XENOMORPH_CORE_RETURN "xenomorph_core_return"
-#define COMSIG_XENOMORPH_HIVEMIND_CHANGE_FORM "xenomorph_hivemind_change_form"
-#define COMSIG_XENOMORPH_HIVEMIND_TELEPORT "xeno_hivemind_teleport"

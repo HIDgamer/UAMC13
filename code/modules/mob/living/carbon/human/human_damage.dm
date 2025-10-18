@@ -418,7 +418,7 @@ This function restores all limbs.
 */
 /mob/living/carbon/human/apply_damage(damage = 0, damagetype = BRUTE, def_zone = null, \
 	sharp = 0, edge = 0, obj/used_weapon = null, no_limb_loss = FALSE, \
-	permanent_kill = FALSE, mob/firer = null, force = FALSE, enviro = FALSE
+	permanent_kill = FALSE, mob/firer = null, force = FALSE
 )
 	if(protection_aura && damage > 0)
 		damage = floor(damage * ((ORDER_HOLD_CALC_LEVEL - protection_aura) / ORDER_HOLD_CALC_LEVEL))
@@ -429,10 +429,10 @@ This function restores all limbs.
 			if((damage > 25 && prob(20)) || (damage > 50 && prob(60)))
 				INVOKE_ASYNC(src, PROC_REF(emote), "pain")
 
-		..(damage, damagetype, def_zone, enviro=enviro)
+		..(damage, damagetype, def_zone)
 		return TRUE
 
-	var/list/damagedata = list("damage" = damage, "enviro" = enviro)
+	var/list/damagedata = list("damage" = damage)
 	if(SEND_SIGNAL(src, COMSIG_HUMAN_TAKE_DAMAGE, damagedata, damagetype) & COMPONENT_BLOCK_DAMAGE)
 		return
 	damage = damagedata["damage"]
@@ -449,8 +449,7 @@ This function restores all limbs.
 
 	var/list/damage_data = list(
 		"bonus_damage" = 0,
-		"damage" = damage,
-		"enviro" = enviro
+		"damage" = damage
 	)
 	SEND_SIGNAL(src, COMSIG_BONUS_DAMAGE, damage_data)
 	damage += damage_data["bonus_damage"]

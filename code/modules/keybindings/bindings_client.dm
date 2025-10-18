@@ -1,6 +1,6 @@
 // Clients aren't datums so we have to define these procs indpendently.
 // These verbs are called for all key press and release events
-CLIENT_VERB(keyDown, _key as text)
+/client/verb/keyDown(_key as text)
 	set instant = TRUE
 	set hidden = TRUE
 
@@ -79,7 +79,7 @@ CLIENT_VERB(keyDown, _key as text)
 	admin_holder?.key_down(_key, src)
 	mob.focus?.key_down(_key, src)
 
-CLIENT_VERB(keyUp, _key as text)
+/client/verb/keyUp(_key as text)
 	set instant = TRUE
 	set hidden = TRUE
 

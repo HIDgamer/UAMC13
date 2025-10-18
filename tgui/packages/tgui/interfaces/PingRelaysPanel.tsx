@@ -53,32 +53,17 @@ class PingApp extends Component<PingAppProps> {
     this.realCurrentIndex = 0;
   }
 
-  startTest(
-    desc: string,
-    pingURL: string,
-    connectURL: string,
-    retryIndex: number = -1,
-  ) {
+  startTest(desc: string, pingURL: string, connectURL: string) {
     this.pinger.ping(
       'http://' + pingURL,
       (error: string | null, pong: number) => {
         // reading state is too unreliable now somereason so we have to use realCurrentIndex
-        let index = retryIndex === -1 ? this.realCurrentIndex++ : retryIndex;
-
-        if (error !== null && retryIndex === -1) {
-          // Attempt a retry since it errored and we haven't tried yet
-          console.warn('Retrying ' + desc);
-          this.startTest(desc, pingURL, connectURL, index);
-          return;
-        }
-
-        this.results[index]?.update(
+        this.results[this.realCurrentIndex++]?.update(
           desc,
           'byond://' + connectURL,
           round(pong * 0.75, 0), // The ping is inflated so lets compensate a bit
           error,
         );
-
         // We still have to set a state to cause a redraw
         this.setState((prevState: State) => ({
           currentIndex: prevState.currentIndex + 1,

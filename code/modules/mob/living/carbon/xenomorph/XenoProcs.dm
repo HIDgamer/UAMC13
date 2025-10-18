@@ -117,41 +117,28 @@
 		else if(!(caste_type == XENO_CASTE_QUEEN))
 			. += "Queen's Location: [hive.living_xeno_queen.loc.loc.name]"
 
-		if (CHECK_MULTIPLE_BITFIELDS(hive.hive_flags, XENO_SLASH_ALLOW_ALL))
+		if(hive.slashing_allowed == XENO_SLASH_ALLOWED)
 			. += "Slashing: PERMITTED"
-		else if (HAS_FLAG(hive.hive_flags, XENO_SLASH_NORMAL))
-			. += "Slashing: RESTRICTED AGAINST INFECTED"
 		else
 			. += "Slashing: FORBIDDEN"
 
-		var/str_builder = "NOBODY"
-		if (CHECK_MULTIPLE_BITFIELDS(hive.hive_flags, XENO_CONSTRUCTION_ALLOW_ALL))
-			str_builder = "ANYONE"
+		if(hive.construction_allowed == XENO_LEADER)
+			. += "Construction Placement: LEADERS"
+		else if(hive.construction_allowed == NORMAL_XENO)
+			. += "Construction Placement: ANYONE"
+		else if(hive.construction_allowed == XENO_NOBODY)
+			. += "Construction Placement: NOBODY"
 		else
-			if (HAS_FLAG(hive.hive_flags, XENO_CONSTRUCTION_QUEEN))
-				str_builder = "QUEEN"
-				if (HAS_FLAG(hive.hive_flags, XENO_CONSTRUCTION_LEADERS))
-					str_builder += " and "
-			if (HAS_FLAG(hive.hive_flags, XENO_CONSTRUCTION_LEADERS))
-				str_builder += "LEADERS"
-		. += "Special Structure Placement: [str_builder]"
+			. += "Construction Placement: QUEEN"
 
-		str_builder = "NOBODY"
-		if (CHECK_MULTIPLE_BITFIELDS(hive.hive_flags, XENO_DECONSTRUCTION_ALLOW_ALL))
-			str_builder = "ANYONE"
+		if(hive.destruction_allowed == XENO_LEADER)
+			. += "Special Structure Destruction: LEADERS"
+		else if(hive.destruction_allowed == NORMAL_XENO)
+			. += "Special Structure Destruction: BUILDERS and LEADERS"
+		else if(hive.construction_allowed == XENO_NOBODY)
+			. += "Construction Placement: NOBODY"
 		else
-			if (HAS_FLAG(hive.hive_flags, XENO_DECONSTRUCTION_QUEEN))
-				str_builder = "QUEEN"
-				if (HAS_FLAG(hive.hive_flags, XENO_DECONSTRUCTION_LEADERS))
-					str_builder += " and "
-			if (HAS_FLAG(hive.hive_flags, XENO_DECONSTRUCTION_LEADERS))
-				str_builder += "LEADERS"
-		. += "Special Structure Destruction: [str_builder]"
-
-		if (HAS_FLAG(hive.hive_flags, XENO_UNNESTING_RESTRICTED))
-			. += "Unnesting: BUILDERS"
-		else
-			. += "Unnesting: ANYONE"
+			. += "Special Structure Destruction: QUEEN"
 
 		if(hive.hive_orders)
 			. += "Hive Orders: [hive.hive_orders]"
@@ -166,7 +153,7 @@
 		if(is_mob_incapacitated() || body_position == LYING_DOWN || buckled || evolving || !isturf(loc))
 			to_chat(src, SPAN_WARNING("We cannot do this in our current state."))
 			return FALSE
-		else if(!is_hive_ruler() && observed_xeno)
+		else if(caste_type != XENO_CASTE_QUEEN && observed_xeno)
 			to_chat(src, SPAN_WARNING("We cannot do this in our current state."))
 			return FALSE
 	else
@@ -357,10 +344,7 @@
 
 	if (pounceAction.freeze_self)
 		if(pounceAction.freeze_play_sound)
-			if(istype(hive, /datum/hive_status/pathogen))
-				playsound(loc, "pathogen_pounce", 60, 1)
-			else
-				playsound(loc, rand(0, 100) < 95 ? 'sound/voice/alien_pounce.ogg' : 'sound/voice/alien_pounce2.ogg', 25, 1)
+			playsound(loc, rand(0, 100) < 95 ? 'sound/voice/alien_pounce.ogg' : 'sound/voice/alien_pounce2.ogg', 25, 1)
 		ADD_TRAIT(src, TRAIT_IMMOBILIZED, TRAIT_SOURCE_ABILITY("Pounce"))
 		pounceAction.freeze_timer_id = addtimer(CALLBACK(src, PROC_REF(unfreeze_pounce)), pounceAction.freeze_time, TIMER_STOPPABLE)
 	pounceAction.additional_effects(M)
@@ -479,8 +463,6 @@
 /mob/living/carbon/xenomorph/proc/check_alien_construction(turf/current_turf, check_blockers = TRUE, silent = FALSE, check_doors = TRUE, ignore_nest = FALSE)
 	var/has_obstacle
 	for(var/obj/O in current_turf)
-		if(istype(O, /obj/effect/alien/resin/design/speed_node) || istype(O, /obj/effect/alien/resin/design/cost_node) || istype(O, /obj/effect/alien/resin/design/construct_node))
-			continue
 		if(check_blockers && istype(O, /obj/effect/build_blocker))
 			var/obj/effect/build_blocker/bb = O
 			if(!silent)
@@ -574,7 +556,7 @@
 	if(!hive)
 		return
 	var/mob/living/carbon/xenomorph/queen/Q = hive.living_xeno_queen
-	if(!Q || (!hive.allow_no_queen_actions && !Q.ovipositor) || hive_pos == NORMAL_XENO || !Q.current_aura || !SSmapping.same_z_map(Q.loc.z, loc.z)) //We are no longer a leader, or the Queen attached to us has dropped from her ovi, disabled her pheromones or even died
+	if(!Q || !Q.ovipositor || hive_pos == NORMAL_XENO || !Q.current_aura || !SSmapping.same_z_map(Q.loc.z, loc.z)) //We are no longer a leader, or the Queen attached to us has dropped from her ovi, disabled her pheromones or even died
 		leader_aura_strength = 0
 		leader_current_aura = ""
 		to_chat(src, SPAN_XENOWARNING("Our pheromones wane. The Queen is no longer granting us her pheromones."))
@@ -649,11 +631,6 @@
 	// Infected mobs do not have their tackle counter reset if
 	// they get knocked down or get up from a knockdown
 	if(M.status_flags & XENO_HOST)
-		return
-
-	// If they were not forcibly floored, don't reset
-	// Resting should not reset the counter
-	if(!HAS_TRAIT(M, TRAIT_FLOORED))
 		return
 
 	reset_tackle(M)
@@ -809,7 +786,7 @@
  * * shake_camera - whether to shake the thrown mob camera on throw
  * * immobilize - if TRUE the mob will be immobilized during the throw, ensuring it doesn't move and break it
  */
-/mob/living/proc/throw_carbon(mob/living/carbon/target, direction, distance, speed = SPEED_VERY_FAST, shake_camera = TRUE, immobilize = TRUE)
+/mob/living/carbon/xenomorph/proc/throw_carbon(mob/living/carbon/target, direction, distance, speed = SPEED_VERY_FAST, shake_camera = TRUE, immobilize = TRUE)
 	if(!direction)
 		direction = get_dir(src, target)
 	var/turf/target_destination = get_ranged_target_turf(target, direction, distance)
@@ -824,7 +801,7 @@
 		shake_camera(target, 10, 1)
 
 /// Handler callback to reset immobilization status after a successful [/mob/living/carbon/xenomorph/proc/throw_carbon]
-/mob/living/proc/throw_carbon_end(mob/living/carbon/target)
+/mob/living/carbon/xenomorph/proc/throw_carbon_end(mob/living/carbon/target)
 	REMOVE_TRAIT(target, TRAIT_IMMOBILIZED, XENO_THROW_TRAIT)
 
 /// snowflake proc to clear effects from research warcrimes

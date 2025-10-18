@@ -156,11 +156,11 @@ GLOBAL_LIST_EMPTY(admin_ranks) //list of all ranks with associated rights
 	var/datum/admins/D = new /datum/admins(rank, rights, ckey, extra_titles)
 
 	//find the client for a ckey if they are connected and associate them with the new admin datum
-	INVOKE_ASYNC(D, TYPE_PROC_REF(/datum/admins, associate), GLOB.directory[ckey])
+	D.associate(GLOB.directory[ckey])
 
 /*
 #ifdef TESTING
-CLIENT_VERB(changerank, newrank in admin_ranks)
+/client/verb/changerank(newrank in admin_ranks)
 	if(holder)
 		holder.rank = newrank
 		holder.rights = admin_ranks[newrank]
@@ -169,7 +169,7 @@ CLIENT_VERB(changerank, newrank in admin_ranks)
 	remove_admin_verbs()
 	holder.associate(src)
 
-CLIENT_VERB(changerights, newrights as num)
+/client/verb/changerights(newrights as num)
 	if(holder)
 		holder.rights = newrights
 	else

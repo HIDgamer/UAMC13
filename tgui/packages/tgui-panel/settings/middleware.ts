@@ -59,11 +59,11 @@ function setGlobalFontSize(
   // Used solution from theme.ts
   clearInterval(statFontTimer);
   Byond.command(
-    `.output statbrowser:set_font_size ${statLinked ? fontSize : statFontSize}`,
+    `.output statbrowser:set_font_size ${statLinked ? fontSize : statFontSize}px`,
   );
   statFontTimer = setTimeout(() => {
     Byond.command(
-      `.output statbrowser:set_font_size ${statLinked ? fontSize : statFontSize}`,
+      `.output statbrowser:set_font_size ${statLinked ? fontSize : statFontSize}px`,
     );
   }, 1500);
 }

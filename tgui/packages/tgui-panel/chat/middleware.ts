@@ -4,8 +4,7 @@
  * @license MIT
  */
 
-import { storage } from 'common/storage';
-import type { ByondWindow } from 'common/types';
+import { storage as realStorage, StorageProxy } from 'common/storage';
 import DOMPurify from 'dompurify';
 
 import {
@@ -13,7 +12,6 @@ import {
   importSettings,
   loadSettings,
   removeHighlightSetting,
-  updateHighlightKeywords,
   updateHighlightSetting,
   updateSettings,
 } from '../settings/actions';
@@ -40,10 +38,14 @@ import { selectChat, selectCurrentChatPage } from './selectors';
 // List of blacklisted tags
 const FORBID_TAGS = ['a', 'iframe', 'link', 'video'];
 
+const usingCdnStorage =
+  !Byond.TRIDENT && Byond.storageCdn !== 'tgui:storagecdn';
+const storage = usingCdnStorage ? new StorageProxy(true) : realStorage;
+
 const saveChatToStorage = async (store) => {
   const state = selectChat(store.getState());
 
-  if (!(window as ByondWindow).hubStorage) {
+  if (usingCdnStorage) {
     const indexedDbBackend = await storage.backendPromise;
     indexedDbBackend.processChatMessages(chatRenderer.storeQueue);
   } else {
@@ -67,7 +69,7 @@ const loadChatFromStorage = async (store) => {
   const state = await storage.get('chat-state-cm');
 
   let messages;
-  if (!(window as ByondWindow).hubStorage) {
+  if (usingCdnStorage) {
     messages = await (await storage.backendPromise).getChatMessages();
   } else {
     messages = await storage.get('chat-messages-cm');
@@ -197,15 +199,13 @@ export const chatMiddleware = (store) => {
       type === addHighlightSetting.type ||
       type === removeHighlightSetting.type ||
       type === updateHighlightSetting.type ||
-      type === importSettings.type ||
-      type === updateHighlightKeywords.type
+      type === importSettings.type
     ) {
       next(action);
       const nextSettings = selectSettings(store.getState());
       chatRenderer.setHighlight(
         nextSettings.highlightSettings,
         nextSettings.highlightSettingById,
-        nextSettings.highlightKeywords,
       );
 
       return;
