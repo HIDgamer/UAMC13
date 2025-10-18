@@ -482,6 +482,12 @@
 			return R.volume
 	return 0
 
+/datum/reagents/proc/contains_harmful_substances()
+	for(var/datum/reagent/R in reagent_list)
+		if(R.id != "water")
+			return TRUE
+	return FALSE
+
 /datum/reagents/proc/get_reagents()
 	var/res = ""
 	for(var/datum/reagent/A in reagent_list)
